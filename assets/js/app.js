@@ -26,12 +26,17 @@
   /* ---------- Map ---------- */
   // gestureHandling: on phones one finger scrolls the page and two fingers move
   // the map; on desktop, ctrl/cmd + scroll zooms. Stops the map trapping scrolls.
-  var map = L.map("map", { zoomControl: true, zoomSnap: 0.25, gestureHandling: true });
+  // zoomSnap 1: whole zoom levels only. In-between levels stretch the map images
+  // and make the map look blurry.
+  var map = L.map("map", { zoomControl: true, zoomSnap: 1, gestureHandling: true });
   // Esri street map: no API key, and unlike OpenStreetMap's server it doesn't
   // return 403 "Access blocked" when the page is opened from a file.
   // CSS turns it into the black-and-gray look of the Instagram store-locator post.
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
     maxZoom: 19,
+    // On sharp phone/laptop screens, load the next zoom level's images at half
+    // size so the map stays crisp instead of soft.
+    detectRetina: true,
     attribution: 'Tiles &copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, &copy; OpenStreetMap contributors'
   }).addTo(map);
 

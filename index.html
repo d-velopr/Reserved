@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reserved | Store Locator</title>
+  <meta name="description" content="Find Reserved at 10 shops across Southern California. Get directions in one tap and sign up for drop alerts." />
+  <meta name="theme-color" content="#163C42" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/gen/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/gen/favicon-180.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Reserved | Store Locator" />
+  <meta property="og:description" content="Find Reserved at 10 shops across Southern California." />
+  <meta property="og:image" content="assets/img/gen/hero.webp" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=28" />
+</head>
+<body>
+
+  <!-- 21+ gate. Remembered per browser after a "Yes". -->
+  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" hidden>
+    <div class="gate-card stitched">
+      <img src="assets/img/gen/crest.webp" alt="" width="150" height="132" />
+      <h2 id="gate-title">Are you 21 or older?</h2>
+      <div class="gate-actions">
+        <button class="btn btn-gold" id="gate-yes" type="button">Yes, enter</button>
+        <a class="btn btn-ghost" href="https://www.google.com">No</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="top">
+    <a href="#" class="brand" aria-label="Reserved home">
+      <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="180" height="70" />
+    </a>
+    <a href="#stores" class="btn btn-outline btn-sm">Store locator</a>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Reserved">
+      <img class="hero-img" src="assets/img/gen/hero.webp" alt="The Reserved logo painted on a graffiti wall at a Southern California beach" width="1206" height="799" />
+    </section>
+
+    <section class="intro">
+      <div class="wrap">
+        <h1>Find Our Drops Near You.</h1>
+      </div>
+      <div class="thread" aria-hidden="true"></div>
+    </section>
+
+    <section class="locator" id="stores" aria-labelledby="stores-title">
+      <div class="wrap">
+        <div class="locator-head">
+          <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="360" height="140" loading="lazy" />
+          <h2 id="stores-title">Store locator</h2>
+        </div>
+        <div class="tools">
+          <label class="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <span class="sr-only">Search by city, store name, or ZIP code</span>
+            <input id="q" type="search" placeholder="City, store, or ZIP code" autocomplete="off" />
+          </label>
+          <button class="btn btn-red" id="near" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Near me
+          </button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+
+        <div class="locator-grid">
+          <div id="map" class="map" aria-label="Map of Reserved stores"></div>
+          <div class="list-col">
+            <h3 class="list-title" id="list-title">Our Stores <span class="list-count" id="list-count">10</span></h3>
+            <ol class="store-list" id="list" aria-labelledby="list-title"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="subscribe" id="subscribe" aria-labelledby="sub-title">
+      <div class="wrap sub-inner">
+        <img class="crest" src="assets/img/gen/crest.webp" alt="Reserved crest with two lions, wings and a crown" width="640" height="563" loading="lazy" />
+        <div class="sub-body">
+          <h2 id="sub-title">Stay Up To Date.</h2>
+          <p>New stores and restocks, straight to your inbox.</p>
+          <form id="sub-form" class="sub-form" novalidate>
+            <label class="sr-only" for="email">Email address</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required />
+            <!-- Honeypot: real people never see or fill this. -->
+            <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button class="btn btn-gold" type="submit">Subscribe</button>
+          </form>
+          <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="thread" aria-hidden="true"></div>
+    <div class="wrap foot-inner">
+      <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="140" height="54" loading="lazy" />
+      <p>The Reserved way or no way.</p>
+      <p class="fine">For adults 21+. Cultivated by palm trees.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.js"></script>
+  <script src="assets/js/stores.js?v=28"></script>
+  <script src="assets/js/app.js?v=28"></script>
+</body>
+</html>

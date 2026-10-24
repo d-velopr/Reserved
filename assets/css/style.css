@@ -1,0 +1,485 @@
+/* Reserved store locator. Palette from the brand mockups; thread colors from the wordmark. */
+:root {
+  --teal: #163C42;
+  --teal-2: #1F4F56;
+  --ink: #0F2A2E;
+  --cream: #FAF4E6;
+  --sand: #EADFC8;
+  --gold: #E7B15E;
+  --gold-2: #C98F35;
+  --muted: #55696B;
+
+  --t-green: #1F7A4D;
+  --t-red: #B3203A;
+  --t-gold: #D99A1E;
+  --t-blue: #1E5FD9;
+  --t-orange: #E8641B;
+  --t-purple: #6B3A9A;
+
+  --radius: 14px;
+  --stitch: 2px dashed rgba(231, 177, 94, .85);
+  --wide: "wdth" 125;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Archivo", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+body.locked { overflow: hidden; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--t-blue); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+h1, h2 {
+  font-variation-settings: var(--wide);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -.01em;
+  margin: 0;
+}
+h1 { font-size: clamp(2.3rem, 7vw, 4.6rem); }
+h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
+
+/* Six-color thread stripe, one stitch per wordmark letter color */
+.thread {
+  height: 7px;
+  background: linear-gradient(90deg,
+    var(--t-green) 0 16.66%, var(--t-red) 0 33.33%, var(--t-gold) 0 50%,
+    var(--t-blue) 0 66.66%, var(--t-orange) 0 83.33%, var(--t-purple) 0);
+}
+
+/* Embroidered patch: solid edge + dashed stitch line just inside it */
+.stitched {
+  position: relative;
+  border-radius: var(--radius);
+}
+.stitched::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: var(--stitch);
+  border-radius: calc(var(--radius) - 5px);
+  pointer-events: none;
+  z-index: 500;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-height: 48px;
+  padding: .75rem 1.5rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font: inherit;
+  font-weight: 800;
+  font-variation-settings: "wdth" 110;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .12s ease, background-color .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 20px; height: 20px; }
+.btn-sm { min-height: 40px; padding: .5rem 1.1rem; font-size: .95rem; }
+.btn-gold { background: var(--gold); color: var(--ink); border-color: var(--ink); box-shadow: 0 3px 0 var(--ink); }
+.btn-gold:hover { background: #F0C077; }
+.btn-teal { background: var(--teal); color: var(--cream); }
+.btn-teal:hover { background: var(--teal-2); }
+.btn-outline { border-color: var(--gold); color: var(--gold); background: transparent; }
+.btn-outline:hover { background: var(--gold); color: var(--ink); }
+.btn-ghost { color: var(--cream); border-color: rgba(250, 244, 230, .5); }
+.btn[disabled] { opacity: .65; cursor: progress; }
+
+/* Jump links and list taps land below the sticky header, not under it */
+#stores, #map, #subscribe { scroll-margin-top: 84px; }
+
+/* ---------- Header ---------- */
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .6rem max(16px, calc((100% - 1160px) / 2));
+  background: rgba(22, 60, 66, .96); /* --teal, slightly see-through */
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(231, 177, 94, .35);
+}
+.brand img { width: clamp(130px, 22vw, 180px); height: auto; }
+
+/* ---------- Hero ---------- */
+.hero { background: var(--teal); }
+/* 90px taller than the original crop, with the top kept in the same place,
+   so the extra 90px goes to the bottom under the slogan. On narrow screens,
+   where the photo runs out at the bottom, the shift is capped so the photo
+   still fills the box (a little sky is trimmed instead).
+   66.25vw = the image's full height at page width (799 / 1206). */
+.hero-img {
+  width: 100%;
+  height: calc(clamp(260px, 52vw, 620px) + 90px);
+  object-fit: cover;
+  object-position: 50% min(0px, max(
+    calc(clamp(260px, 52vw, 620px) + 90px - 66.25vw),
+    calc((clamp(260px, 52vw, 620px) - 66.25vw) * .55)
+  ));
+}
+
+.intro { background: var(--teal); color: var(--cream); text-align: center; }
+.intro .wrap { padding: 2.25rem 0 2.5rem; }
+
+/* ---------- Locator: modeled on the Reserved Instagram store-locator post ---------- */
+.locator {
+  padding: 3rem 0 4rem;
+  background: #0B0B0C;
+  color: #fff;
+}
+.locator-head { text-align: center; margin-bottom: 1.75rem; }
+.locator-head img {
+  width: min(420px, 82%);
+  height: auto;
+  margin: 0 auto .4rem;
+  filter: drop-shadow(0 0 28px rgba(231, 177, 94, .28));
+}
+.locator h2 {
+  color: #fff;
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.tools { display: flex; gap: .75rem; flex-wrap: wrap; }
+.search {
+  flex: 1 1 260px;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 52px;
+  padding: 0 1rem;
+  background: #1A1A1C;
+  border: 2px solid #3A3A3E;
+  border-radius: 999px;
+  color: #A8A8AE;
+}
+.search:focus-within { border-color: #fff; }
+.search svg { width: 20px; height: 20px; flex: none; }
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: #fff;
+  background: transparent;
+}
+.search input::placeholder { color: #8A8A90; }
+.btn-red { background: #E53935; color: #fff; border-color: #7F1414; box-shadow: 0 3px 0 #7F1414; }
+.btn-red:hover { background: #F04A45; }
+.status { min-height: 1.5em; margin: .6rem 0 .8rem; color: #fff; font-weight: 600; }
+
+.locator-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: #141416;
+  border: 1px solid #2A2A2E;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.map {
+  height: min(70vh, 560px);
+  background: #111;
+  z-index: 1;
+}
+
+/* Title above the store list, with a live count of the stores shown */
+.list-title {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: 0;
+  padding: 1.25rem 1.25rem .25rem 1.3rem;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 900;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.list-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.7rem;
+  height: 1.7rem;
+  padding: 0 .45rem;
+  border-radius: 999px;
+  background: #E53935;
+  color: #fff;
+  font-size: .85rem;
+  font-variation-settings: "wdth" 100;
+  letter-spacing: 0;
+}
+
+/* Legend, like the bottom-left list in the post: dot, city tag, store name */
+.store-list {
+  list-style: none;
+  margin: 0;
+  padding: 1rem .75rem 1.25rem;
+  display: grid;
+  grid-auto-rows: max-content;
+  gap: .25rem;
+}
+.store-list li {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+}
+.store-list li:hover, .store-list li.active { background: #222226; }
+.store {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem .6rem;
+  padding: .6rem .5rem .6rem 1.6rem;
+  position: relative;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: #fff;
+}
+.store::before {
+  content: "";
+  position: absolute;
+  left: .55rem;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: #fff;
+}
+.store-city {
+  padding: .15rem .5rem;
+  border-radius: 4px;
+  background: var(--tag);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 800;
+  font-variation-settings: "wdth" 80;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25);
+}
+.store-name {
+  font-weight: 800;
+  font-variation-settings: "wdth" 80;
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: .02em;
+}
+.store-mi { font-style: normal; color: var(--gold); font-weight: 700; font-size: .9rem; }
+.dir {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  align-self: stretch;
+  color: #E53935;
+  text-decoration: none;
+  border-radius: 10px;
+}
+.dir svg { width: 26px; height: 26px; }
+.dir:hover { background: rgba(229, 57, 53, .15); }
+
+@media (min-width: 860px) {
+  /* List sits beside the map at full height, no scrolling; the map stretches to match */
+  .locator-grid { grid-template-columns: 1fr 330px; align-items: stretch; }
+  .map { height: auto; min-height: 640px; }
+  .list-col { border-left: 1px solid #2A2A2E; display: flex; flex-direction: column; justify-content: center; }
+  .list-title { padding-top: 1.25rem; }
+}
+
+/* Map markers: red pin (tip = store), colored city tag, big chrome R with a glow */
+.mk-wrap { background: none; border: 0; }
+.mk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+  transform-origin: 50% 34px;
+  transition: transform .15s ease;
+}
+.mk-pin { width: 26px; height: 34px; flex: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .8)); }
+.mk-city {
+  margin-top: 2px;
+  padding: .1rem .45rem;
+  border-radius: 4px;
+  background: var(--tag);
+  color: #fff;
+  font: 800 .78rem/1.3 "Archivo", sans-serif;
+  font-variation-settings: "wdth" 80;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .7), inset 0 0 0 1px rgba(255, 255, 255, .25);
+}
+/* Leaflet forces width:auto on marker images, so match its specificity */
+.leaflet-container .leaflet-marker-pane .mk-logo {
+  width: 72px !important;
+  height: auto;
+  margin-top: 3px;
+  filter: drop-shadow(0 0 10px var(--tag)) drop-shadow(0 0 4px rgba(0, 0, 0, .9));
+}
+.mk-body { display: flex; flex-direction: column; align-items: center; transition: transform .2s ease; }
+.mk-wrap:hover .mk { transform: scale(1.1); }
+.z-far .mk-city { display: none; }
+/* Logo would cover a neighbor: show just the red pin until there's room */
+.mk.no-logo .mk-body { visibility: hidden; }
+.z-far.leaflet-container .leaflet-marker-pane .mk-logo { width: 46px !important; }
+/* Zoomed out: shift crowded logos sideways (per-store nudge in stores.js) */
+.z-nudge .mk-body { transform: translate(calc(var(--nx) * var(--nk, 1)), calc(var(--ny) * var(--nk, 1))); }
+/* Phone-width overview (zoom < 8): stores sit closer together on screen, so
+   logos get smaller and the nudges shrink to match */
+.z-vfar { --nk: .55; }
+.z-vfar.leaflet-container .leaflet-marker-pane .mk-logo { width: 34px !important; }
+.z-vfar .mk-pin { transform: scale(.8); transform-origin: 50% 100%; }
+
+/* "Use two fingers to move the map" notice (leaflet-gesture-handling) */
+.leaflet-gesture-handling-touch-warning:after,
+.leaflet-gesture-handling-scroll-warning:after {
+  font-family: "Archivo", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.leaflet-popup-content-wrapper { border-radius: 12px; background: #fff; color: #111; }
+.leaflet-popup-tip { background: #fff; }
+.leaflet-popup-content { margin: 14px 16px; font-family: "Archivo", sans-serif; }
+.pop { display: grid; gap: .35rem; }
+.pop strong { font-size: 1.1rem; font-variation-settings: "wdth" 115; }
+.pop span { color: #555; font-size: .92rem; line-height: 1.35; }
+.pop .btn { margin-top: .4rem; justify-self: start; }
+.leaflet-container a.btn { color: var(--ink); }
+
+/* Black-and-gray map like the post: grayscale, inverted, darkened */
+.map.leaflet-container { background: #111; }
+.leaflet-tile-pane { filter: grayscale(1) invert(1) brightness(.78) contrast(1.35); }
+.leaflet-bar a { background: #1A1A1C; color: #fff; border-bottom-color: #333; }
+.leaflet-bar a:hover { background: #2A2A2E; color: #fff; }
+.leaflet-control-attribution.leaflet-control { background: rgba(0, 0, 0, .7); color: #999; }
+.leaflet-control-attribution a { color: #ccc; }
+
+/* ---------- Subscribe ---------- */
+.subscribe { background: var(--teal); color: var(--cream); padding: 3.5rem 0; }
+.sub-inner { display: grid; gap: 2rem; align-items: center; }
+/* Keep the crest's own 640x563 shape; never stretch it */
+.crest { width: min(180px, 55%); height: auto; aspect-ratio: 640 / 563; object-fit: contain; margin-inline: auto; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .35)); }
+.sub-body p { margin: .6rem 0 1.25rem; color: #D9E3DF; font-size: 1.1rem; }
+.sub-form { display: flex; gap: .6rem; flex-wrap: wrap; }
+.sub-form input[type="email"] {
+  flex: 1 1 240px;
+  min-height: 52px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  border: 2px dashed var(--gold);
+  background: var(--cream);
+  color: var(--ink);
+  font: inherit;
+}
+.sub-form input[type="email"]:focus { outline: 3px solid var(--t-blue); outline-offset: 2px; }
+.hp { position: absolute; left: -9999px; opacity: 0; }
+.form-msg { min-height: 1.5em; margin: .75rem 0 0; font-weight: 700; }
+.form-msg.ok { color: var(--gold); }
+.form-msg.err { color: #FFB4A8; }
+
+@media (min-width: 760px) {
+  .sub-inner { grid-template-columns: 300px 1fr; gap: 3rem; }
+  .crest { width: 100%; }
+}
+
+/* ---------- Footer ---------- */
+.foot { background: var(--ink); color: #B9CBC7; }
+.foot-inner { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.5rem; padding: 1.75rem 0 2rem; }
+.foot-inner p { margin: 0; }
+.foot-inner p:first-of-type { color: var(--cream); font-weight: 800; font-variation-settings: "wdth" 120; }
+.fine { font-size: .85rem; margin-left: auto !important; }
+
+/* ---------- Age gate ---------- */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(15, 42, 46, .92);
+  backdrop-filter: blur(6px);
+}
+.gate[hidden] { display: none; }
+.gate-card {
+  width: min(420px, 100%);
+  padding: 2rem 1.75rem 2.25rem;
+  background: var(--teal);
+  color: var(--cream);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+}
+.gate-card img { width: 150px; margin: 0 auto 1rem; height: auto; aspect-ratio: 640 / 563; object-fit: contain; }
+.gate-card h2 { font-size: 1.7rem; }
+.gate-actions { display: flex; gap: .75rem; justify-content: center; margin-top: 1.5rem; position: relative; z-index: 501; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 640px) {
+  /* Hero: show the whole photo at its own shape, so no wall art is cut off */
+  .hero-img { height: auto; aspect-ratio: 1206 / 799; object-position: center; }
+  .intro .wrap { padding: 1.5rem 0 1.75rem; }
+
+  .locator { padding: 2rem 0 2.5rem; }
+  .locator-head { margin-bottom: 1.25rem; }
+  .locator-head img { width: min(300px, 78%); }
+  .tools .btn { flex: 1 1 100%; }
+  .status:empty { min-height: 0; margin: .4rem 0; }
+  .leaflet-control-attribution.leaflet-control { font-size: 9px; }
+
+  /* Store list: its own scroll box on phones (about 4.5 rows show, so the cut-off
+     row hints there's more). The fade at the bottom goes away at the end. */
+  .store-list {
+    max-height: 330px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #4A4A50 transparent;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+  }
+  .store-list.at-end { -webkit-mask-image: none; mask-image: none; }
+
+  .subscribe { padding: 2.5rem 0 2.75rem; }
+  .sub-body { text-align: center; }
+  .sub-form .btn { flex: 1 1 100%; }
+  .form-msg:empty { min-height: 0; margin: 0; }
+
+  .foot-inner { flex-direction: column; text-align: center; gap: .6rem; padding: 1.75rem 0 calc(1.75rem + env(safe-area-inset-bottom)); }
+  .fine { margin-left: 0 !important; }
+}
+
+/* Narrow phones: city tag above the store name on every row, so all rows match */
+@media (max-width: 440px) {
+  .store { flex-direction: column; align-items: flex-start; gap: .25rem; padding-top: .5rem; padding-bottom: .5rem; }
+  .store::before { top: calc(.5rem + .8rem); } /* line the dot up with the city tag */
+  .store-list { gap: .1rem; }
+}

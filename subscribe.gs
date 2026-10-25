@@ -31,6 +31,9 @@
  * =============================================================================
  */
 
+// Shown when the /exec URL is opened in a browser. If it doesn't say this,
+// the live deployment is still running older code.
+var VERSION = 'zip-2';
 var SHEET_NAME = 'Subscribers';
 // New columns go at the end so rows saved before they existed stay lined up.
 var HEADERS = ['Timestamp', 'Email', 'Signed Up From', 'Client Timestamp', 'ZIP Code', 'Source'];
@@ -80,7 +83,7 @@ function doPost(e) {
 
 /** Open the /exec URL in a browser to confirm the deployment is live. */
 function doGet() {
-  return jsonResponse_({ status: 'ok', service: 'Reserved sign-up' });
+  return jsonResponse_({ status: 'ok', service: 'Reserved sign-up', version: VERSION });
 }
 
 function parseRequest_(e) {
@@ -124,9 +127,16 @@ function getSheet_() {
     sheet.appendRow(HEADERS);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
-  } else if (sheet.getRange(1, ZIP_COL).getValue() !== HEADERS[ZIP_COL - 1]) {
-    // Sheet made by the older 4-column version: add the new headers.
-    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]).setFontWeight('bold');
+  } else {
+    // Older Sheets may be missing the newer headers. Fill in only the blank
+    // header cells, so headers someone renamed (e.g. "EMAIL ADDRESS") stay.
+    var top = sheet.getRange(1, 1, 1, HEADERS.length);
+    var current = top.getValues()[0];
+    var changed = false;
+    for (var i = 0; i < HEADERS.length; i++) {
+      if (current[i] === '' || current[i] === null) { current[i] = HEADERS[i]; changed = true; }
+    }
+    if (changed) top.setValues([current]).setFontWeight('bold');
   }
   return sheet;
 }

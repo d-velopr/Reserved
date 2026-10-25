@@ -2,7 +2,7 @@
   "use strict";
 
   /* Paste the Apps Script web app URL here (ends in /exec). See subscribe.gs. */
-  var SIGNUP_URL = "https://script.google.com/macros/s/AKfycbzdLKm7ALsz3VRbFkZikZfQLtxy5MP5c54fObSC6At9KVZywW9HIA9nhoOmSmh_tnf-/exec";
+  var SIGNUP_URL = "https://script.google.com/macros/s/AKfycbwWgp5F6ZsGo_vI7E4F3nOKRrx69DUtj8EVUrfl4luhgNV2o8cQ5FT7zrQA9K3KzyI/exec";
 
   var STORES = window.RESERVED_STORES || [];
   var PIN_IMG = "assets/img/gen/pin-r.webp";

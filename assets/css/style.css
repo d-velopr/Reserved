@@ -143,8 +143,6 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .top { gap: .6rem; }
   .brand img { width: 110px; }
   .top .btn-sm { padding-inline: .8rem; font-size: .88rem; }
-  .top-actions { gap: .4rem; }
-  .ig-btn { width: 36px; height: 36px; }
 }
 
 /* ---------- Hero ---------- */
@@ -504,6 +502,8 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 640px) {
+  /* Phones: no Instagram button in the header (the footer link stays) */
+  .ig-btn { display: none; }
   /* Hero: show the whole photo at its own shape, so no wall art is cut off */
   .hero-img { height: auto; aspect-ratio: 1206 / 799; object-position: center; }
   .intro .wrap { padding: 1.5rem 0 1.75rem; }

@@ -49,6 +49,9 @@ function doPost(e) {
     }
 
     sheet.appendRow([new Date(), data.email, data.page, data.submittedAt]);
+    // Save the row before the lock is released. Without this, a quick repeat
+    // sign-up can check the Sheet before the row lands and add it twice.
+    SpreadsheetApp.flush();
     console.log('Subscriber added: ' + data.email);
     return jsonResponse_({ status: 'ok' });
   } catch (err) {

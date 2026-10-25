@@ -2,7 +2,7 @@
   "use strict";
 
   /* Paste the Apps Script web app URL here (ends in /exec). See subscribe.gs. */
-  var SIGNUP_URL = "REPLACE_ME_APPS_SCRIPT_URL";
+  var SIGNUP_URL = "https://script.google.com/macros/s/AKfycbzdLKm7ALsz3VRbFkZikZfQLtxy5MP5c54fObSC6At9KVZywW9HIA9nhoOmSmh_tnf-/exec";
 
   var STORES = window.RESERVED_STORES || [];
   var PIN_IMG = "assets/img/gen/pin-r.webp";
@@ -32,7 +32,9 @@
   // Esri street map: no API key, and unlike OpenStreetMap's server it doesn't
   // return 403 "Access blocked" when the page is opened from a file.
   // CSS turns it into the black-and-gray look of the Instagram store-locator post.
-  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+  var TILE_URL = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}";
+  var STORE_ZOOM = 14; // how close the map goes when a store is picked from the list
+  var tiles = L.tileLayer(TILE_URL, {
     maxZoom: 19,
     // On sharp phone/laptop screens, load the next zoom level's images at half
     // size so the map stays crisp instead of soft.
@@ -97,8 +99,8 @@
       html: '<div class="mk" style="--tag:' + s.tag + ";--nx:" + n[0] + "px;--ny:" + n[1] + 'px">' + RED_PIN +
         '<div class="mk-body"><span class="mk-city">' + esc(s.city) + "</span>" +
         '<img class="mk-logo" src="' + esc(s.logo || PIN_IMG) + '" alt="" /></div></div>',
-      iconSize: [120, 140],
-      iconAnchor: [60, 34],
+      iconSize: [160, 160],
+      iconAnchor: [80, 34],
       popupAnchor: [0, -30]
     });
   }
@@ -152,6 +154,59 @@
     resizeTimer = setTimeout(refit, 200);
   });
 
+  /* ---------- Preload each store's close-up ----------
+     Picking a store flies the map to it at STORE_ZOOM. Fetch the map images for
+     each of those views ahead of time, six at a time once the map is on
+     screen, so the close-up is already there when the map lands. Holding on
+     to each image keeps it in the browser's memory until the map asks for it
+     (a few MB in all), and Esri allows a day of caching after that. */
+  var started = {}, queue = [], busy = 0, kept = [];
+  function tileUrlsFor(s) {
+    var size = map.getSize(), ts = tiles.getTileSize().x;
+    var c = map.project([s.lat, s.lng], STORE_ZOOM);
+    // On sharp screens the map loads the next zoom level's images at half size.
+    var z = STORE_ZOOM + (tiles.options.zoomOffset || 0);
+    var urls = [];
+    for (var x = Math.floor((c.x - size.x / 2) / ts); x <= Math.floor((c.x + size.x / 2) / ts); x++) {
+      for (var y = Math.floor((c.y - size.y / 2) / ts); y <= Math.floor((c.y + size.y / 2) / ts); y++) {
+        var u = L.Util.template(TILE_URL, { x: x, y: y, z: z });
+        if (!started[u]) urls.push(u);
+      }
+    }
+    return urls;
+  }
+  function pump() {
+    while (busy < 6 && queue.length) {
+      var u = queue.shift();
+      if (started[u]) continue;
+      started[u] = true;
+      busy++;
+      var img = new Image();
+      kept.push(img);
+      img.onload = img.onerror = function () { busy--; pump(); };
+      img.src = u;
+    }
+  }
+  // urgent: jump the line (the visitor is pointing at this store right now).
+  function preload(s, urgent) {
+    var urls = tileUrlsFor(s);
+    if (urgent) queue = urls.concat(queue.filter(function (u) { return urls.indexOf(u) === -1; }));
+    else urls.forEach(function (u) { if (queue.indexOf(u) === -1) queue.push(u); });
+    pump();
+  }
+  // Start once the page has loaded and the map scrolls near view. Skipped when
+  // the visitor has asked their phone to save data.
+  var saveData = navigator.connection && navigator.connection.saveData;
+  window.addEventListener("load", function () {
+    if (saveData || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      STORES.forEach(function (s) { preload(s, false); });
+    }, { rootMargin: "300px" });
+    io.observe(map.getContainer());
+  });
+
   /* ---------- List ---------- */
   var list = document.getElementById("list");
   var statusEl = document.getElementById("status");
@@ -170,7 +225,13 @@
         '<a class="dir" target="_blank" rel="noopener" href="' + directionsUrl(s) + '" aria-label="Directions to ' + esc(s.name) + '">' +
           '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 10-10 10L2 12z" fill="currentColor"/><path d="M9 14v-2.5a1.5 1.5 0 0 1 1.5-1.5H15m-2-2l2 2-2 2" fill="none" stroke="#FAF4E6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         "</a>";
-      li.querySelector(".store").addEventListener("click", function () { setActive(s.id, true); });
+      var btn = li.querySelector(".store");
+      btn.addEventListener("click", function () { setActive(s.id, true); });
+      // About to pick this store: fetch its close-up first (not on Data Saver).
+      if (!saveData) {
+        btn.addEventListener("pointerenter", function () { preload(s, true); });
+        btn.addEventListener("focus", function () { preload(s, true); });
+      }
       list.appendChild(li);
     });
     document.getElementById("list-count").textContent = stores.length;
@@ -185,7 +246,7 @@
     });
     if (fromList) {
       userMoved = true;
-      map.flyTo([s.lat, s.lng], 14, { duration: 0.8 });
+      map.flyTo([s.lat, s.lng], STORE_ZOOM, { duration: 0.8 });
       s.marker.openPopup();
       if (window.matchMedia("(max-width: 859px)").matches) {
         document.getElementById("map").scrollIntoView({ behavior: "smooth", block: "center" });

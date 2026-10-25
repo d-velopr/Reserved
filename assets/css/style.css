@@ -313,17 +313,23 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .list-title { padding-top: 1.25rem; }
 }
 
-/* Map markers: red pin (tip = store), colored city tag, big chrome R with a glow */
+/* Map markers: red pin (tip = store), colored city tag, store logo with a glow */
 .mk-wrap { background: none; border: 0; }
+/* The marker box is much bigger than what's drawn in it. Only the pin, tag and
+   logo take clicks, so the empty part doesn't steal clicks from a neighbor.
+   (Beats Leaflet's .leaflet-marker-icon.leaflet-interactive rule.) */
+.leaflet-marker-icon.leaflet-interactive.mk-wrap { pointer-events: none; }
+.mk-pin, .mk-city, .mk-logo { pointer-events: auto; }
 .mk {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 120px;
+  width: 160px;
   transform-origin: 50% 34px;
   transition: transform .15s ease;
 }
-.mk-pin { width: 26px; height: 34px; flex: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .8)); }
+/* z-index: a logo shifted up never covers its own pin's tip (the store) */
+.mk-pin { position: relative; z-index: 1; width: 26px; height: 34px; flex: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .8)); }
 .mk-city {
   margin-top: 2px;
   padding: .1rem .45rem;
@@ -342,8 +348,8 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .leaflet-container .leaflet-marker-pane .mk-logo {
   width: auto !important;
   height: auto !important;
-  max-width: 96px !important;
-  max-height: 58px !important;
+  max-width: 136px !important;
+  max-height: 80px !important;
   margin-top: 3px;
   filter: drop-shadow(0 0 10px var(--tag)) drop-shadow(0 0 4px rgba(0, 0, 0, .9));
 }
@@ -352,13 +358,13 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .z-far .mk-city { display: none; }
 /* Logo would cover a neighbor: show just the red pin until there's room */
 .mk.no-logo .mk-body { visibility: hidden; }
-.z-far.leaflet-container .leaflet-marker-pane .mk-logo { max-width: 66px !important; max-height: 40px !important; }
+.z-far.leaflet-container .leaflet-marker-pane .mk-logo { max-width: 100px !important; max-height: 58px !important; }
 /* Zoomed out: shift crowded logos sideways (per-store nudge in stores.js) */
 .z-nudge .mk-body { transform: translate(calc(var(--nx) * var(--nk, 1)), calc(var(--ny) * var(--nk, 1))); }
 /* Phone-width overview (zoom < 8): stores sit closer together on screen, so
    logos get smaller and the nudges shrink to match */
 .z-vfar { --nk: .55; }
-.z-vfar.leaflet-container .leaflet-marker-pane .mk-logo { max-width: 50px !important; max-height: 30px !important; }
+.z-vfar.leaflet-container .leaflet-marker-pane .mk-logo { max-width: 76px !important; max-height: 44px !important; }
 .z-vfar .mk-pin { transform: scale(.8); transform-origin: 50% 100%; }
 
 /* "Use two fingers to move the map" notice (leaflet-gesture-handling) */

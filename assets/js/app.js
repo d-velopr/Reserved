@@ -25,31 +25,104 @@
     document.head.appendChild(tag);
   }
 
-  /* ---------- 21+ gate (also the analytics consent) ---------- */
-  // "Yes, enter" confirms 21+ and agrees to analytics, so both are saved
-  // together. Visitors who passed the gate before the analytics notice was
-  // added see it once more.
-  var gate = document.getElementById("gate");
-  var passed = false;
-  try {
-    passed = localStorage.getItem("reserved21") === "yes" &&
-      localStorage.getItem("reservedAnalytics") === "yes";
-  } catch (e) {}
-  if (passed) {
-    startAnalytics();
-  } else {
-    gate.hidden = false;
-    document.body.classList.add("locked");
-    document.getElementById("gate-yes").focus();
+  /* ---------- Sign-up (shared by the entry gate and the Subscribe form) ---------- */
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  // Posts to the Apps Script in subscribe.gs. "no-cors" means the reply can't be
+  // read, so this resolves once the request is sent and rejects only if the
+  // network fails. Check the Sheet to confirm rows land.
+  function sendSignup(fields) {
+    fields.page = location.href;
+    fields.submittedAt = new Date().toISOString();
+    return fetch(SIGNUP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(fields)
+    });
   }
-  document.getElementById("gate-yes").addEventListener("click", function () {
-    try {
-      localStorage.setItem("reserved21", "yes");
-      localStorage.setItem("reservedAnalytics", "yes");
-    } catch (e) {}
+
+  /* ---------- Entry gate ---------- */
+  // Step 1: "Yes, enter" confirms 21+ and agrees to analytics (saved together).
+  // Step 2: email and ZIP code, required to get in. Each step is remembered on
+  // its own, so someone who passed step 1 before step 2 existed only sees step 2.
+  var gate = document.getElementById("gate");
+  var ageStep = document.getElementById("gate-age");
+  var joinForm = document.getElementById("gate-join");
+  var gateEmail = document.getElementById("gate-email");
+  var gateZip = document.getElementById("gate-zip");
+  var gateMsg = document.getElementById("gate-msg");
+
+  function remembered(key) {
+    try { return localStorage.getItem(key) === "yes"; } catch (e) { return false; }
+  }
+  function remember(key) {
+    try { localStorage.setItem(key, "yes"); } catch (e) {}
+  }
+
+  function showJoinStep() {
+    ageStep.hidden = true;
+    joinForm.hidden = false;
+    gate.setAttribute("aria-labelledby", "gate-join-title");
+    gateEmail.focus();
+  }
+  function openSite() {
     gate.hidden = true;
     document.body.classList.remove("locked");
+  }
+
+  var ageOk = remembered("reserved21") && remembered("reservedAnalytics");
+  if (ageOk) startAnalytics();
+  if (!ageOk || !remembered("reservedJoined")) {
+    gate.hidden = false;
+    document.body.classList.add("locked");
+    if (ageOk) showJoinStep();
+    else document.getElementById("gate-yes").focus();
+  }
+
+  document.getElementById("gate-yes").addEventListener("click", function () {
+    remember("reserved21");
+    remember("reservedAnalytics");
     startAnalytics();
+    showJoinStep();
+  });
+
+  // ZIP box: digits only, five max (also catches pasted "92501-1234").
+  gateZip.addEventListener("input", function () {
+    var digits = gateZip.value.replace(/\D/g, "").slice(0, 5);
+    if (gateZip.value !== digits) gateZip.value = digits;
+  });
+
+  function gateError(text, field) {
+    gateMsg.textContent = text;
+    gateMsg.className = "form-msg err";
+    gateEmail.removeAttribute("aria-invalid");
+    gateZip.removeAttribute("aria-invalid");
+    if (field) { field.setAttribute("aria-invalid", "true"); field.focus(); }
+  }
+
+  joinForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (joinForm.company.value) return; // bot
+    var emailVal = gateEmail.value.trim();
+    var zipVal = gateZip.value.trim();
+    if (!EMAIL_RE.test(emailVal)) return gateError("Enter an email like name@email.com.", gateEmail);
+    if (!/^\d{5}$/.test(zipVal)) return gateError("Enter your 5-digit ZIP code.", gateZip);
+    gateError("");
+    gateMsg.className = "form-msg";
+
+    var btn = joinForm.querySelector("button");
+    btn.disabled = true;
+    btn.textContent = "Entering...";
+    sendSignup({ email: emailVal, zip: zipVal, source: "entry gate" })
+      .then(function () {
+        remember("reservedJoined");
+        openSite();
+      })
+      .catch(function () {
+        gateError("That didn't go through. Check your connection and try again.");
+        btn.disabled = false;
+        btn.textContent = "Enter";
+      });
   });
 
   /* ---------- Map ---------- */
@@ -422,7 +495,7 @@
     var val = email.value.trim();
     msg.className = "form-msg";
     if (form.company.value) return; // bot
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) {
+    if (!EMAIL_RE.test(val)) {
       msg.textContent = "Enter an email like name@email.com.";
       msg.classList.add("err");
       email.focus();
@@ -436,12 +509,7 @@
     var btn = form.querySelector("button");
     btn.disabled = true;
     btn.textContent = "Subscribing...";
-    fetch(SIGNUP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ email: val, page: location.href, submittedAt: new Date().toISOString() })
-    }).then(function () {
+    sendSignup({ email: val, source: "subscribe form" }).then(function () {
       form.reset();
       msg.textContent = "Subscribed. Watch your inbox for the next drop.";
       msg.classList.add("ok");

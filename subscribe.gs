@@ -1,8 +1,10 @@
 /**
  * Reserved: email sign-up backend
  * =============================================================================
- * Receives the "Get drops first" form on index.html and adds one row per
- * sign-up to a Google Sheet. A repeat email is not added twice.
+ * Receives sign-ups from index.html (the email + ZIP step of the entry gate,
+ * and the Subscribe form) and adds one row per sign-up to a Google Sheet.
+ * A repeat email is not added twice; if the first row has no ZIP code yet,
+ * the ZIP from the repeat sign-up is filled in.
  *
  * SETUP (once, about 3 minutes)
  * -----------------------------------------------------------------------------
@@ -30,7 +32,9 @@
  */
 
 var SHEET_NAME = 'Subscribers';
-var HEADERS = ['Timestamp', 'Email', 'Signed Up From', 'Client Timestamp'];
+// New columns go at the end so rows saved before they existed stay lined up.
+var HEADERS = ['Timestamp', 'Email', 'Signed Up From', 'Client Timestamp', 'ZIP Code', 'Source'];
+var ZIP_COL = 5;
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -40,15 +44,27 @@ function doPost(e) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) {
       return jsonResponse_({ status: 'error', message: 'Invalid email.' });
     }
+    if (data.zip && !/^\d{5}$/.test(data.zip)) {
+      return jsonResponse_({ status: 'error', message: 'Invalid ZIP code.' });
+    }
 
     lock.waitLock(10000);
     var sheet = getSheet_();
 
-    if (alreadySubscribed_(sheet, data.email)) {
+    var row = findSubscriber_(sheet, data.email);
+    if (row) {
+      var zipCell = sheet.getRange(row, ZIP_COL);
+      if (data.zip && !zipCell.getValue()) {
+        // Text format keeps leading zeros (e.g. 01234).
+        zipCell.setNumberFormat('@').setValue(data.zip);
+        SpreadsheetApp.flush();
+      }
       return jsonResponse_({ status: 'ok', duplicate: true });
     }
 
-    sheet.appendRow([new Date(), data.email, data.page, data.submittedAt]);
+    sheet.appendRow([new Date(), data.email, data.page, data.submittedAt, '', data.source]);
+    var last = sheet.getLastRow();
+    if (data.zip) sheet.getRange(last, ZIP_COL).setNumberFormat('@').setValue(data.zip);
     // Save the row before the lock is released. Without this, a quick repeat
     // sign-up can check the Sheet before the row lands and add it twice.
     SpreadsheetApp.flush();
@@ -75,6 +91,8 @@ function parseRequest_(e) {
   if (!raw.email && e && e.parameter) raw = e.parameter;
   return {
     email: clean_(raw.email).toLowerCase(),
+    zip: clean_(raw.zip),
+    source: clean_(raw.source),
     page: clean_(raw.page),
     submittedAt: clean_(raw.submittedAt)
   };
@@ -89,12 +107,13 @@ function clean_(value) {
   return text;
 }
 
-function alreadySubscribed_(sheet, email) {
+/** Returns the row number of an existing sign-up for this email, or 0. */
+function findSubscriber_(sheet, email) {
   var last = sheet.getLastRow();
-  if (last < 2) return false;
+  if (last < 2) return 0;
   var found = sheet.getRange(2, 2, last - 1, 1)
     .createTextFinder(email).matchEntireCell(true).findNext();
-  return found !== null;
+  return found ? found.getRow() : 0;
 }
 
 function getSheet_() {
@@ -105,6 +124,9 @@ function getSheet_() {
     sheet.appendRow(HEADERS);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
+  } else if (sheet.getRange(1, ZIP_COL).getValue() !== HEADERS[ZIP_COL - 1]) {
+    // Sheet made by the older 4-column version: add the new headers.
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]).setFontWeight('bold');
   }
   return sheet;
 }

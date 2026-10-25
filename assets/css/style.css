@@ -122,12 +122,29 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 }
 .brand img { width: clamp(130px, 22vw, 180px); height: auto; }
 .top .btn { white-space: nowrap; }
+.top-actions { display: flex; align-items: center; gap: .6rem; }
+/* Instagram: round icon button, same gold outline as "View Locations" */
+.ig-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  transition: background-color .15s ease, color .15s ease;
+}
+.ig-btn:hover { background: var(--gold); color: var(--ink); }
+.ig-btn svg { width: 20px; height: 20px; }
 /* Small phones (iPhone SE size): shrink the logo and button a touch so
    "View Locations" stays on one line */
 @media (max-width: 359px) {
   .top { gap: .6rem; }
   .brand img { width: 110px; }
   .top .btn-sm { padding-inline: .8rem; font-size: .88rem; }
+  .top-actions { gap: .4rem; }
+  .ig-btn { width: 36px; height: 36px; }
 }
 
 /* ---------- Hero ---------- */
@@ -434,6 +451,9 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .foot-inner p { margin: 0; }
 .foot-inner p:first-of-type { color: var(--cream); font-weight: 800; font-variation-settings: "wdth" 120; }
 .fine { font-size: .85rem; margin-left: auto !important; }
+.ig-link { display: inline-flex; align-items: center; gap: .45rem; color: var(--gold); font-weight: 700; text-decoration: none; }
+.ig-link:hover { text-decoration: underline; }
+.ig-link svg { width: 22px; height: 22px; flex: none; }
 
 /* ---------- Age gate ---------- */
 .gate {
@@ -459,6 +479,28 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .gate-card h2 { font-size: 1.7rem; }
 .gate-note { margin: 1rem auto 0; max-width: 30ch; font-size: .78rem; line-height: 1.4; opacity: .75; }
 .gate-actions { display: flex; gap: .75rem; justify-content: center; margin-top: 1.5rem; position: relative; z-index: 501; }
+/* Step 2: email + ZIP. Above the stitch line so taps reach the fields. */
+.gate-join { position: relative; z-index: 501; display: grid; gap: .65rem; }
+.gate-join[hidden] { display: none; }
+.gate-join h2 { margin-bottom: .1rem; }
+.gate-sub { margin: 0 0 .5rem; color: #D9E3DF; font-size: .98rem; }
+.gate-join input:not(.hp) {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  border: 2px dashed var(--gold);
+  background: var(--cream);
+  color: var(--ink);
+  font: inherit;
+  text-align: center;
+}
+.gate-join input:focus { outline: 3px solid var(--t-blue); outline-offset: 2px; }
+.gate-join input[aria-invalid="true"] { border-color: #FFB4A8; border-style: solid; }
+.gate-join .btn { width: 100%; margin-top: .25rem; }
+.gate-join .form-msg { margin: 0; }
+.gate-join .form-msg:empty { min-height: 0; }
+.gate-join .gate-note { margin-top: 0; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 640px) {

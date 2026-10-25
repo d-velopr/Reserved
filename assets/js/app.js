@@ -50,7 +50,7 @@
   map.on("zoomend", sizePins);
 
   // Hide any logo that would cover another store's logo or pin, so the map never
-  // turns into a pile of R's on small screens. Hidden stores keep their red pin;
+  // turns into a pile of logos on small screens. Hidden stores keep their red pin;
   // their logo comes back as soon as there's room (zoom in). Closest/first stores win.
   function overlaps(a, b) {
     return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
@@ -88,14 +88,15 @@
   }
   map.on("zoomend moveend", scheduleDeclutter);
 
-  // Marker, top to bottom: red pin (its tip is the store), city tag, chrome R.
+  // Marker, top to bottom: red pin (its tip is the store), city tag, store logo
+  // (the chrome R if the store has no logo).
   function storeIcon(s) {
     var n = s.nudge || [0, 0];
     return L.divIcon({
       className: "mk-wrap",
       html: '<div class="mk" style="--tag:' + s.tag + ";--nx:" + n[0] + "px;--ny:" + n[1] + 'px">' + RED_PIN +
         '<div class="mk-body"><span class="mk-city">' + esc(s.city) + "</span>" +
-        '<img class="mk-logo" src="' + PIN_IMG + '" alt="" /></div></div>',
+        '<img class="mk-logo" src="' + esc(s.logo || PIN_IMG) + '" alt="" /></div></div>',
       iconSize: [120, 140],
       iconAnchor: [60, 34],
       popupAnchor: [0, -30]

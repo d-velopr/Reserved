@@ -6,24 +6,49 @@
   <title>Reserved | Store Locator</title>
   <meta name="description" content="Find Reserved at 10 shops across Southern California. Get directions in one tap and sign up for drop alerts." />
   <meta name="theme-color" content="#163C42" />
+
+  <!-- Google tag (gtag.js), G-2X555LCLRX. Analytics stays off until the visitor
+       clicks "Yes, enter" on the 21+ gate, which also agrees to analytics.
+       app.js turns it on and loads the tag after that click (or right away for
+       a visitor who already agreed). Ads storage is never turned on. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    gtag('js', new Date());
+  </script>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/gen/favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/gen/favicon-180.png" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Reserved | Store Locator" />
   <meta property="og:description" content="Find Reserved at 10 shops across Southern California." />
-  <meta property="og:image" content="assets/img/gen/hero.webp" />
+  <meta property="og:url" content="https://d-velopr.github.io/Reserved/" />
+  <!-- Link preview (iMessage, Instagram, etc.): 1200x630, built from the Instagram
+       store-locator post (assets/img/igpost.jpeg): wordmark left, all 10 stores
+       on the map right. Must be a full URL to show. -->
+  <meta property="og:image" content="https://d-velopr.github.io/Reserved/assets/img/gen/og-preview.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Reserved store locator: map of all 10 Southern California shops" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.css" />
-  <link rel="stylesheet" href="assets/css/style.css?v=30" />
+  <link rel="stylesheet" href="assets/css/style.css?v=31" />
 </head>
 <body>
 
-  <!-- 21+ gate. Remembered per browser after a "Yes". -->
+  <!-- 21+ gate, which also asks for analytics consent. Remembered per browser after a "Yes". -->
   <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" hidden>
     <div class="gate-card stitched">
       <img src="assets/img/gen/crest.webp" alt="" width="150" height="132" />
@@ -32,6 +57,7 @@
         <button class="btn btn-gold" id="gate-yes" type="button">Yes, enter</button>
         <a class="btn btn-ghost" href="https://www.google.com">No</a>
       </div>
+      <p class="gate-note">By entering, you confirm you're 21+ and agree to analytics cookies.</p>
     </div>
   </div>
 
@@ -39,7 +65,7 @@
     <a href="#" class="brand" aria-label="Reserved home">
       <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="180" height="70" />
     </a>
-    <a href="#stores" class="btn btn-outline btn-sm">Store locator</a>
+    <a href="#stores" class="btn btn-outline btn-sm">View Locations</a>
   </header>
 
   <main>
@@ -113,7 +139,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.js"></script>
-  <script src="assets/js/stores.js?v=30"></script>
-  <script src="assets/js/app.js?v=30"></script>
+  <script src="assets/js/stores.js?v=31"></script>
+  <script src="assets/js/app.js?v=31"></script>
 </body>
 </html>

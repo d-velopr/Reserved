@@ -8,19 +8,48 @@
   var PIN_IMG = "assets/img/gen/pin-r.webp";
   var RED_PIN = '<svg class="mk-pin" viewBox="0 0 26 34" aria-hidden="true"><path d="M13 33S2 20.5 2 12.5a11 11 0 0 1 22 0C24 20.5 13 33 13 33z" fill="#E53935" stroke="#7F1414" stroke-width="1.5"/><circle cx="13" cy="12.5" r="4.2" fill="#fff"/></svg>';
 
-  /* ---------- 21+ gate ---------- */
+  /* ---------- Google Analytics ---------- */
+  // Only runs after the visitor agrees on the 21+ gate. The consent default
+  // (analytics off) and the gtag() helper are set in the <head> of index.html.
+  var GA_ID = "G-2X555LCLRX";
+  var analyticsOn = false;
+  function startAnalytics() {
+    if (analyticsOn || typeof window.gtag !== "function") return;
+    analyticsOn = true;
+    // Turn analytics on before the first page view is sent.
+    window.gtag("consent", "update", { analytics_storage: "granted" });
+    window.gtag("config", GA_ID);
+    var tag = document.createElement("script");
+    tag.async = true;
+    tag.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+    document.head.appendChild(tag);
+  }
+
+  /* ---------- 21+ gate (also the analytics consent) ---------- */
+  // "Yes, enter" confirms 21+ and agrees to analytics, so both are saved
+  // together. Visitors who passed the gate before the analytics notice was
+  // added see it once more.
   var gate = document.getElementById("gate");
   var passed = false;
-  try { passed = localStorage.getItem("reserved21") === "yes"; } catch (e) {}
-  if (!passed) {
+  try {
+    passed = localStorage.getItem("reserved21") === "yes" &&
+      localStorage.getItem("reservedAnalytics") === "yes";
+  } catch (e) {}
+  if (passed) {
+    startAnalytics();
+  } else {
     gate.hidden = false;
     document.body.classList.add("locked");
     document.getElementById("gate-yes").focus();
   }
   document.getElementById("gate-yes").addEventListener("click", function () {
-    try { localStorage.setItem("reserved21", "yes"); } catch (e) {}
+    try {
+      localStorage.setItem("reserved21", "yes");
+      localStorage.setItem("reservedAnalytics", "yes");
+    } catch (e) {}
     gate.hidden = true;
     document.body.classList.remove("locked");
+    startAnalytics();
   });
 
   /* ---------- Map ---------- */

@@ -220,7 +220,7 @@
   function popupHtml(s) {
     return '<div class="pop"><strong>' + esc(s.name) + "</strong>" +
       "<span>" + esc(s.address) + "</span>" +
-      '<a class="btn btn-gold btn-sm" target="_blank" rel="noopener" href="' + directionsUrl(s) + '">Directions</a></div>';
+      '<a class="btn btn-red btn-sm" target="_blank" rel="noopener" href="' + directionsUrl(s) + '">Directions</a></div>';
   }
 
   STORES.forEach(function (s, i) {
@@ -325,7 +325,7 @@
           (s.miles != null ? '<em class="store-mi">' + s.miles.toFixed(1) + " mi</em>" : "") +
         "</button>" +
         '<a class="dir" target="_blank" rel="noopener" href="' + directionsUrl(s) + '" aria-label="Directions to ' + esc(s.name) + '">' +
-          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 10-10 10L2 12z" fill="currentColor"/><path d="M9 14v-2.5a1.5 1.5 0 0 1 1.5-1.5H15m-2-2l2 2-2 2" fill="none" stroke="#FAF4E6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 10-10 10L2 12z" fill="currentColor"/><path d="M9 14v-2.5a1.5 1.5 0 0 1 1.5-1.5H15m-2-2l2 2-2 2" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         "</a>";
       var btn = li.querySelector(".store");
       btn.addEventListener("click", function () { setActive(s.id, true); });

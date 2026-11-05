@@ -237,6 +237,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; background: var(--black); }
+.hero picture { display: block; }
 /* The looping video sits exactly on top of the photo and fades in once playing */
 .hero-video { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity .6s ease; pointer-events: none; }
 .hero-video.is-playing { opacity: 1; }

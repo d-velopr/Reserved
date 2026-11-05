@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=61" />
+  <link rel="stylesheet" href="assets/css/style.css?v=62" />
 </head>
 <body>
 
@@ -92,10 +92,17 @@
 
   <main>
     <section class="hero" aria-label="Reserved">
-      <img class="hero-img" src="assets/img/gen/hero.webp" alt="The Reserved logo painted on a graffiti wall at a Southern California beach" width="1206" height="799" fetchpriority="high" />
-      <!-- Moving version (palms sway, waves roll). home.js loads and fades it in
-           over the photo, except for visitors who prefer reduced motion. -->
-      <video class="hero-img hero-video" data-mp4="assets/video/hero.mp4?v=2" data-webm="assets/video/hero.webm?v=2" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+      <!-- Visitors who allow motion first see the wall without the tagline
+           (hero-clean); the intro video then spray-paints it on. Everyone else
+           gets the full photo. -->
+      <picture>
+        <source media="(prefers-reduced-motion: no-preference)" srcset="assets/img/gen/hero-clean.webp" />
+        <img class="hero-img" src="assets/img/gen/hero.webp" alt="The Reserved logo painted on a graffiti wall at a Southern California beach" width="1206" height="799" fetchpriority="high" />
+      </picture>
+      <!-- 1) intro: tagline sprayed on (plays once)  2) loop: palms sway, waves roll.
+           home.js loads them after the page and fades them in over the photo. -->
+      <video class="hero-img hero-video hero-intro" data-mp4="assets/video/hero-intro.mp4?v=2" data-webm="assets/video/hero-intro.webm?v=2" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+      <video class="hero-img hero-video hero-loop" data-mp4="assets/video/hero.mp4?v=3" data-webm="assets/video/hero.webm?v=3" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
     </section>
 
     <section class="intro">
@@ -172,6 +179,6 @@
   <script src="assets/js/stores.js?v=35"></script>
   <script src="assets/js/products.js?v=1"></script>
   <script src="assets/js/site.js?v=3"></script>
-  <script src="assets/js/home.js?v=9"></script>
+  <script src="assets/js/home.js?v=11"></script>
 </body>
 </html>

@@ -12,24 +12,55 @@
     });
   }
 
-  // Hero: swap in the looping video (palms + ocean) after the page has loaded,
-  // so it never slows the first view. Skipped for reduced motion / data saver.
-  var heroVideo = document.querySelector(".hero-video");
-  if (heroVideo) {
+  // Hero: after the page has loaded, play the intro (tagline spray-painted
+  // onto the wall) once, then hand off to the palms + ocean loop. The intro
+  // ends on the loop's first frame, so the switch is seamless.
+  // Reduced motion / data saver / autoplay blocked: the full photo stays.
+  var heroIntro = document.querySelector(".hero-intro");
+  var heroLoop = document.querySelector(".hero-loop");
+  var heroPic = document.querySelector(".hero picture");
+  if (heroLoop) {
     var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var saveData = navigator.connection && navigator.connection.saveData;
-    if (!calm && !saveData) {
-      var startHero = function () {
-        heroVideo.addEventListener("playing", function () { heroVideo.classList.add("is-playing"); }, { once: true });
-        // MP4 is smaller; WebM covers browsers without H.264 (some Linux builds)
-        var mp4 = heroVideo.canPlayType('video/mp4; codecs="avc1.640028"');
-        heroVideo.src = heroVideo.getAttribute(mp4 ? "data-mp4" : "data-webm");
-        var p = heroVideo.play();
-        if (p && p.catch) p.catch(function () {}); // autoplay blocked: the photo stays
-      };
-      if (document.readyState === "complete") startHero();
-      else window.addEventListener("load", startHero, { once: true });
-    }
+    var mp4 = heroLoop.canPlayType('video/mp4; codecs="avc1.640028"'); // else WebM (some Linux builds)
+    var showFullPhoto = function () {
+      // The tagline-free photo only makes sense if the spray plays
+      var src = heroPic && heroPic.querySelector("source");
+      if (src) src.remove();
+    };
+    var load = function (v) { v.src = v.getAttribute(mp4 ? "data-mp4" : "data-webm"); };
+    var play = function (v, onFail) {
+      v.addEventListener("playing", function () { v.classList.add("is-playing"); }, { once: true });
+      var p = v.play();
+      if (p && p.catch) p.catch(onFail);
+    };
+    var startHero = function () {
+      var img = heroPic && heroPic.querySelector("img");
+      var cleanShown = img && /hero-clean/.test(img.currentSrc);
+      if (heroIntro && cleanShown) {
+        // If the intro hasn't started in 4s (slow network), put the tagline back
+        var slow = setTimeout(showFullPhoto, 4000);
+        heroIntro.addEventListener("playing", function () { clearTimeout(slow); }, { once: true });
+        heroIntro.addEventListener("ended", function () { play(heroLoop, function () {}); }, { once: true });
+        load(heroIntro);
+        load(heroLoop);
+        heroLoop.preload = "auto";
+        play(heroIntro, function () { clearTimeout(slow); showFullPhoto(); });
+      } else {
+        showFullPhoto();
+        load(heroLoop);
+        play(heroLoop, function () {});
+      }
+    };
+    // Wait for the page to load and, on a first visit, for the 21+ gate to
+    // close, so the spray isn't over before anyone can see it.
+    var whenOpen = function (fn) {
+      if (window.RESERVED_OPEN) fn();
+      else document.addEventListener("reserved:open", fn, { once: true });
+    };
+    if (calm || saveData) showFullPhoto();
+    else if (document.readyState === "complete") whenOpen(startHero);
+    else window.addEventListener("load", function () { whenOpen(startHero); }, { once: true });
   }
 
   var tiles = document.getElementById("cat-tiles");

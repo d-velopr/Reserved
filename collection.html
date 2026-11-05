@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Reserved | The Collection</title>
+  <meta name="description" content="The full Reserved lineup: flower, pre-rolls, concentrates, vapes and edibles. Find any of it at a shop near you." />
+  <meta name="theme-color" content="#0B0B0C" />
+
+  <!-- The 21+ entry gate lives on the Home page. A visitor who hasn't passed it
+       yet goes there first (index.html?next=this page) and comes back after.
+       Runs before anything draws, so the page never flashes. -->
+  <script>
+    (function () {
+      var ok;
+      try {
+        ok = ["reserved21", "reservedAnalytics", "reservedJoined"].every(function (k) {
+          return localStorage.getItem(k) === "yes";
+        });
+      } catch (e) {
+        ok = true; // storage blocked: the gate can't be remembered, so don't loop
+      }
+      if (!ok) location.replace("index.html?next=" + encodeURIComponent(
+        location.pathname.split("/").pop() + location.search + location.hash));
+    })();
+  </script>
+
+  <!-- Google tag (gtag.js), G-2X555LCLRX. Analytics stays off until the visitor
+       clicks "Yes, enter" on the 21+ gate (Home page), which also agrees to analytics.
+       site.js turns it on and loads the tag after that click (or right away for
+       a visitor who already agreed). Ads storage is never turned on. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    gtag('js', new Date());
+  </script>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/gen/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/gen/favicon-180.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Reserved | The Collection" />
+  <meta property="og:description" content="The full Reserved lineup: flower, pre-rolls, concentrates, vapes and edibles. Find any of it at a shop near you." />
+  <meta property="og:url" content="https://d-velopr.github.io/Reserved/collection.html" />
+  <meta property="og:image" content="https://d-velopr.github.io/Reserved/assets/img/gen/og-preview.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Reserved store locator: map of all 10 Southern California shops" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=42" />
+</head>
+<body>
+
+  <header class="top">
+    <a href="index.html" class="brand" aria-label="Reserved home">
+      <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="180" height="70" />
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span aria-hidden="true"></span>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="collection.html" aria-current="page">Collection</a>
+      <a href="store-locator.html">Store Locator</a>
+    </nav>
+    <a class="ig-btn" href="https://www.instagram.com/reservedwayornoway/" target="_blank" rel="noopener" aria-label="Reserved on Instagram (@reservedwayornoway)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>
+    </a>
+  </header>
+
+  <main>
+    <section class="coll-head">
+      <div class="wrap">
+        <p class="eyebrow">Reserved</p>
+        <h1>The Collection</h1>
+        <p class="coll-sub">Tap a product for details, then find it at a shop near you.</p>
+      </div>
+    </section>
+
+    <div class="chips-bar">
+      <div class="wrap">
+        <div class="chips" id="chips" role="toolbar" aria-label="Show a category"></div>
+      </div>
+    </div>
+
+    <div class="wrap shelf" id="shelf"></div>
+
+    <section class="coll-cta">
+      <div class="wrap coll-cta-inner">
+        <img src="assets/img/gen/pin-r.webp" alt="" width="98" height="110" loading="lazy" />
+        <div>
+          <h2>Seen Something You Like?</h2>
+          <p>It's on shelves across Southern California.</p>
+        </div>
+        <a class="btn btn-red" href="store-locator.html">Find a Store</a>
+      </div>
+    </section>
+
+    <section class="subscribe" id="subscribe" aria-labelledby="sub-title">
+      <div class="wrap sub-inner">
+        <img class="crest" src="assets/img/gen/crest.webp" alt="Reserved crest with two lions, wings and a crown" width="640" height="563" loading="lazy" />
+        <div class="sub-body">
+          <h2 id="sub-title">Stay Up To Date.</h2>
+          <p>New stores and restocks, straight to your inbox.</p>
+          <form id="sub-form" class="sub-form" novalidate>
+            <label class="sr-only" for="email">Email address</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required />
+            <!-- Honeypot: real people never see or fill this. -->
+            <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button class="btn btn-red" type="submit">Subscribe</button>
+          </form>
+          <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="thread" aria-hidden="true"></div>
+    <div class="wrap foot-inner">
+      <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="140" height="54" loading="lazy" />
+      <a class="ig-link" href="https://www.instagram.com/reservedwayornoway/" target="_blank" rel="noopener" aria-label="Follow Reserved on Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>
+        @reservedwayornoway
+      </a>
+      <p class="fine">For adults 21+. Cultivated by palm trees.</p>
+    </div>
+  </footer>
+
+
+  <!-- Product sheet: slides up from the bottom on phones, centered on wider
+       screens. Filled in by collection.js. -->
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <span class="sheet-grip" aria-hidden="true"></span>
+    <button type="button" class="sheet-close" id="sheet-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+    <div id="sheet-body"></div>
+  </dialog>
+
+  <script src="assets/js/products.js?v=1"></script>
+  <script src="assets/js/site.js?v=3"></script>
+  <script src="assets/js/collection.js?v=2"></script>
+</body>
+</html>

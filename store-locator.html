@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Reserved | Store Locator</title>
+  <meta name="description" content="Find Reserved at 10 shops across Southern California. Get directions in one tap and sign up for drop alerts." />
+  <meta name="theme-color" content="#0B0B0C" />
+
+  <!-- The 21+ entry gate lives on the Home page. A visitor who hasn't passed it
+       yet goes there first (index.html?next=this page) and comes back after.
+       Runs before anything draws, so the page never flashes. -->
+  <script>
+    (function () {
+      var ok;
+      try {
+        ok = ["reserved21", "reservedAnalytics", "reservedJoined"].every(function (k) {
+          return localStorage.getItem(k) === "yes";
+        });
+      } catch (e) {
+        ok = true; // storage blocked: the gate can't be remembered, so don't loop
+      }
+      if (!ok) location.replace("index.html?next=" + encodeURIComponent(
+        location.pathname.split("/").pop() + location.search + location.hash));
+    })();
+  </script>
+
+  <!-- Google tag (gtag.js), G-2X555LCLRX. Analytics stays off until the visitor
+       clicks "Yes, enter" on the 21+ gate (Home page), which also agrees to analytics.
+       site.js turns it on and loads the tag after that click (or right away for
+       a visitor who already agreed). Ads storage is never turned on. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    gtag('js', new Date());
+  </script>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/gen/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/gen/favicon-180.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Reserved | Store Locator" />
+  <meta property="og:description" content="Find Reserved at 10 shops across Southern California." />
+  <meta property="og:url" content="https://d-velopr.github.io/Reserved/store-locator.html" />
+  <!-- Link preview (iMessage, Instagram, etc.): 1200x630, built from the Instagram
+       store-locator post (assets/img/igpost.jpeg): wordmark left, all 10 stores
+       on the map right. Must be a full URL to show. -->
+  <meta property="og:image" content="https://d-velopr.github.io/Reserved/assets/img/gen/og-preview.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Reserved store locator: map of all 10 Southern California shops" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=42" />
+</head>
+<body>
+
+  <header class="top">
+    <a href="index.html" class="brand" aria-label="Reserved home">
+      <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="180" height="70" />
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span aria-hidden="true"></span>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="store-locator.html" aria-current="page">Store Locator</a>
+    </nav>
+    <a class="ig-btn" href="https://www.instagram.com/reservedwayornoway/" target="_blank" rel="noopener" aria-label="Reserved on Instagram (@reservedwayornoway)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>
+    </a>
+  </header>
+
+  <main>
+    <section class="locator" id="stores" aria-labelledby="stores-title">
+      <div class="wrap">
+        <div class="locator-head">
+          <img src="assets/img/gen/wordmark.webp" alt="" width="360" height="140" />
+          <h1 id="stores-title">Store locator</h1>
+        </div>
+        <div class="tools">
+          <label class="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <span class="sr-only">Search by city, store name, or ZIP code</span>
+            <input id="q" type="search" placeholder="City, store, or ZIP code" autocomplete="off" />
+          </label>
+          <button class="btn btn-red" id="near" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Near me
+          </button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+
+        <div class="locator-grid">
+          <div id="map" class="map" aria-label="Map of Reserved stores"></div>
+          <div class="list-col">
+            <h3 class="list-title" id="list-title">Our Stores <span class="list-count" id="list-count">10</span></h3>
+            <ol class="store-list" id="list" aria-labelledby="list-title"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="subscribe" id="subscribe" aria-labelledby="sub-title">
+      <div class="wrap sub-inner">
+        <img class="crest" src="assets/img/gen/crest.webp" alt="Reserved crest with two lions, wings and a crown" width="640" height="563" loading="lazy" />
+        <div class="sub-body">
+          <h2 id="sub-title">Stay Up To Date.</h2>
+          <p>New stores and restocks, straight to your inbox.</p>
+          <form id="sub-form" class="sub-form" novalidate>
+            <label class="sr-only" for="email">Email address</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required />
+            <!-- Honeypot: real people never see or fill this. -->
+            <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button class="btn btn-red" type="submit">Subscribe</button>
+          </form>
+          <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="thread" aria-hidden="true"></div>
+    <div class="wrap foot-inner">
+      <img src="assets/img/gen/wordmark.webp" alt="Reserved" width="140" height="54" loading="lazy" />
+      <a class="ig-link" href="https://www.instagram.com/reservedwayornoway/" target="_blank" rel="noopener" aria-label="Follow Reserved on Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>
+        @reservedwayornoway
+      </a>
+      <p class="fine">For adults 21+. Cultivated by palm trees.</p>
+    </div>
+  </footer>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.js"></script>
+  <script src="assets/js/stores.js?v=32"></script>
+  <script src="assets/js/site.js?v=3"></script>
+  <script src="assets/js/locator.js?v=1"></script>
+</body>
+</html>

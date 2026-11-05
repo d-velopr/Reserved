@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=42" />
+  <link rel="stylesheet" href="assets/css/style.css?v=61" />
 </head>
 <body>
 
@@ -93,12 +93,14 @@
   <main>
     <section class="hero" aria-label="Reserved">
       <img class="hero-img" src="assets/img/gen/hero.webp" alt="The Reserved logo painted on a graffiti wall at a Southern California beach" width="1206" height="799" fetchpriority="high" />
+      <!-- Moving version (palms sway, waves roll). home.js loads and fades it in
+           over the photo, except for visitors who prefer reduced motion. -->
+      <video class="hero-img hero-video" data-mp4="assets/video/hero.mp4?v=2" data-webm="assets/video/hero.webm?v=2" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
     </section>
 
     <section class="intro">
       <div class="wrap">
-        <p class="eyebrow">Cultivated by palm trees</p>
-        <h1>Reserved Way Or No Way.</h1>
+        <h1 class="sr-only">Reserved Way Or No Way.</h1> <!-- hidden on screen; still the page title for search engines and screen readers -->
         <div class="intro-actions">
           <a class="btn btn-red" href="collection.html">Shop the Collection</a>
           <a class="btn btn-outline" href="store-locator.html">Find a Store</a>
@@ -107,24 +109,19 @@
       <div class="thread" aria-hidden="true"></div>
     </section>
 
-    <section class="props" aria-label="Why Reserved">
-      <ul class="wrap props-list">
-        <li class="prop" style="--tag:var(--t-green)">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M25 44c0-10 .5-19-1-26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M24 18c-3-6-10-8-17-6 5 1 9 3 11 7M24 18c4-6 11-7 17-4-5 0-9 2-12 6M24 18c-6-2-12 2-14 9 3-4 8-6 12-6M24 18c6-1 11 4 12 10-3-4-7-6-11-6M24 18c0-6 3-11 8-13-3 3-4 7-5 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 44h22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-          <h2>West Coast Spirit</h2>
-          <p>Born under Southern California palm trees.</p>
-        </li>
-        <li class="prop" style="--tag:var(--t-red)">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 44S10 29.5 10 19a14 14 0 0 1 28 0c0 10.5-14 25-14 25z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="19" r="5" fill="currentColor"/></svg>
-          <h2><span id="store-count">10</span> Shops &amp; Counting</h2>
-          <p>From Echo Park to El Centro. Directions in one tap.</p>
-        </li>
-        <li class="prop" style="--tag:var(--t-gold)">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 34V22a12 12 0 0 1 24 0v12l3 4H9z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M20 42a4 4 0 0 0 8 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M38 8l3-3M41 14h4M10 8L7 5M7 14H3" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-          <h2>First To Know</h2>
-          <p>Drops and restocks, straight to your inbox.</p>
-        </li>
-      </ul>
+    <section class="coming" aria-labelledby="coming-title">
+      <div class="wrap">
+        <div class="coming-card">
+          <div class="sec-head">
+            <h2 id="coming-title">Coming Soon</h2>
+            <a class="see-all" href="store-locator.html">View all locations
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <!-- Filled by home.js from RESERVED_COMING_SOON in stores.js -->
+          <ul class="soon-list" id="coming-list"></ul>
+        </div>
+      </div>
     </section>
 
     <section class="home-cats" aria-labelledby="cats-title">
@@ -139,19 +136,6 @@
       </div>
     </section>
 
-    <section class="home-stores" aria-labelledby="find-title">
-      <div class="wrap home-stores-inner">
-        <a class="map-card" href="store-locator.html" aria-label="Open the store locator">
-          <img src="assets/img/gen/store-map.webp" alt="Map of Reserved shops across Southern California" width="800" height="1004" loading="lazy" />
-        </a>
-        <div class="home-stores-body">
-          <h2 id="find-title">Find Our Drops Near You.</h2>
-          <p>Pick your city to see the closest shop.</p>
-          <ul class="city-chips" id="city-chips"></ul>
-          <a class="btn btn-red" href="store-locator.html">Open the Store Locator</a>
-        </div>
-      </div>
-    </section>
 
     <section class="subscribe" id="subscribe" aria-labelledby="sub-title">
       <div class="wrap sub-inner">
@@ -185,9 +169,9 @@
   </footer>
 
 
-  <script src="assets/js/stores.js?v=32"></script>
+  <script src="assets/js/stores.js?v=35"></script>
   <script src="assets/js/products.js?v=1"></script>
   <script src="assets/js/site.js?v=3"></script>
-  <script src="assets/js/home.js?v=1"></script>
+  <script src="assets/js/home.js?v=9"></script>
 </body>
 </html>

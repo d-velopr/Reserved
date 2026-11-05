@@ -5,7 +5,15 @@
 
   var STORES = window.RESERVED_STORES || [];
   var PIN_IMG = "assets/img/gen/pin-r.webp";
-  var RED_PIN = '<svg class="mk-pin" viewBox="0 0 26 34" aria-hidden="true"><path d="M13 33S2 20.5 2 12.5a11 11 0 0 1 22 0C24 20.5 13 33 13 33z" fill="#E53935" stroke="#7F1414" stroke-width="1.5"/><circle cx="13" cy="12.5" r="4.2" fill="#fff"/></svg>';
+  // Metallic gold pin: one shared gradient (added to the page once), dark edge
+  // and dark center dot so it reads on the dark map.
+  var GOLD_DEFS = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
+    '<linearGradient id="pin-gold" x1="0" y1="0" x2=".35" y2="1">' +
+    '<stop offset="0" stop-color="#FFF1B8"/><stop offset=".28" stop-color="#F5C842"/>' +
+    '<stop offset=".62" stop-color="#C9921A"/><stop offset="1" stop-color="#7E5410"/>' +
+    "</linearGradient></defs></svg>";
+  document.body.insertAdjacentHTML("afterbegin", GOLD_DEFS);
+  var PIN = '<svg class="mk-pin" viewBox="0 0 26 34" aria-hidden="true"><path d="M13 33S2 20.5 2 12.5a11 11 0 0 1 22 0C24 20.5 13 33 13 33z" fill="url(#pin-gold)" stroke="#5A3C08" stroke-width="1.5"/><circle cx="13" cy="12.5" r="4.2" fill="#0B0B0C" stroke="#5A3C08" stroke-width=".8"/></svg>';
 
   /* ---------- Map ---------- */
   // gestureHandling: on phones one finger scrolls the page and two fingers move
@@ -36,7 +44,7 @@
   map.on("zoomend", sizePins);
 
   // Hide any logo that would cover another store's logo or pin, so the map never
-  // turns into a pile of logos on small screens. Hidden stores keep their red pin;
+  // turns into a pile of logos on small screens. Hidden stores keep their gold pin;
   // their logo comes back as soon as there's room (zoom in). Closest/first stores win.
   function overlaps(a, b) {
     return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
@@ -74,13 +82,13 @@
   }
   map.on("zoomend moveend", scheduleDeclutter);
 
-  // Marker, top to bottom: red pin (its tip is the store), city tag, store logo
+  // Marker, top to bottom: gold pin (its tip is the store), city tag, store logo
   // (the chrome R if the store has no logo).
   function storeIcon(s) {
     var n = s.nudge || [0, 0];
     return L.divIcon({
       className: "mk-wrap",
-      html: '<div class="mk" style="--tag:' + s.tag + ";--nx:" + n[0] + "px;--ny:" + n[1] + 'px">' + RED_PIN +
+      html: '<div class="mk" style="--tag:' + s.tag + ";--nx:" + n[0] + "px;--ny:" + n[1] + 'px">' + PIN +
         '<div class="mk-body"><span class="mk-city">' + esc(s.city) + "</span>" +
         '<img class="mk-logo" src="' + esc(s.logo || PIN_IMG) + '" alt="" /></div></div>',
       iconSize: [160, 160],

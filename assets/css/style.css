@@ -236,7 +236,10 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 }
 
 /* ---------- Hero ---------- */
-.hero { background: var(--black); }
+.hero { position: relative; background: var(--black); }
+/* The looping video sits exactly on top of the photo and fades in once playing */
+.hero-video { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity .6s ease; pointer-events: none; }
+.hero-video.is-playing { opacity: 1; }
 /* 90px taller than the original crop, with the top kept in the same place,
    so the extra 90px goes to the bottom under the slogan. On narrow screens,
    where the photo runs out at the bottom, the shift is capped so the photo
@@ -424,7 +427,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .list-title { padding-top: 1.25rem; }
 }
 
-/* Map markers: red pin (tip = store), colored city tag, store logo with a glow */
+/* Map markers: gold pin (tip = store), colored city tag, store logo with a glow */
 .mk-wrap { background: none; border: 0; }
 /* The marker box is much bigger than what's drawn in it. Only the pin, tag and
    logo take clicks, so the empty part doesn't steal clicks from a neighbor.
@@ -467,7 +470,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .mk-body { display: flex; flex-direction: column; align-items: center; transition: transform .2s ease; }
 .mk-wrap:hover .mk { transform: scale(1.1); }
 .z-far .mk-city { display: none; }
-/* Logo would cover a neighbor: show just the red pin until there's room */
+/* Logo would cover a neighbor: show just the gold pin until there's room */
 .mk.no-logo .mk-body { visibility: hidden; }
 .z-far.leaflet-container .leaflet-marker-pane .mk-logo { max-width: 100px !important; max-height: 58px !important; }
 /* Zoomed out: shift crowded logos sideways (per-store nudge in stores.js) */
@@ -664,34 +667,67 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 /* ======================================================================
    Home
    ====================================================================== */
-.intro-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1.6rem; }
+.intro-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
 
-.props { padding: 2.5rem 0 1rem; }
-.props-list { list-style: none; margin-block: 0; padding: 0; display: grid; gap: .85rem; }
-.prop {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  column-gap: 1rem;
+/* Coming Soon: 2 across on phones, 4 across on wider screens */
+.coming { padding: 2.5rem 0 1rem; }
+/* Bordered panel, same gold edge as the store card below it */
+.coming-card {
+  padding: 1.5rem 1.25rem 1.25rem;
+  border: 1px solid rgba(231, 177, 94, .35);
+  border-radius: calc(var(--radius) + 6px);
+  background:
+    radial-gradient(90% 70% at 0% 0%, rgba(231, 177, 94, .14), transparent 60%),
+    var(--surface);
+  box-shadow: 0 0 60px rgba(231, 177, 94, .12);
+}
+@media (min-width: 760px) { .coming-card { padding: 2.25rem 2.5rem 2.5rem; } }
+/* Phones: "View all locations" drops under the heading instead of crowding it */
+.coming-card .sec-head { flex-wrap: wrap; row-gap: 0; }
+/* Narrowest phones: tighter padding and narrower letters so a city name like
+   VICTORVILLE fits on one line */
+@media (max-width: 360px) {
+  .coming-card { padding-inline: 1rem; }
+  .coming-card .soon-list { gap: .6rem; }
+  .coming-card .soon-card { padding-inline: .4rem; }
+  .coming-card .soon-card h3 { font-variation-settings: "wdth" 100; letter-spacing: 0; }
+}
+.soon-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.soon-card {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 1rem 1.15rem;
-  background: var(--surface);
+  text-align: center;
+  padding: 1.1rem .75rem 1.2rem;
+  background: var(--black);
   border: 1px solid var(--line);
   border-radius: var(--radius);
 }
-.prop svg {
-  grid-row: span 2;
-  width: 60px;
-  height: 60px;
-  padding: 11px;
+.soon-card svg {
+  width: 56px;
+  height: 56px;
+  padding: 10px;
+  margin-bottom: .7rem;
   border-radius: 50%;
   background: var(--tag);
   color: var(--white);
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .22);
 }
-.prop h2 { font-size: 1.1rem; letter-spacing: .02em; text-transform: uppercase; align-self: end; }
-.prop p { margin: .2rem 0 0; color: var(--muted); font-size: .95rem; line-height: 1.35; align-self: start; }
+.soon-card h3 {
+  margin: 0;
+  font-size: clamp(.95rem, 4.4vw, 1.1rem); /* smaller on the narrowest phones so words fit */
+  font-weight: 900;
+  font-variation-settings: var(--wide);
+  line-height: 1.1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere; /* a long city name never pushes the card wider */
+}
+.soon-card p { margin: .3rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.3; }
+.soon-list:empty { min-height: 340px; } /* hold the space until home.js fills it */
 @media (min-width: 760px) {
-  .props-list { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .soon-list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .soon-list:empty { min-height: 170px; }
 }
 
 .home-cats { padding: 2.5rem 0; }
@@ -746,40 +782,8 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .tiles { margin: 0; padding: 0; grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); overflow: visible; }
 }
 
-.home-stores { padding: 2.5rem 0 3.5rem; }
-.home-stores-inner { display: grid; gap: 1.75rem; align-items: center; }
-.map-card {
-  display: block;
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid var(--line);
-  box-shadow: 0 0 48px rgba(231, 177, 94, .14);
-}
-.map-card img { width: 100%; height: auto; transition: transform .3s ease; }
-.map-card:hover img { transform: scale(1.02); }
-.home-stores-body p { margin: .6rem 0 1.1rem; color: var(--muted); font-size: 1.1rem; }
-.city-chips { list-style: none; margin: 0 0 1.5rem; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
-.city-chips:empty { min-height: 136px; } /* about three rows of chips on a phone */
-.city-chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  padding: .3rem .8rem;
-  border-radius: 6px;
-  background: var(--tag);
-  color: #fff;
-  font-size: .9rem;
-  font-weight: 800;
-  font-variation-settings: "wdth" 80;
-  letter-spacing: .02em;
-  text-transform: uppercase;
-  text-decoration: none;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25);
-}
-.city-chip:hover { filter: brightness(1.15); }
-@media (min-width: 760px) {
-  .home-stores-inner { grid-template-columns: minmax(0, 420px) 1fr; gap: 3.5rem; }
-}
+
+
 
 /* ======================================================================
    Collection
@@ -976,7 +980,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 
 /* Phones: full-width buttons and full-bleed chip row */
 @media (max-width: 640px) {
-  .intro-actions .btn, .home-stores-body .btn { flex: 1 1 100%; width: 100%; }
+  .intro-actions .btn { flex: 1 1 100%; width: 100%; }
   .chips-bar .wrap { width: 100%; }
   .chips { padding-inline: 16px; }
   .coll-head { padding: 1.75rem 0 1.25rem; }

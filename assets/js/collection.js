@@ -31,6 +31,10 @@
   function metaLine(p) {
     return [p.size, p.type].filter(Boolean).map(esc).join(" · ");
   }
+  // Sheet line: adds lineage and THC when a strain has them
+  function sheetMeta(p) {
+    return [p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc).join(" · ");
+  }
 
   /* ---------- Chips ---------- */
   var chipBar = document.getElementById("chips");
@@ -103,9 +107,13 @@
       '<div class="sheet-info">' +
         '<p class="sheet-cat" style="--cat:' + esc(c.color || "#222") + '">' + esc(c.name || "") + "</p>" +
         '<h2 id="sheet-title">' + esc(p.name) + "</h2>" +
-        (metaLine(p) ? '<p class="sheet-meta">' + metaLine(p) + "</p>" : "") +
+        (sheetMeta(p) ? '<p class="sheet-meta">' + sheetMeta(p) + "</p>" : "") +
         (p.soon ? '<p class="soon soon-inline">Coming soon</p>' : "") +
         (p.desc ? '<p class="sheet-desc">' + esc(p.desc) + "</p>" : "") +
+        // Flower strains: the sizes it comes in
+        ((p.sizes || []).length
+          ? '<p class="sheet-label">Available in</p><ul class="formats">' +
+            p.sizes.map(function (z) { return "<li>" + esc(z) + "</li>"; }).join("") + "</ul>" : "") +
         '<div class="sheet-actions">' +
           '<a class="btn btn-red" href="store-locator.html">' +
             '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s-7-7.6-7-13a7 7 0 0 1 14 0c0 5.4-7 13-7 13z" fill="currentColor"/><circle cx="12" cy="9" r="2.6" fill="#E53935"/></svg>' +

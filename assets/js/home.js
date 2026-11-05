@@ -70,7 +70,7 @@
       return '<li><a class="tile" href="collection.html#' + esc(c.id) + '" style="--cat:' + esc(c.color) + '">' +
         '<img src="assets/img/gen/crest.webp" alt="" loading="lazy" />' +
         '<span class="tile-name">' + esc(c.name) + "</span>" +
-        '<span class="tile-n">' + n + (n === 1 ? " product" : " products") + "</span></a></li>";
+        '<span class="tile-n">' + n + " " + (c.unit || "product") + (n === 1 ? "" : "s") + "</span></a></li>";
     }).join("");
   }
 

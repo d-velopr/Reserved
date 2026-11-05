@@ -14,12 +14,12 @@ The 21+ entry gate is on the Home page only. A first-time visitor who opens anot
 
 ## Editing content
 
-- **Products:** `assets/js/products.js`. The Collection page and the Home tiles both read it.
+- **Products:** `assets/js/products.js`. Flower is listed by strain (type and sizes); the other categories by product. The Collection page and the Home tiles both read it.
 - **Stores:** `assets/js/stores.js`. The map and the store list read it, and the Home page's Coming Soon cards come from `RESERVED_COMING_SOON` in the same file.
 - **Sign-ups:** go to a Google Sheet through `subscribe.gs`.
 
 ## Links you can share
 
 - `collection.html#flower` opens one category
-- `collection.html#live-rosin` opens one product
+- `collection.html#live-rosin` opens one product (`#strain-1` opens one flower strain)
 - `store-locator.html?q=Riverside` (or a ZIP code) starts with that search

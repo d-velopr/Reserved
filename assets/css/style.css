@@ -886,15 +886,10 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 }
 .soon-inline { position: static; display: inline-block; margin: .6rem 0 0; }
 
-.coll-cta { background: var(--surface); border-top: 1px solid var(--line); padding: 2.25rem 0; }
-.coll-cta-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 1.5rem; text-align: center; }
-.coll-cta img { width: 64px; height: auto; }
-.coll-cta h2 { font-size: clamp(1.4rem, 4vw, 2rem); }
-.coll-cta p { margin: .3rem 0 0; color: var(--muted); }
-@media (min-width: 760px) {
-  .coll-cta-inner { justify-content: flex-start; text-align: left; }
-  .coll-cta .btn { margin-left: auto; }
-}
+/* End of the Collection page: big Reserved R with the Find a Store button */
+.coll-cta { background: var(--surface); border-top: 1px solid var(--line); padding: 2.5rem 0 3rem; }
+.coll-cta .wrap { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+.coll-cta img { width: clamp(150px, 38vw, 260px); height: auto; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .55)); }
 
 /* Product sheet: centered card on wide screens, slides up from the bottom on phones */
 body:has(.sheet[open]) { overflow: hidden; }
@@ -948,6 +943,17 @@ body:has(.sheet[open]) { overflow: hidden; }
 }
 .sheet h2 { font-size: clamp(1.8rem, 6vw, 2.4rem); text-transform: uppercase; }
 .sheet-meta { margin: .35rem 0 0; color: var(--gold); font-weight: 800; }
+/* "Available in": the sizes a flower strain comes in */
+.sheet-label { margin: 1.1rem 0 .45rem; color: var(--muted); font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.formats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+.formats li {
+  padding: .35rem .75rem;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: .9rem;
+  font-weight: 800;
+}
 .sheet-desc { margin: .9rem 0 0; color: var(--muted); }
 .sheet-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.4rem; }
 .sheet-actions .btn-red { flex: 1 1 200px; }

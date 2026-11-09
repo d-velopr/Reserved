@@ -29,11 +29,11 @@
  *   soon:  optional: true shows a "Coming soon" tag
  */
 window.RESERVED_CATEGORIES = [
-  { id: "flower",       name: "Flower",       color: "#1F7A4D", blurb: "Cultivated by palm trees. Jarred fresh.", unit: "strain" },
-  { id: "pre-rolls",    name: "Pre-Rolls",    color: "#B3203A", blurb: "Whole flower, rolled and ready." },
-  { id: "concentrates", name: "Concentrates", color: "#D99A1E", blurb: "Small-batch extracts for the heads." },
-  { id: "vapes",        name: "Vapes",        color: "#1E5FD9", blurb: "Pocket-size and easy to carry." },
-  { id: "edibles",      name: "Edibles",      color: "#6B3A9A", blurb: "Measured doses. Start low, go slow." }
+  { id: "flower",       name: "Flower",       color: "#1F7A4D", unit: "strain" },
+  { id: "pre-rolls",    name: "Pre-Rolls",    color: "#B3203A" },
+  { id: "concentrates", name: "Concentrates", color: "#D99A1E" },
+  { id: "vapes",        name: "Vapes",        color: "#1E5FD9" },
+  { id: "edibles",      name: "Edibles",      color: "#6B3A9A" }
 ];
 
 window.RESERVED_PRODUCTS = [

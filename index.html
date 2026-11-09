@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=72" />
+  <link rel="stylesheet" href="assets/css/style.css?v=94" />
 </head>
 <body>
 
@@ -55,7 +55,7 @@
           <button class="btn btn-red" id="gate-yes" type="button">Yes, enter</button>
           <a class="btn btn-ghost" href="https://www.google.com">No</a>
         </div>
-        <p class="gate-note">By entering, you confirm you're 21+ and agree to analytics cookies.</p>
+        <p class="gate-note">By entering, you confirm you're 21+ and agree to analytics cookies and our <a href="terms.html">Terms</a>. See our <a href="privacy.html">Privacy Policy</a>.</p>
       </div>
       <form id="gate-join" class="gate-join" novalidate hidden>
         <h2 id="gate-join-title">Join the list to enter.</h2>
@@ -68,7 +68,7 @@
         <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <button class="btn btn-red" type="submit">Enter</button>
         <p class="form-msg" id="gate-msg" role="status" aria-live="polite"></p>
-        <p class="gate-note">We'll email you about new drops and stores. Unsubscribe anytime.</p>
+        <p class="gate-note">We'll email you about new drops and stores. Unsubscribe anytime. <a href="privacy.html">Privacy Policy</a></p>
       </form>
     </div>
   </div>
@@ -84,6 +84,8 @@
       <a href="index.html" aria-current="page">Home</a>
       <a href="collection.html">Collection</a>
       <a href="store-locator.html">Store Locator</a>
+      <!-- Phones only: Contact sits in the menu (and leaves the footer) -->
+      <a class="nav-phone" href="contact.html">Contact</a>
     </nav>
     <a class="ig-btn" href="https://www.instagram.com/reservedwayornoway/" target="_blank" rel="noopener" aria-label="Reserved on Instagram (@reservedwayornoway)">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>
@@ -119,9 +121,30 @@
       </div>
     </section>
 
-    <section class="coming" aria-labelledby="coming-title">
+    <section class="coming" aria-labelledby="find-title">
       <div class="wrap">
-        <div class="coming-card">
+        <!-- Mini store locator: every path leads to store-locator.html -->
+        <div class="coming-card find-card">
+          <div class="sec-head">
+            <h2 id="find-title"><a class="find-link" href="store-locator.html">Find a Store</a></h2>
+            <a class="see-all find-map" href="store-locator.html">View map
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <form class="tools" action="store-locator.html" method="get">
+            <label class="search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+              <span class="sr-only">Search by city, store name, or ZIP code</span>
+              <input name="q" type="search" placeholder="City, store, or ZIP code" autocomplete="off" />
+            </label>
+            <button class="btn btn-red" type="submit">Search</button>
+          </form>
+          <!-- Filled by home.js from RESERVED_STORES in stores.js. Hidden on
+               phones, where the search bar is enough. -->
+          <ul class="city-chips" id="store-cities"></ul>
+        </div>
+
+        <div class="coming-soon" id="coming-soon">
           <div class="sec-head">
             <h2 id="coming-title">Coming Soon...</h2>
           </div>
@@ -165,13 +188,20 @@
         @reservedwayornoway
       </a>
       <p class="fine">For adults 21+. Cultivated by palm trees.</p>
+      <ul class="foot-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li class="foot-desk"><a href="contact.html">Contact</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms &amp; Conditions</a></li>
+      </ul>
     </div>
   </footer>
 
 
   <script src="assets/js/stores.js?v=35"></script>
-  <script src="assets/js/products.js?v=4"></script>
-  <script src="assets/js/site.js?v=3"></script>
-  <script src="assets/js/home.js?v=14"></script>
+  <script src="assets/js/products.js?v=5"></script>
+  <script src="assets/js/site.js?v=6"></script>
+  <script src="assets/js/home.js?v=17"></script>
 </body>
 </html>

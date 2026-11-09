@@ -1,5 +1,5 @@
-/* Shared by every page: Google Analytics, the 21+ entry gate (Home only), and
-   the Subscribe form. Load this before any page script. */
+/* Shared by every page: Google Analytics, the 21+ entry gate (Home only), the
+   Subscribe form and the Contact form. Load this before any page script. */
 (function () {
   "use strict";
 
@@ -59,7 +59,7 @@
   if (ageOk) startAnalytics();
 
   // Only our own pages are allowed as a place to go back to.
-  var NEXT_RE = /^(store-locator|collection)(\.html)?([?#].*)?$/;
+  var NEXT_RE = /^(store-locator|collection|about|faq)(\.html)?([?#].*)?$/;
   var next = new URLSearchParams(location.search).get("next");
   if (next && !NEXT_RE.test(next)) next = null;
 
@@ -184,6 +184,56 @@
     });
     // Leaving phone width (rotating a tablet, say) closes it too
     window.matchMedia("(max-width: 640px)").addEventListener("change", function () { setMenu(false); });
+  }
+
+  /* ---------- Contact form (contact.html) ---------- */
+  // Sends to the same Apps Script as sign-ups, as kind "contact"; it lands on
+  // the Sheet's Messages tab and never adds anyone to the sign-up list.
+  var contact = document.getElementById("contact-form");
+  if (contact) {
+    var cMsg = document.getElementById("contact-msg");
+    var cFields = [contact.elements.name, contact.elements.email, contact.elements.message];
+
+    var contactError = function (text, field) {
+      cMsg.textContent = text;
+      cMsg.className = "form-msg err";
+      cFields.forEach(function (f) { f.removeAttribute("aria-invalid"); });
+      if (field) { field.setAttribute("aria-invalid", "true"); field.focus(); }
+    };
+
+    contact.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (contact.company.value) return; // bot
+      var name = contact.elements.name.value.trim();
+      var from = contact.elements.email.value.trim();
+      var text = contact.elements.message.value.trim();
+      var license = contact.elements.license.value.trim(); // optional
+      if (!name) return contactError("Enter your name.", contact.elements.name);
+      if (!EMAIL_RE.test(from)) return contactError("Enter an email like name@email.com.", contact.elements.email);
+      if (text.length < 2) return contactError("Write a message.", contact.elements.message);
+      contactError("");
+      cMsg.className = "form-msg";
+
+      var btn = contact.querySelector("button[type=submit]");
+      btn.disabled = true;
+      btn.textContent = "Sending...";
+      sendSignup({
+        kind: "contact",
+        name: name,
+        from: from, // "from", not "email": see subscribe.gs
+        license: license,
+        message: text
+      }).then(function () {
+        contact.reset();
+        cMsg.textContent = "Message sent. We'll reply by email.";
+        cMsg.className = "form-msg ok";
+      }).catch(function () {
+        contactError("That didn't go through. Check your connection and try again.");
+      }).then(function () {
+        btn.disabled = false;
+        btn.textContent = "Send Message";
+      });
+    });
   }
 
   /* ---------- Subscribe ---------- */

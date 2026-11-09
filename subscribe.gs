@@ -6,6 +6,11 @@
  * A repeat email is not added twice; if the first row has no ZIP code yet,
  * the ZIP from the repeat sign-up is filled in.
  *
+ * Also receives messages from contact.html (kind: "contact") and adds them to
+ * a separate "Messages" tab. A message never adds anyone to the sign-up list.
+ * The contact form sends its email as "from", not "email", so an older
+ * deployment of this script rejects it instead of adding it as a sign-up.
+ *
  * SETUP (once, about 3 minutes)
  * -----------------------------------------------------------------------------
  *  1. Create a Google Sheet, e.g. "Reserved: Subscribers".
@@ -33,16 +38,19 @@
 
 // Shown when the /exec URL is opened in a browser. If it doesn't say this,
 // the live deployment is still running older code.
-var VERSION = 'zip-2';
+var VERSION = 'contact-2';
 var SHEET_NAME = 'Subscribers';
 // New columns go at the end so rows saved before they existed stay lined up.
 var HEADERS = ['Timestamp', 'Email', 'Signed Up From', 'Client Timestamp', 'ZIP Code', 'Source'];
 var ZIP_COL = 5;
+var MESSAGES_SHEET = 'Messages';
+var MESSAGE_HEADERS = ['Timestamp', 'Name', 'Email', 'License #', 'Message', 'Sent From'];
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
     var data = parseRequest_(e);
+    if (data.kind === 'contact') return saveMessage_(data, lock);
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) {
       return jsonResponse_({ status: 'error', message: 'Invalid email.' });
@@ -97,15 +105,45 @@ function parseRequest_(e) {
     zip: clean_(raw.zip),
     source: clean_(raw.source),
     page: clean_(raw.page),
-    submittedAt: clean_(raw.submittedAt)
+    submittedAt: clean_(raw.submittedAt),
+    // Contact form
+    kind: clean_(raw.kind),
+    name: clean_(raw.name, 100),
+    from: clean_(raw.from).toLowerCase(),
+    license: clean_(raw.license, 40),
+    message: clean_(raw.message, 2000)
   };
 }
 
-/** Trims, caps length, and blocks values that a Sheet would run as a formula. */
-function clean_(value) {
+/** Adds one contact-form message to the Messages tab. */
+function saveMessage_(data, lock) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.from)) {
+    return jsonResponse_({ status: 'error', message: 'Invalid email.' });
+  }
+  if (!data.name || !data.message) {
+    return jsonResponse_({ status: 'error', message: 'Name and message are required.' });
+  }
+  lock.waitLock(10000);
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = book.getSheetByName(MESSAGES_SHEET);
+  if (!sheet) {
+    sheet = book.insertSheet(MESSAGES_SHEET);
+    sheet.appendRow(MESSAGE_HEADERS);
+    sheet.getRange(1, 1, 1, MESSAGE_HEADERS.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
+  sheet.appendRow([new Date(), data.name, data.from, data.license, data.message, data.page]);
+  SpreadsheetApp.flush();
+  console.log('Message from: ' + data.from);
+  return jsonResponse_({ status: 'ok' });
+}
+
+/** Trims, caps length (500 by default), and blocks values a Sheet would run as a formula. */
+function clean_(value, max) {
   if (value === null || value === undefined) return '';
   var text = String(value).trim();
-  if (text.length > 500) text = text.substring(0, 500);
+  max = max || 500;
+  if (text.length > max) text = text.substring(0, max);
   if (/^[=+\-@]/.test(text)) text = "'" + text;
   return text;
 }

@@ -74,14 +74,25 @@
     }).join("");
   }
 
-  // Coming Soon cards. The section hides itself when the list is empty.
+  // Find a Store: one chip per city, each opening the locator on that city.
+  var STORES = window.RESERVED_STORES || [];
+  var cityList = document.getElementById("store-cities");
+  if (cityList) {
+    var cities = [];
+    STORES.forEach(function (s) { if (cities.indexOf(s.city) < 0) cities.push(s.city); });
+    cityList.innerHTML = cities.map(function (c) {
+      return '<li><a href="store-locator.html?q=' + encodeURIComponent(c) + '">' + esc(c) + "</a></li>";
+    }).join("");
+  }
+
+  // Coming Soon cards. The block hides itself when the list is empty.
   var SOON = window.RESERVED_COMING_SOON || [];
   var COLORS = ["var(--t-green)", "var(--t-red)", "var(--t-gold)", "var(--t-blue)", "var(--t-orange)", "var(--t-purple)"];
   var PIN = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 44S10 29.5 10 19a14 14 0 0 1 28 0c0 10.5-14 25-14 25z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="19" r="5" fill="currentColor"/></svg>';
   var soonList = document.getElementById("coming-list");
   if (soonList) {
     if (!SOON.length) {
-      soonList.closest("section").hidden = true;
+      soonList.closest(".coming-soon").hidden = true;
     } else {
       soonList.innerHTML = SOON.map(function (s, i) {
         var detail = [s.name, s.when].filter(Boolean).map(esc).join(" &middot; ");

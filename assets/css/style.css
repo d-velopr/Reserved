@@ -25,6 +25,9 @@
   --radius: 14px;
   --stitch: 2px dashed rgba(255, 255, 255, .28);
   --wide: "wdth" 125;
+  /* Soft gold glow under every box; the stronger one is for hover */
+  --gold-glow: 0 6px 22px rgba(231, 177, 94, .1);
+  --gold-glow-strong: 0 10px 32px rgba(231, 177, 94, .32);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -626,6 +629,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 
   .foot-inner { flex-direction: column; text-align: center; gap: .6rem; padding: 1.75rem 0 2rem; }
   .fine { margin-left: 0 !important; }
+  .foot-links { justify-content: center; }
 }
 
 /* Narrow phones: city tag above the store name on every row, so all rows match */
@@ -696,6 +700,27 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .coming-card .soon-card { padding-inline: .4rem; }
   .coming-card .soon-card h3 { font-variation-settings: "wdth" 100; letter-spacing: 0; }
 }
+/* Find a Store box: search bar, then a row of city chips */
+.find-card .tools { margin-bottom: 1rem; }
+.city-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.city-chips:empty { min-height: 84px; } /* hold the space until home.js fills it */
+.city-chips a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: .4rem .95rem;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--white);
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.city-chips a:hover, .city-chips a:focus-visible { border-color: var(--gold); color: var(--gold); }
+/* Coming Soon now sits under the box */
+.coming-soon { margin-top: 2.25rem; }
+
 .soon-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
 .soon-card {
   display: flex;
@@ -704,7 +729,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   text-align: center;
   padding: 1.1rem .75rem 1.2rem;
   background: var(--black);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(231, 177, 94, .6); /* gold */
   border-radius: var(--radius);
 }
 .soon-card svg {
@@ -715,7 +740,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   border-radius: 50%;
   background: var(--tag);
   color: var(--white);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .22);
+  box-shadow: inset 0 0 0 2px rgba(231, 177, 94, .6); /* gold ring */
 }
 .soon-card h3 {
   margin: 0;
@@ -788,6 +813,27 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .tiles { margin: 0; padding: 0; grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); overflow: visible; }
 }
 
+/* Home Collection: gold detail. A soft gold glow behind the section, a gold
+   sheen across each tile, a thin gold edge and gold stitching. Home only; the
+   Collection page cards keep their white stitch. */
+.home-cats {
+  background:
+    radial-gradient(55% 90% at 0% 0%, rgba(231, 177, 94, .10), transparent 65%),
+    radial-gradient(45% 80% at 100% 0%, rgba(231, 177, 94, .07), transparent 65%); /* both fade out before the bottom edge */
+}
+.home-cats .tile {
+  background:
+    linear-gradient(160deg, rgba(231, 177, 94, .22), rgba(231, 177, 94, 0) 42%),
+    radial-gradient(circle at 50% 38%, var(--cat), color-mix(in srgb, var(--cat) 30%, #0B0B0C) 78%);
+  box-shadow: inset 0 0 0 1px rgba(231, 177, 94, .4);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.home-cats .tile::after { border-color: rgba(231, 177, 94, .55); }
+.home-cats .tile:hover, .home-cats .tile:focus-visible {
+  box-shadow: inset 0 0 0 1px rgba(231, 177, 94, .75), var(--gold-glow-strong);
+}
+@media (prefers-reduced-motion: reduce) { .home-cats .tile { transition: none; } }
+
 
 
 
@@ -843,7 +889,6 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .shelf-cat + .shelf-cat { margin-top: 2.75rem; }
 .shelf-head { margin-bottom: 1rem; }
 .shelf-head h2 { font-size: clamp(1.5rem, 5vw, 2.2rem); letter-spacing: .02em; text-transform: uppercase; }
-.shelf-head p { margin: .35rem 0 0; color: var(--muted); }
 
 .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 @media (min-width: 700px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
@@ -996,4 +1041,140 @@ body:has(.sheet[open]) { overflow: hidden; }
   .chips-bar .wrap { width: 100%; }
   .chips { padding-inline: 16px; }
   .coll-head { padding: 1.75rem 0 1.25rem; }
+}
+
+
+/* ======================================================================
+   Info pages: About, FAQ, Privacy, Terms, 404
+   ====================================================================== */
+.page-head { padding: 2.5rem 0 1.75rem; text-align: center; }
+.page-head .crest { width: min(140px, 40%); margin-bottom: 1.25rem; }
+.page-sub { margin: .75rem auto 0; max-width: 40ch; color: var(--muted); font-size: 1.1rem; }
+.updated { margin: .5rem 0 0; color: var(--muted); font-size: .9rem; }
+
+/* Reading column: long text stays easy on the eyes */
+.prose { width: min(720px, 100% - 32px); margin-inline: auto; padding-bottom: 3.5rem; }
+.prose h2 {
+  margin: 2.25rem 0 .6rem;
+  font-size: clamp(1.25rem, 3.6vw, 1.6rem);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.prose h2:first-child { margin-top: 0; }
+.prose p, .prose li { color: #D6D6DA; }
+.prose ul { padding-left: 1.2rem; }
+.prose li + li { margin-top: .35rem; }
+.prose a { color: var(--gold); }
+.prose a.btn-red { color: var(--white); } /* buttons keep their own text color */
+.prose strong { color: var(--white); }
+
+/* About: short sections in patch-style cards */
+.about-grid { display: grid; gap: 14px; }
+.about-card { background: var(--surface); padding: 1.6rem 1.5rem 1.7rem; }
+.about-card h2 { margin-top: 0; }
+.about-card p { margin: 0; }
+.about-card p + p { margin-top: .75rem; }
+.about-photo { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: 14px; }
+@media (min-width: 760px) { .about-grid { grid-template-columns: 1fr 1fr; } }
+
+/* FAQ: tap a question to open its answer */
+.faq { display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.faq details[open] { border-color: var(--line-2); }
+.faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 56px;
+  padding: .9rem 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+";
+  flex: none;
+  color: var(--gold);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform .15s ease;
+}
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details > div { padding: 0 1.2rem 1.1rem; }
+.faq details p { margin: 0; }
+.faq details p + p { margin-top: .6rem; }
+.faq-more { margin-top: 2.25rem; text-align: center; }
+.faq-more p { margin: 0 0 1rem; }
+
+/* Footer page links */
+.foot-links { display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; width: 100%; margin: 0; padding: 0; list-style: none; font-size: .9rem; }
+.foot-links a { display: inline-flex; align-items: center; min-height: 36px; color: var(--muted); text-decoration: none; }
+.foot-links a:hover { color: var(--white); text-decoration: underline; }
+
+/* 404 */
+.lost { padding: 3.5rem 0 4.5rem; text-align: center; }
+.lost img { width: clamp(150px, 38vw, 240px); height: auto; margin: 0 auto 1.75rem; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .55)); }
+.lost p { margin: .9rem auto 1.75rem; max-width: 34ch; color: var(--muted); font-size: 1.1rem; }
+.lost-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
+
+/* Gate: links to the policies */
+.gate-note a { color: inherit; }
+@media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
+
+/* Contact form */
+.contact-form { display: grid; gap: .35rem; background: var(--surface); padding: 1.75rem 1.5rem 2rem; }
+.contact-form label { margin-top: .7rem; font-weight: 800; }
+.contact-form label:first-of-type { margin-top: 0; }
+.contact-form input:not(.hp), .contact-form textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: .7rem 1rem;
+  border-radius: 12px;
+  border: 2px solid var(--line-2);
+  background: var(--surface-2);
+  color: var(--white);
+  font: inherit;
+}
+.contact-form textarea { min-height: 160px; resize: vertical; }
+.contact-form ::placeholder { color: var(--placeholder); }
+.contact-form :is(input, textarea):focus { outline: 0; border-color: var(--white); }
+.contact-form [aria-invalid="true"] { border-color: #FF8A80; }
+.contact-form .btn { margin-top: 1.1rem; }
+.contact-form .opt { color: var(--muted); font-weight: 400; }
+.contact-form .form-msg { margin: .25rem 0 0; }
+.contact-form .form-msg:empty { min-height: 0; }
+.form-note { margin: .25rem 0 0; color: var(--muted); font-size: .85rem; }
+@media (min-width: 640px) { .contact-form { padding: 2.25rem 2.5rem 2.5rem; } .contact-form .btn { justify-self: start; } }
+
+/* ---------- Gold glow on every box (Home Collection tiles: only on hover) ---------- */
+.soon-card, .locator-grid, .card, .about-card, .faq details, .contact-form { box-shadow: var(--gold-glow); }
+.coming-card { box-shadow: 0 0 60px rgba(231, 177, 94, .12), var(--gold-glow); }
+.gate-card { box-shadow: 0 20px 60px rgba(0, 0, 0, .6), var(--gold-glow); }
+.sheet { box-shadow: 0 24px 70px rgba(0, 0, 0, .7), var(--gold-glow); }
+/* Boxes you can tap glow a little brighter on hover */
+.card { transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
+.card:hover, .faq details:hover { box-shadow: var(--gold-glow-strong); }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+
+/* ---------- Contact: menu link on phones, footer link on wider screens ---------- */
+.nav .nav-phone { display: none; }
+@media (max-width: 640px) {
+  .nav .nav-phone { display: inline-flex; }
+  .foot-links .foot-desk { display: none; }
+}
+
+/* ---------- Find a Store ---------- */
+/* The heading opens the Store Locator; it looks like a plain heading */
+.find-link { color: inherit; text-decoration: none; }
+.find-link:hover { color: var(--gold); }
+/* Phones: no city chips and no "View map" (the heading does that job) */
+@media (max-width: 640px) {
+  .find-card .city-chips, .find-card .find-map { display: none; }
+}
+/* Contact form, phones: the button is full width, so the lines under it center too */
+@media (max-width: 639px) {
+  .contact-form .form-note, .contact-form .form-msg { text-align: center; }
 }

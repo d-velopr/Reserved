@@ -51,8 +51,7 @@
     var items = PRODUCTS.filter(function (p) { return p.cat === c.id; });
     if (!items.length) return "";
     return '<section class="shelf-cat" data-cat="' + esc(c.id) + '" aria-labelledby="cat-' + esc(c.id) + '">' +
-      '<div class="shelf-head"><h2 id="cat-' + esc(c.id) + '">' + esc(c.name) + "</h2>" +
-      (c.blurb ? "<p>" + esc(c.blurb) + "</p>" : "") + "</div>" +
+      '<div class="shelf-head"><h2 id="cat-' + esc(c.id) + '">' + esc(c.name) + "</h2></div>" +
       '<ul class="cards">' + items.map(function (p) {
         return '<li><button type="button" class="card" data-id="' + esc(p.id) + '" aria-haspopup="dialog">' +
           artHtml(p, "card-art") +

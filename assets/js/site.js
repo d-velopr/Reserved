@@ -186,6 +186,49 @@
     window.matchMedia("(max-width: 640px)").addEventListener("change", function () { setMenu(false); });
   }
 
+  /* ---------- Light / dark ---------- */
+  // The site always opens dark. Light mode is kept in sessionStorage, so it
+  // follows the visitor from page to page until the tab closes; a new tab or
+  // visit starts dark. The small script at the top of each page's <head> reads
+  // it before the page draws. Two switches share this: the round header button
+  // (wider screens) and the row in the phone menu.
+  var THEME_KEY = "reservedTheme";
+  var root = document.documentElement;
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  var themeBtns = document.querySelectorAll(".theme-btn, .nav-theme");
+  function savedLight() {
+    try { return sessionStorage.getItem(THEME_KEY) === "light"; } catch (e) { return false; }
+  }
+  function showTheme(light) {
+    if (light) root.setAttribute("data-theme", "light");
+    else root.removeAttribute("data-theme");
+    if (themeMeta) themeMeta.setAttribute("content", light ? "#F5EEDF" : "#0B0B0C");
+    // Each switch says what it switches to
+    themeBtns.forEach(function (b) {
+      b.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
+      var label = b.querySelector(".theme-label");
+      if (label) label.textContent = light ? "Dark mode" : "Light mode";
+    });
+  }
+  var fadeTimer;
+  themeBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var light = root.getAttribute("data-theme") !== "light";
+      try {
+        if (light) sessionStorage.setItem(THEME_KEY, "light");
+        else sessionStorage.removeItem(THEME_KEY);
+      } catch (e) {}
+      // Colors fade for a moment (style.css skips it for reduced motion)
+      root.classList.add("theme-fade");
+      clearTimeout(fadeTimer);
+      fadeTimer = setTimeout(function () { root.classList.remove("theme-fade"); }, 350);
+      showTheme(light);
+    });
+  });
+  showTheme(savedLight());
+  // Back/Forward can show a page as it was left: match the tab's current choice
+  window.addEventListener("pageshow", function (e) { if (e.persisted) showTheme(savedLight()); });
+
   /* ---------- Contact form (contact.html) ---------- */
   // Sends to the same Apps Script as sign-ups, as kind "contact"; it lands on
   // the Sheet's Messages tab and never adds anyone to the sign-up list.

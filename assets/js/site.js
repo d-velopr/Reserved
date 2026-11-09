@@ -269,4 +269,25 @@
       });
     });
   }
+
+  /* ---------- Tap-to-open sections (FAQ, Privacy, Terms) ---------- */
+  // A link to #some-section (the tiles at the top of Privacy and Terms, or a
+  // link from another page) opens that section and scrolls to it.
+  var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function openSection(id, smooth) {
+    var d = id && document.getElementById(id);
+    if (!d || d.tagName !== "DETAILS") return false;
+    d.open = true;
+    d.scrollIntoView({ behavior: smooth && !calm ? "smooth" : "auto", block: "start" });
+    d.querySelector("summary").focus({ preventScroll: true });
+    return true;
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a && openSection(a.getAttribute("href").slice(1), true)) {
+      e.preventDefault();
+      history.replaceState(null, "", a.getAttribute("href"));
+    }
+  });
+  if (location.hash) openSection(decodeURIComponent(location.hash.slice(1)), false);
 })();

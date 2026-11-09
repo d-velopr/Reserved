@@ -20,7 +20,7 @@ window.RESERVED_STORES = [
   { name: "The Healing Tree", logo: "assets/img/stores/healing-tree.webp", city: "Lake Elsinore", tag: "#8C8A1E", address: "480 3rd St, Lake Elsinore, CA 92530",        lat: 33.68559, lng: -117.33879, nudge: [-50, 0] },
   { name: "Westside Cllctv",  logo: "assets/img/stores/westside.webp", city: "Perris",        tag: "#C62828", address: "872 W Washington St, Perris, CA 92571",      lat: 33.85377, lng: -117.24485, nudge: [10, 46] },
   { name: "Blazed Utopia",    logo: "assets/img/stores/blazed-utopia.webp", city: "San Jacinto",   tag: "#2E7D32", address: "620 S State St, San Jacinto, CA 92583",      lat: 33.78106, lng: -116.97196, nudge: [86, -30] },
-  { name: "Budology",         logo: "assets/img/stores/budology.webp", city: "Hemet",         tag: "#2E7D32", address: "172 San Jacinto Ave, Hemet, CA 92543",       lat: 33.74894, lng: -116.95858, nudge: [20, 84] },
+  { name: "Budology",         logo: "assets/img/stores/budology.webp", city: "Hemet",         tag: "#2E7D32", address: "172 San Jacinto Ave, Hemet, CA 92543",       lat: 33.74894, lng: -116.95858, nudge: [70, 36] },
   { name: "Leaf Society",     logo: "assets/img/stores/leaf-society.webp", city: "El Centro",     tag: "#2E7D32", address: "599 La Brucherie Rd N, El Centro, CA 92243", lat: 32.79750, lng: -115.57860 }
 ];
 

@@ -1064,7 +1064,6 @@ body:has(.sheet[open]) { overflow: hidden; }
    Info pages: About, FAQ, Privacy, Terms, 404
    ====================================================================== */
 .page-head { padding: 2.5rem 0 1.75rem; text-align: center; }
-.page-head .crest { width: min(140px, 40%); margin-bottom: 1.25rem; }
 .page-sub { margin: .75rem auto 0; max-width: 40ch; color: var(--muted); font-size: 1.1rem; }
 .updated { margin: .5rem 0 0; color: var(--muted); font-size: .9rem; }
 
@@ -1090,8 +1089,12 @@ body:has(.sheet[open]) { overflow: hidden; }
 .about-card h2 { margin-top: 0; }
 .about-card p { margin: 0; }
 .about-card p + p { margin-top: .75rem; }
-.about-photo { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: 14px; }
-@media (min-width: 760px) { .about-grid { grid-template-columns: 1fr 1fr; } }
+/* About: the R + Find a Store sits under the heading, so no band around it */
+.about-cta { background: none; border-top: 0; padding: 0 0 2rem; }
+@media (min-width: 760px) {
+  .about-grid { grid-template-columns: 1fr 1fr; }
+  .about-card:first-child { grid-column: 1 / -1; } /* 3 cards: wide one on top, two below */
+}
 
 /* FAQ: tap a question to open its answer */
 .faq { display: grid; gap: 10px; }
@@ -1122,8 +1125,40 @@ body:has(.sheet[open]) { overflow: hidden; }
 .faq details > div { padding: 0 1.2rem 1.1rem; }
 .faq details p { margin: 0; }
 .faq details p + p { margin-top: .6rem; }
-.faq-more { margin-top: 2.25rem; text-align: center; }
-.faq-more p { margin: 0 0 1rem; }
+/* Lists and extra paragraphs inside an open section */
+.faq details > div > * + * { margin-top: .6rem; }
+.faq details ul { margin: 0; }
+/* Opened from a link: land below the sticky header, not under it */
+.faq details[id] { scroll-margin-top: calc(var(--head-h, 72px) + 12px); }
+
+/* Privacy & Terms: the short version as tiles; tap one to open its section */
+.prose .glance { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 1.5rem; padding: 0; list-style: none; }
+.prose .glance li + li { margin-top: 0; }
+.prose .glance a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  height: 100%;
+  min-height: 112px;
+  padding: 1rem .75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--gold-glow);
+  color: var(--white);
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.prose .glance a:hover { border-color: var(--line-2); box-shadow: var(--gold-glow-strong); }
+.prose .glance svg { width: 30px; height: 30px; color: var(--gold); }
+@media (min-width: 760px) { .prose .glance { grid-template-columns: repeat(4, 1fr); } }
+.prose .legal-intro { margin: 0 0 1.25rem; color: var(--muted); font-size: .95rem; }
 
 /* Footer page links */
 .foot-links { display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; width: 100%; margin: 0; padding: 0; list-style: none; font-size: .9rem; }

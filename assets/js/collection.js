@@ -20,12 +20,16 @@
   }
 
   // Product photo, or the crest on the category color when there's no photo.
+  // The sheet can use its own image (sheetImg). Cutouts (logos, labels with a
+  // see-through background) sit whole on the category color.
   function artHtml(p, cls) {
     var c = catById[p.cat] || {};
-    var img = p.img
-      ? '<img src="' + esc(p.img) + '" alt="" loading="lazy" />'
+    var src = (cls === "sheet-art" && p.sheetImg) || p.img;
+    var img = src
+      ? '<img src="' + esc(src) + '" alt="" loading="lazy" />'
       : '<img class="art-crest" src="' + CREST + '" alt="" loading="lazy" />';
-    return '<span class="' + cls + (p.img ? " has-photo" : "") + '" style="--cat:' + esc(c.color || "#222") + '">' + img + "</span>";
+    var kind = !src ? "" : p.cutout ? " has-cutout" : " has-photo";
+    return '<span class="' + cls + kind + '" style="--cat:' + esc(c.color || "#222") + '">' + img + "</span>";
   }
 
   function metaLine(p) {

@@ -563,6 +563,15 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .ig-link { display: inline-flex; align-items: center; gap: .45rem; color: var(--gold); font-weight: 700; text-decoration: none; }
 .ig-link:hover { text-decoration: underline; }
 .ig-link svg { width: 22px; height: 22px; flex: none; }
+/* Wider than phones: logo over the links on the left,
+   Instagram over the 21+ line on the right */
+@media (min-width: 641px) {
+  .foot-inner { display: grid; grid-template-columns: 1fr auto; gap: .5rem 1.5rem; }
+  .foot-inner > img { grid-area: 1 / 1; justify-self: start; }
+  .foot-inner .ig-link { grid-area: 1 / 2; justify-self: end; align-self: end; }
+  .foot-inner .foot-links { grid-area: 2 / 1; }
+  .foot-inner .fine { grid-area: 2 / 2; justify-self: end; align-self: start; margin-left: 0 !important; }
+}
 
 /* ---------- Age gate ---------- */
 .gate {
@@ -933,6 +942,9 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .art-crest { width: 66%; height: auto; aspect-ratio: 640 / 563; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .5)); }
 .has-photo { background: #111; }
 .has-photo img { width: 100%; height: 100%; object-fit: cover; }
+/* Logos and labels with a see-through background: whole, on the category color */
+.has-cutout img { width: 80%; height: 80%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .55)); }
+.sheet-art.has-cutout img { width: 70%; height: 82%; }
 .card-body { display: grid; gap: .15rem; padding: .75rem .9rem 1rem; }
 .card-name { font-weight: 900; font-variation-settings: "wdth" 110; font-size: 1.05rem; line-height: 1.15; text-transform: uppercase; }
 .card-meta { color: var(--muted); font-size: .9rem; }
@@ -952,7 +964,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 }
 .soon-inline { position: static; display: inline-block; margin: .6rem 0 0; }
 
-/* End of the Collection page: big Reserved R with the Find a Store button */
+/* Big Reserved R with the Find a Store button (About page) */
 .coll-cta { background: var(--surface); border-top: 1px solid var(--line); padding: 2.5rem 0 3rem; }
 .coll-cta .wrap { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
 .coll-cta img { width: clamp(150px, 38vw, 260px); height: auto; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .55)); }

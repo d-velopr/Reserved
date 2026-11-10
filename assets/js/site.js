@@ -203,11 +203,11 @@
     if (light) root.setAttribute("data-theme", "light");
     else root.removeAttribute("data-theme");
     if (themeMeta) themeMeta.setAttribute("content", light ? "#F5EEDF" : "#0B0B0C");
-    // Each switch says what it switches to
+    // Header button says what it switches to; the phone-menu row is a
+    // "Dark mode" on/off switch
     themeBtns.forEach(function (b) {
-      b.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
-      var label = b.querySelector(".theme-label");
-      if (label) label.textContent = light ? "Dark mode" : "Light mode";
+      if (b.classList.contains("nav-theme")) b.setAttribute("aria-checked", light ? "false" : "true");
+      else b.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
     });
   }
   var fadeTimer;

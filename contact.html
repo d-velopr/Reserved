@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Reserved | Contact Us</title>
   <meta name="description" content="Questions, shop inquiries or privacy requests for Reserved." />
-  <meta name="theme-color" content="#0B0B0C" />
+  <meta name="theme-color" content="#F5EEDF" />
   <!-- Light mode lasts for this tab only (sessionStorage); every visit opens dark.
        Set before the page draws, so changing pages never flashes dark. The
        switch itself is in site.js. -->
-  <script>try{if(sessionStorage.getItem("reservedTheme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
+  <script>(function(){var d;try{d=sessionStorage.getItem("reservedTheme")==="dark"}catch(e){}if(!d)document.documentElement.setAttribute("data-theme","light")})()</script>
 
   <!-- Google tag (gtag.js), G-2X555LCLRX. Analytics stays off until the visitor
        clicks "Yes, enter" on the 21+ gate (Home page), which also agrees to analytics.
@@ -42,7 +42,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=113" />
+  <link rel="stylesheet" href="assets/css/style.css?v=114" />
 </head>
 <body>
 
@@ -60,9 +60,9 @@
       <!-- Phones only: Contact sits in the menu (and leaves the footer) -->
       <a class="nav-phone" href="contact.html" aria-current="page">Contact</a>
       <!-- Phones only: light/dark switch (a round button in the header on wider screens) -->
-      <button class="nav-theme" type="button" role="switch" aria-checked="true" aria-label="Dark mode"><span class="theme-switch" aria-hidden="true"><span class="theme-knob"><svg class="ts-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.55 1.55M17.15 17.15l1.55 1.55M5.3 18.7l1.55-1.55M17.15 6.85l1.55-1.55" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="ts-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></button>
+      <button class="nav-theme" type="button" role="switch" aria-checked="false" aria-label="Dark mode"><span class="theme-switch" aria-hidden="true"><span class="theme-knob"><svg class="ts-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.55 1.55M17.15 17.15l1.55 1.55M5.3 18.7l1.55-1.55M17.15 6.85l1.55-1.55" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><svg class="ts-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span></span></button>
     </nav>
-    <button class="theme-btn" type="button" aria-label="Switch to light mode"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.55 1.55M17.15 17.15l1.55 1.55M5.3 18.7l1.55-1.55M17.15 6.85l1.55-1.55" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+    <button class="theme-btn" type="button" aria-label="Switch to dark mode"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.55 1.55M17.15 17.15l1.55 1.55M5.3 18.7l1.55-1.55M17.15 6.85l1.55-1.55" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
     <a class="ig-btn" href="https://www.instagram.com/reservedwayornoway/" target="_blank" rel="noopener" aria-label="Reserved on Instagram (@reservedwayornoway)">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>
     </a>
@@ -115,6 +115,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/site.js?v=9"></script>
+  <script src="assets/js/site.js?v=10"></script>
 </body>
 </html>

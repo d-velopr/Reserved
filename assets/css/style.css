@@ -47,8 +47,9 @@
   --sheet-dim: rgba(0, 0, 0, .72);
 }
 
-/* Light mode: warm cream. Turned on per tab (sessionStorage) by the small
-   script at the top of each page's <head>, so there's no dark flash. Red
+/* Light mode: warm cream, the default. The small script at the top of each
+   page's <head> turns it on before the page draws, unless the visitor chose
+   dark in this tab (sessionStorage "reservedTheme" = "dark"). Red
    buttons, colored product art, the thread stripe, logos and photos don't change. */
 :root[data-theme="light"] {
   --bg: #F5EEDF;

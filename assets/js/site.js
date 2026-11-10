@@ -187,17 +187,17 @@
   }
 
   /* ---------- Light / dark ---------- */
-  // The site always opens dark. Light mode is kept in sessionStorage, so it
+  // The site always opens light. Dark mode is kept in sessionStorage, so it
   // follows the visitor from page to page until the tab closes; a new tab or
-  // visit starts dark. The small script at the top of each page's <head> reads
+  // visit starts light. The small script at the top of each page's <head> reads
   // it before the page draws. Two switches share this: the round header button
-  // (wider screens) and the row in the phone menu.
+  // (wider screens) and the switch on the Home row of the phone menu.
   var THEME_KEY = "reservedTheme";
   var root = document.documentElement;
   var themeMeta = document.querySelector('meta[name="theme-color"]');
   var themeBtns = document.querySelectorAll(".theme-btn, .nav-theme");
   function savedLight() {
-    try { return sessionStorage.getItem(THEME_KEY) === "light"; } catch (e) { return false; }
+    try { return sessionStorage.getItem(THEME_KEY) !== "dark"; } catch (e) { return true; }
   }
   function showTheme(light) {
     if (light) root.setAttribute("data-theme", "light");
@@ -215,8 +215,8 @@
     b.addEventListener("click", function () {
       var light = root.getAttribute("data-theme") !== "light";
       try {
-        if (light) sessionStorage.setItem(THEME_KEY, "light");
-        else sessionStorage.removeItem(THEME_KEY);
+        if (light) sessionStorage.removeItem(THEME_KEY);
+        else sessionStorage.setItem(THEME_KEY, "dark");
       } catch (e) {}
       // Colors fade for a moment (style.css skips it for reduced motion)
       root.classList.add("theme-fade");

@@ -68,6 +68,9 @@
   --scroll-thumb: #C2B08C;
   --map-line: var(--line);
   --stitch-panel: 2px dashed rgba(21, 18, 13, .22);
+  /* Pale gold vanishes on cream, so the glows use a deeper, stronger gold */
+  --gold-glow: 0 6px 22px rgba(190, 125, 25, .18);
+  --gold-glow-strong: 0 10px 32px rgba(190, 120, 15, .55);
   --menu-shadow: 0 16px 32px rgba(60, 45, 20, .16);
   --card-shadow: 0 20px 60px rgba(60, 45, 20, .18);
   --sheet-shadow: 0 24px 70px rgba(60, 45, 20, .22);

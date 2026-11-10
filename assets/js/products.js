@@ -43,17 +43,17 @@ window.RESERVED_CATEGORIES = [
 
 window.RESERVED_PRODUCTS = [
   // Pre-rolls: Tiger Ztripez (infused) and Minis (flower only)
-  { id: "hardcore-og-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Hardcore OG", size: "Single", desc: "1.5g flower + 0.3g live resin concentrate in three stripes.",
+  { id: "hardcore-og-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Hardcore OG", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/hardcore-og-tiger-ztripez.webp" },
-  { id: "lilas-lotus-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Lila's Lotus", size: "Single", desc: "1.5g flower + 0.3g live resin concentrate in three stripes.",
+  { id: "lilas-lotus-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Lila's Lotus", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/lilas-lotus-tiger-ztripez.webp" },
-  { id: "matcha-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Matcha", size: "Single", desc: "1.5g flower + 0.3g live resin concentrate in three stripes.",
+  { id: "matcha-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Matcha", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/matcha-tiger-ztripez.webp" },
-  { id: "rainbow-z-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Rainbow Z", size: "Single", desc: "1.5g flower + 0.3g live resin concentrate in three stripes.",
+  { id: "rainbow-z-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Rainbow Z", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/rainbow-z-tiger-ztripez.webp" },
-  { id: "toad-venom-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Toad Venom", size: "Single", desc: "1.5g flower + 0.3g live resin concentrate in three stripes.",
+  { id: "toad-venom-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Toad Venom", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/toad-venom-tiger-ztripez.webp" },
-  { id: "zandia-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Zandia", size: "Single", desc: "1.5g flower + 0.3g live resin concentrate in three stripes.",
+  { id: "zandia-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Zandia", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/zandia-tiger-ztripez.webp" },
   { id: "biscotti-minis", cat: "pre-rolls", line: "Minis", name: "Biscotti", size: "Pack of 6", desc: "Six flower pre-rolls.",
     img: "assets/img/prerolls/biscotti-minis.webp" },

@@ -67,6 +67,7 @@
   if (tiles) {
     tiles.innerHTML = CATS.map(function (c) {
       var n = PRODUCTS.filter(function (p) { return p.cat === c.id; }).length;
+      if (!n) return ""; // no tile for an empty category
       return '<li><a class="tile" href="collection.html#' + esc(c.id) + '" style="--cat:' + esc(c.color) + '">' +
         '<img src="assets/img/gen/crest.webp" alt="" loading="lazy" />' +
         '<span class="tile-name">' + esc(c.name) + "</span>" +

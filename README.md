@@ -20,7 +20,7 @@ The 21+ entry gate is on the Home page only. A first-time visitor who opens anot
 
 ## Editing content
 
-- **Products:** `assets/js/products.js`. Flower is listed by strain (type and sizes); the other categories by product. The Collection page and the Home tiles both read it.
+- **Products:** `assets/js/products.js`. Flower is listed by strain (type and sizes); the other categories by product. The Collection page and the Home tiles both read it. A category with no products is hidden on both (Flower, until strains are added).
 - **Stores:** `assets/js/stores.js`. The map and the store list read it, and the Home page's Coming Soon cards come from `RESERVED_COMING_SOON` in the same file.
 - **Sign-ups:** go to a Google Sheet through `subscribe.gs`. Contact-page messages go to the same Sheet, on its Messages tab.
 

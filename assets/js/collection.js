@@ -5,8 +5,11 @@
 (function () {
   "use strict";
 
-  var CATS = window.RESERVED_CATEGORIES || [];
   var PRODUCTS = window.RESERVED_PRODUCTS || [];
+  // Categories with no products yet are left out (no empty chip or section).
+  var CATS = (window.RESERVED_CATEGORIES || []).filter(function (c) {
+    return PRODUCTS.some(function (p) { return p.cat === c.id; });
+  });
   var CREST = "assets/img/gen/crest.webp";
 
   var catById = {}, productById = {};
@@ -33,11 +36,11 @@
   }
 
   function metaLine(p) {
-    return [p.size, p.type].filter(Boolean).map(esc).join(" · ");
+    return [p.line, p.size, p.type].filter(Boolean).map(esc).join(" · ");
   }
   // Sheet line: adds lineage and THC when a strain has them
   function sheetMeta(p) {
-    return [p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc).join(" · ");
+    return [p.line, p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc).join(" · ");
   }
 
   /* ---------- Chips ---------- */
@@ -137,7 +140,7 @@
     var url = location.href.split("#")[0] + "#" + p.id;
     var shareMsg = document.getElementById("share-msg");
     if (navigator.share) {
-      navigator.share({ title: "Reserved " + p.name, url: url }).catch(function () {});
+      navigator.share({ title: "Reserved " + [p.line, p.name].filter(Boolean).join(" "), url: url }).catch(function () {});
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(url).then(function () {
         shareMsg.textContent = "Link copied.";

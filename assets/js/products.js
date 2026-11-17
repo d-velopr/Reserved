@@ -38,16 +38,13 @@
  *   soon:  optional: true shows a "Coming soon" tag
  */
 window.RESERVED_CATEGORIES = [
-  { id: "flower",       name: "Flower",       color: "#1F7A4D", unit: "strain" },
   { id: "pre-rolls",    name: "Pre-Rolls",    color: "#B3203A" },
   { id: "concentrates", name: "Concentrates", color: "#D99A1E" },
-  { id: "vapes",        name: "Vapes",        color: "#1E5FD9" }
+  { id: "vapes",        name: "Vapes",        color: "#1E5FD9" },
+  { id: "flower",       name: "Flower",       color: "#1F7A4D", unit: "strain" } // last while it's a placeholder
 ];
 
 window.RESERVED_PRODUCTS = [
-  // Flower (PLACEHOLDER): swap for one entry per strain when they're ready
-  { id: "flower-coming-soon", cat: "flower", name: "Flower", desc: "Strains coming soon.", soon: true,
-    img: "assets/img/gen/stamp.webp", cutout: true },
   // Pre-rolls: Tiger Ztripez (infused) and Minis (flower only)
   { id: "lilas-lotus-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Lila's Lotus", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/lilas-lotus-tiger-ztripez.webp" },
@@ -100,5 +97,8 @@ window.RESERVED_PRODUCTS = [
     sheetSoon: true },
   { id: "strawberry-funnel-cake-vape", cat: "vapes", line: "Live Resin Vape", name: "Strawberry Funnel Cake", size: "1g",
     img: "assets/img/vapes/strawberry-funnel-cake-vape.webp",
-    sheetSoon: true }
+    sheetSoon: true },
+  // Flower (PLACEHOLDER): swap for one entry per strain when they're ready
+  { id: "flower-coming-soon", cat: "flower", name: "Flower", desc: "Strains coming soon.", soon: true,
+    img: "assets/img/gen/stamp.webp", cutout: true }
 ];

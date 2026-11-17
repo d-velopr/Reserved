@@ -66,7 +66,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.css" />
-  <link rel="stylesheet" href="assets/css/style.css?v=119" />
+  <link rel="stylesheet" href="assets/css/style.css?v=121" />
 </head>
 <body>
 
@@ -122,22 +122,13 @@
       </div>
     </section>
 
-    <section class="subscribe" id="subscribe" aria-labelledby="sub-title">
-      <div class="wrap sub-inner">
-        <img class="crest" src="assets/img/gen/crest.webp" alt="Reserved crest with two lions, wings and a crown" width="640" height="563" loading="lazy" />
-        <div class="sub-body">
-          <h2 id="sub-title">Stay Up To Date.</h2>
-          <p>New stores and restocks, straight to your inbox.</p>
-          <form id="sub-form" class="sub-form" novalidate>
-            <label class="sr-only" for="email">Email address</label>
-            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required />
-            <!-- Honeypot: real people never see or fill this. -->
-            <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
-            <button class="btn btn-red" type="submit">Subscribe</button>
-          </form>
-          <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
-        </div>
+    <!-- Strain logo slideshow, filled in by lineup.js -->
+    <section class="lineup" id="lineup" aria-labelledby="lineup-title">
+      <div class="wrap">
+        <h2 id="lineup-title">The Lineup</h2>
       </div>
+      <ul class="lineup-track" id="lineup-track" aria-roledescription="carousel" aria-labelledby="lineup-title"></ul>
+      <div class="lineup-dots" id="lineup-dots"></div>
     </section>
   </main>
 
@@ -166,5 +157,6 @@
   <script src="assets/js/stores.js?v=36"></script>
   <script src="assets/js/site.js?v=10"></script>
   <script src="assets/js/locator.js?v=3"></script>
+  <script src="assets/js/lineup.js?v=1"></script>
 </body>
 </html>

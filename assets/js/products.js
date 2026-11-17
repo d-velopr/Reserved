@@ -5,8 +5,8 @@
  * PLACEHOLDER: only the Flower entry is a stand-in until the real strains
  * are in. Everything else is real. A category with no products is hidden.
  *
- * Flower is listed by strain (one entry per strain, with the sizes it comes
- * in). Every other category is listed by product.
+ * Flower is listed by strain (one entry per strain, sold in 3.5g jars).
+ * Every other category is listed by product.
  *
  * Categories, in the order they show:
  *   id:    used in links, e.g. collection.html#flower
@@ -18,8 +18,9 @@
  *   id:    unique, lowercase-with-dashes; used in share links (collection.html#<id>)
  *   cat:   a category id from above
  *   name:  product name
- *   size:  weight / count, e.g. "3.5g" or "5 x 0.5g" (non-flower products)
- *   sizes: flower strains: the sizes it comes in, e.g. ["3.5g", "7g", "14g"]
+ *   size:  weight / count, e.g. "3.5g Jar" or "5 x 0.5g" (shows on the card)
+ *   sizes: optional list instead, for a strain sold in several sizes,
+ *          e.g. ["3.5g", "7g", "14g"] (shows on the sheet only)
  *   line:  optional product line, e.g. "Tiger Ztripez" (shows on the card)
  *   type:  "Indica", "Sativa" or "Hybrid" (flower strains; optional elsewhere)
  *   lineage, thc: optional, e.g. "Gelato x OG Kush", "27%"
@@ -99,6 +100,6 @@ window.RESERVED_PRODUCTS = [
     img: "assets/img/vapes/strawberry-funnel-cake-vape.webp",
     sheetSoon: true },
   // Flower (PLACEHOLDER): swap for one entry per strain when they're ready
-  { id: "flower-coming-soon", cat: "flower", name: "Flower", desc: "Strains coming soon.", soon: true,
+  { id: "flower-coming-soon", cat: "flower", name: "Flower", size: "3.5g Jar", desc: "Strains coming soon.", soon: true,
     img: "assets/img/gen/stamp.webp", cutout: true }
 ];

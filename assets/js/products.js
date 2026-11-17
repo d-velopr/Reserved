@@ -69,7 +69,7 @@ window.RESERVED_PRODUCTS = [
     sheetSoon: true },
   { id: "bubblegum-gelato-minis", cat: "pre-rolls", line: "Minis", name: "Bubblegum Gelato", size: "Pack of 6", desc: "Six flower pre-rolls.",
     img: "assets/img/prerolls/bubblegum-gelato-minis.webp",
-    sheetImg: "assets/img/strains/bubblegum-gelato.webp", sheetCutout: true, sheetSoon: true },
+    sheetSoon: true },
   // Concentrates
   { id: "cherry-bombs-badder", cat: "concentrates", line: "Live Resin Badder", name: "Cherry Bombs", size: "1g", type: "Hybrid", desc: "Live resin badder from fresh-frozen flower.",
     img: "assets/img/concentrates/cherry-bombs-badder.webp" },

@@ -23,3 +23,17 @@ window.RESERVED_STORES = [
   { name: "Budology",         logo: "assets/img/stores/budology.webp", city: "Hemet",         tag: "#2E7D32", address: "172 San Jacinto Ave, Hemet, CA 92543",       lat: 33.74894, lng: -116.95858, nudge: [70, 36] },
   { name: "Leaf Society",     logo: "assets/img/stores/leaf-society.webp", city: "El Centro",     tag: "#2E7D32", address: "599 La Brucherie Rd N, El Centro, CA 92243", lat: 32.79750, lng: -115.57860 }
 ];
+
+/*
+ * Coming soon: the shops shown under "Coming Soon" on the Home page.
+ * city: the big label. name: the shop (optional). when: e.g. "Dec 2026"
+ * (optional). Leave both out to show just the city.
+ * When a shop opens, move it up into RESERVED_STORES with its address.
+ * PLACEHOLDERS below: replace with the real four.
+ */
+window.RESERVED_COMING_SOON = [
+  { city: "Location 1" },
+  { city: "Location 2" },
+  { city: "Location 3" },
+  { city: "Location 4" }
+];

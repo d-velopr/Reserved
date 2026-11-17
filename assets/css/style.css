@@ -652,7 +652,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 /* ---------- Subscribe ---------- */
 .subscribe { background: var(--surface); color: var(--text); padding: 3.5rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
-/* Strain logo strip (Home): glides left at a steady speed and loops.
+/* Strain logo strip (Store Locator): glides left at a steady speed and loops.
    lineup.js moves it; a sideways drag scrubs it, vertical swipes scroll the page. */
 .lineup { --sw: min(64vw, 320px); padding: .5rem 0 1.5rem; } /* sits on the page background, no band */
 .lineup-view { overflow: hidden; touch-action: pan-y; padding: 0; }
@@ -699,7 +699,7 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
 
 /* ---------- Footer ---------- */
 .foot { background: var(--bg); color: var(--muted); }
-/* Home: thin gold line on top instead of the color stripe, same gold as the Find a Store card */
+/* Home: thin gold line on top instead of the color stripe, same gold as the Coming Soon card */
 .foot-gold { border-top: 1px solid rgba(231, 177, 94, .35); }
 .foot-inner { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.5rem; padding: 1.75rem 0 2rem; }
 .foot-inner p { margin: 0; }
@@ -844,6 +844,7 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
 .home-cta { background: var(--bg); text-align: center; }
 .home-cta .wrap { padding: 2.5rem 0 3rem; }
 
+/* Coming Soon: 2 across on phones, 4 across on wider screens */
 .coming { padding: 0 0 2.5rem; }
 /* Bordered panel, same gold edge as the store card below it */
 .coming-card {
@@ -856,13 +857,17 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
   box-shadow: 0 0 60px rgba(231, 177, 94, .12);
 }
 @media (min-width: 760px) { .coming-card { padding: 2.25rem 2.5rem 2.5rem; } }
-/* Home: the line above Subscribe uses the card's gold edge */
-.lineup + .subscribe { border-top-color: rgba(231, 177, 94, .35); border-bottom: 0; } /* footer's gold line takes over below */
+/* Home: the line under Coming Soon uses the card's gold edge */
+.coming + .subscribe { border-top-color: rgba(231, 177, 94, .35); border-bottom: 0; } /* footer's gold line takes over below */
 /* Phones: "View all locations" drops under the heading instead of crowding it */
 .coming-card .sec-head { flex-wrap: wrap; row-gap: 0; }
-/* Narrowest phones: tighter padding in the Find a Store box */
+/* Narrowest phones: tighter padding and narrower letters so a city name like
+   VICTORVILLE fits on one line */
 @media (max-width: 360px) {
   .coming-card { padding-inline: 1rem; }
+  .coming-card .soon-list { gap: .6rem; }
+  .coming-card .soon-card { padding-inline: .4rem; }
+  .coming-card .soon-card h3 { font-variation-settings: "wdth" 100; letter-spacing: 0; }
 }
 /* Find a Store box: search bar, then a row of city chips */
 .find-card .tools { margin-bottom: 1rem; }
@@ -882,6 +887,47 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
   text-decoration: none;
 }
 .city-chips a:hover, .city-chips a:focus-visible { border-color: var(--gold); color: var(--gold-text); }
+/* Coming Soon now sits under the box */
+.coming-soon { margin-top: 2.25rem; }
+
+.soon-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.soon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.1rem .75rem 1.2rem;
+  background: var(--bg);
+  border: 1px solid rgba(231, 177, 94, .6); /* gold */
+  border-radius: var(--radius);
+}
+.soon-card svg {
+  width: 56px;
+  height: 56px;
+  padding: 10px;
+  margin-bottom: .7rem;
+  border-radius: 50%;
+  background: var(--tag);
+  color: var(--white);
+  box-shadow: inset 0 0 0 2px rgba(231, 177, 94, .6); /* gold ring */
+}
+.soon-card h3 {
+  margin: 0;
+  font-size: clamp(.95rem, 4.4vw, 1.1rem); /* smaller on the narrowest phones so words fit */
+  font-weight: 900;
+  font-variation-settings: var(--wide);
+  line-height: 1.1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere; /* a long city name never pushes the card wider */
+}
+.soon-card p { margin: .3rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.3; }
+.soon-list:empty { min-height: 340px; } /* hold the space until home.js fills it */
+@media (min-width: 760px) {
+  .soon-list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .soon-list:empty { min-height: 170px; }
+}
+
 .home-cats { padding: 2.5rem 0; }
 .sec-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
 .sec-head h2 { text-transform: uppercase; letter-spacing: .02em; }
@@ -1330,7 +1376,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 @media (min-width: 640px) { .contact-form { padding: 2.25rem 2.5rem 2.5rem; } .contact-form .btn { justify-self: start; } }
 
 /* ---------- Gold glow on every box (Home Collection tiles: only on hover) ---------- */
-.locator-grid, .card, .about-card, .faq details, .contact-form { box-shadow: var(--gold-glow); }
+.soon-card, .locator-grid, .card, .about-card, .faq details, .contact-form { box-shadow: var(--gold-glow); }
 .coming-card { box-shadow: 0 0 60px rgba(231, 177, 94, .12), var(--gold-glow); }
 .gate-card { box-shadow: var(--card-shadow), var(--gold-glow); }
 .sheet { box-shadow: var(--sheet-shadow), var(--gold-glow); }

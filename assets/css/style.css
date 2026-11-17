@@ -1016,7 +1016,9 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
 /* Category chips: stick under the header while scrolling */
 .chips-bar {
   position: sticky;
-  top: var(--head-h, 72px);
+  /* 1px under the header (which sits on top), so no sliver of page ever
+     shows between them while scrolling; the header's border is the divider */
+  top: calc(var(--head-h, 72px) - 1px);
   z-index: 900;
   background: var(--head-bg);
   backdrop-filter: blur(8px);

@@ -148,13 +148,16 @@
   /* ---------- Header height ---------- */
   // Saved as --head-h so bars that stick below the header (the Collection
   // chips) sit flush under it at every screen size.
+  // Exact height, not offsetHeight: that rounds (70.7px became 71px) and left
+  // a hairline gap under the header on phones.
   var header = document.querySelector(".top");
   function measureHeader() {
-    if (header) document.documentElement.style.setProperty("--head-h", header.offsetHeight + "px");
+    if (header) document.documentElement.style.setProperty("--head-h", header.getBoundingClientRect().height + "px");
   }
   measureHeader();
   window.addEventListener("resize", measureHeader);
   window.addEventListener("load", measureHeader);
+  if (header && "ResizeObserver" in window) new ResizeObserver(measureHeader).observe(header);
 
   /* ---------- Phone menu ---------- */
   // The menu button only shows on phones (see style.css). It opens the page

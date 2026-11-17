@@ -1241,6 +1241,8 @@ body:has(.sheet[open]) { overflow: hidden; }
    Info pages: About, FAQ, Privacy, Terms, 404
    ====================================================================== */
 .page-head { padding: 2.5rem 0 1.75rem; text-align: center; }
+/* Icon before a page title (Contact Us envelope), in the gold accent */
+.h1-icon { width: .9em; height: .9em; margin-right: .3em; vertical-align: -.1em; color: var(--gold-text); }
 .page-sub { margin: .75rem auto 0; max-width: 40ch; color: var(--muted); font-size: 1.1rem; }
 .updated { margin: .5rem 0 0; color: var(--muted); font-size: .9rem; }
 

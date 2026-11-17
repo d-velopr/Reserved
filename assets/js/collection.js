@@ -27,11 +27,13 @@
   // see-through background) sit whole on the category color.
   function artHtml(p, cls) {
     var c = catById[p.cat] || {};
-    var src = (cls === "sheet-art" && p.sheetImg) || p.img;
+    var useSheet = cls === "sheet-art" && p.sheetImg;
+    var src = useSheet ? p.sheetImg : p.img;
     var img = src
       ? '<img src="' + esc(src) + '" alt="" loading="lazy" />'
       : '<img class="art-crest" src="' + CREST + '" alt="" loading="lazy" />';
-    var kind = !src ? "" : p.cutout ? " has-cutout" : " has-photo";
+    var cut = useSheet ? p.sheetCutout : p.cutout;
+    var kind = !src ? "" : cut ? " has-cutout" : " has-photo";
     return '<span class="' + cls + kind + '" style="--cat:' + esc(c.color || "#222") + '">' + img + "</span>";
   }
 

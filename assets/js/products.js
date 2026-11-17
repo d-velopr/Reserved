@@ -27,7 +27,8 @@
  *   img:   optional photo path (square works best, e.g. assets/img/prerolls/x.webp).
  *          Leave it out to show the Reserved crest on the category color.
  *   sheetImg: optional different image for the sheet that opens on tap
- *          (defaults to img)
+ *          (defaults to img). Used for strain logos where the photo is low-res.
+ *   sheetCutout: optional: true when sheetImg has a see-through background
  *   cutout: optional: true when the images have a see-through background
  *          (a logo or label). They show whole, on the category color,
  *          instead of filling the frame like a photo.
@@ -44,21 +45,25 @@ window.RESERVED_CATEGORIES = [
 window.RESERVED_PRODUCTS = [
   // Pre-rolls: Tiger Ztripez (infused) and Minis (flower only)
   { id: "hardcore-og-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Hardcore OG", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
-    img: "assets/img/prerolls/hardcore-og-tiger-ztripez.webp" },
+    img: "assets/img/prerolls/hardcore-og-tiger-ztripez.webp",
+    sheetImg: "assets/img/strains/hardcore-og.webp", sheetCutout: true },
   { id: "lilas-lotus-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Lila's Lotus", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/lilas-lotus-tiger-ztripez.webp" },
   { id: "matcha-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Matcha", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/matcha-tiger-ztripez.webp" },
   { id: "rainbow-z-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Rainbow Z", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
-    img: "assets/img/prerolls/rainbow-z-tiger-ztripez.webp" },
+    img: "assets/img/prerolls/rainbow-z-tiger-ztripez.webp",
+    sheetImg: "assets/img/strains/rainbow-z.webp", sheetCutout: true },
   { id: "toad-venom-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Toad Venom", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/toad-venom-tiger-ztripez.webp" },
   { id: "zandia-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Zandia", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
-    img: "assets/img/prerolls/zandia-tiger-ztripez.webp" },
+    img: "assets/img/prerolls/zandia-tiger-ztripez.webp",
+    sheetImg: "assets/img/strains/zandia.webp", sheetCutout: true },
   { id: "biscotti-minis", cat: "pre-rolls", line: "Minis", name: "Biscotti", size: "Pack of 6", desc: "Six flower pre-rolls.",
     img: "assets/img/prerolls/biscotti-minis.webp" },
   { id: "bubblegum-gelato-minis", cat: "pre-rolls", line: "Minis", name: "Bubblegum Gelato", size: "Pack of 6", desc: "Six flower pre-rolls.",
-    img: "assets/img/prerolls/bubblegum-gelato-minis.webp" },
+    img: "assets/img/prerolls/bubblegum-gelato-minis.webp",
+    sheetImg: "assets/img/strains/bubblegum-gelato.webp", sheetCutout: true },
   // Concentrates
   { id: "cherry-bombs-badder", cat: "concentrates", line: "Live Resin Badder", name: "Cherry Bombs", size: "1g", type: "Hybrid", desc: "Live resin badder from fresh-frozen flower.",
     img: "assets/img/concentrates/cherry-bombs-badder.webp" },
@@ -68,19 +73,26 @@ window.RESERVED_PRODUCTS = [
     img: "assets/img/concentrates/tahiti-lime-badder.webp" },
   // Vapes
   { id: "blueberry-chews-vape", cat: "vapes", line: "Live Resin Vape", name: "Blueberry Chews", size: "1g",
-    img: "assets/img/vapes/blueberry-chews-vape.webp" },
+    img: "assets/img/vapes/blueberry-chews-vape.webp",
+    sheetImg: "assets/img/strains/blueberry-chews.webp", sheetCutout: true },
   { id: "bubblegum-gelato-vape", cat: "vapes", line: "Live Resin Vape", name: "Bubblegum Gelato", size: "1g",
-    img: "assets/img/vapes/bubblegum-gelato-vape.webp" },
+    img: "assets/img/vapes/bubblegum-gelato-vape.webp",
+    sheetImg: "assets/img/strains/bubblegum-gelato.webp", sheetCutout: true },
   { id: "candy-paint-og-vape", cat: "vapes", line: "Live Resin Vape", name: "Candy Paint OG", size: "1g",
-    img: "assets/img/vapes/candy-paint-og-vape.webp" },
+    img: "assets/img/vapes/candy-paint-og-vape.webp",
+    sheetImg: "assets/img/strains/candy-paint-og.webp", sheetCutout: true },
   { id: "green-dragon-kush-vape", cat: "vapes", line: "Live Resin Vape", name: "Green Dragon Kush", size: "1g",
-    img: "assets/img/vapes/green-dragon-kush-vape.webp" },
+    img: "assets/img/vapes/green-dragon-kush-vape.webp",
+    sheetImg: "assets/img/strains/green-dragon-kush.webp", sheetCutout: true },
   { id: "jelly-zoughnutz-vape", cat: "vapes", line: "Live Resin Vape", name: "Jelly Zoughnutz", size: "1g",
-    img: "assets/img/vapes/jelly-zoughnutz-vape.webp" },
+    img: "assets/img/vapes/jelly-zoughnutz-vape.webp",
+    sheetImg: "assets/img/strains/jelly-zoughnutz.webp", sheetCutout: true },
   { id: "rosewater-runtz-vape", cat: "vapes", line: "Live Resin Vape", name: "Rosewater Runtz", size: "1g",
-    img: "assets/img/vapes/rosewater-runtz-vape.webp" },
+    img: "assets/img/vapes/rosewater-runtz-vape.webp",
+    sheetImg: "assets/img/strains/rosewater-runtz.webp", sheetCutout: true },
   { id: "strawberry-funnel-cake-vape", cat: "vapes", line: "Live Resin Vape", name: "Strawberry Funnel Cake", size: "1g",
-    img: "assets/img/vapes/strawberry-funnel-cake-vape.webp" },
+    img: "assets/img/vapes/strawberry-funnel-cake-vape.webp",
+    sheetImg: "assets/img/strains/strawberry-funnel-cake.webp", sheetCutout: true },
   // Edibles (PLACEHOLDER)
   { id: "gummies", cat: "edibles", name: "Gummies", size: "10 x 10mg", desc: "Ten pieces, 10mg each.", soon: true }
 ];

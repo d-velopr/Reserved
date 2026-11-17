@@ -1131,6 +1131,17 @@ body:has(.sheet[open]) { overflow: hidden; }
 .sheet-art { display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: 0; }
 .sheet-art::after { border-radius: 12px; }
 .sheet-art .art-crest { width: 48%; }
+/* No sharp image yet: crest with a short note under it */
+.sheet-art.art-soon { grid-auto-rows: min-content; align-content: center; gap: .6rem; }
+.sheet-art.art-soon .art-crest { width: 36%; }
+.art-soon-text {
+  color: var(--white);
+  font-size: .85rem;
+  font-weight: 800;
+  font-variation-settings: "wdth" 115;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
 .sheet-info { padding: 1.25rem 1.4rem 1.5rem; }
 .sheet-cat {
   display: inline-block;

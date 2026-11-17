@@ -29,6 +29,8 @@
  *   sheetImg: optional different image for the sheet that opens on tap
  *          (defaults to img). Used for strain logos where the photo is low-res.
  *   sheetCutout: optional: true when sheetImg has a see-through background
+ *   sheetSoon: optional: true shows "Images coming soon" on the sheet instead
+ *          of a photo too small to blow up (the card keeps its photo)
  *   cutout: optional: true when the images have a see-through background
  *          (a logo or label). They show whole, on the category color,
  *          instead of filling the frame like a photo.
@@ -50,17 +52,20 @@ window.RESERVED_PRODUCTS = [
   { id: "lilas-lotus-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Lila's Lotus", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/lilas-lotus-tiger-ztripez.webp" },
   { id: "matcha-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Matcha", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
-    img: "assets/img/prerolls/matcha-tiger-ztripez.webp" },
+    img: "assets/img/prerolls/matcha-tiger-ztripez.webp",
+    sheetSoon: true },
   { id: "rainbow-z-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Rainbow Z", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/rainbow-z-tiger-ztripez.webp",
     sheetImg: "assets/img/strains/rainbow-z.webp", sheetCutout: true },
   { id: "toad-venom-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Toad Venom", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
-    img: "assets/img/prerolls/toad-venom-tiger-ztripez.webp" },
+    img: "assets/img/prerolls/toad-venom-tiger-ztripez.webp",
+    sheetSoon: true },
   { id: "zandia-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Zandia", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes.",
     img: "assets/img/prerolls/zandia-tiger-ztripez.webp",
     sheetImg: "assets/img/strains/zandia.webp", sheetCutout: true },
   { id: "biscotti-minis", cat: "pre-rolls", line: "Minis", name: "Biscotti", size: "Pack of 6", desc: "Six flower pre-rolls.",
-    img: "assets/img/prerolls/biscotti-minis.webp" },
+    img: "assets/img/prerolls/biscotti-minis.webp",
+    sheetSoon: true },
   { id: "bubblegum-gelato-minis", cat: "pre-rolls", line: "Minis", name: "Bubblegum Gelato", size: "Pack of 6", desc: "Six flower pre-rolls.",
     img: "assets/img/prerolls/bubblegum-gelato-minis.webp",
     sheetImg: "assets/img/strains/bubblegum-gelato.webp", sheetCutout: true },

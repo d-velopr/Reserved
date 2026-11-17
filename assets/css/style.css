@@ -1090,6 +1090,8 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
 /* Logos and labels with a see-through background: whole, on the category color */
 .has-cutout img { width: 80%; height: 80%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .55)); }
 .sheet-art.has-cutout img { width: 70%; height: 82%; }
+/* Cards: a bit smaller and lower so the "Coming soon" tag doesn't cover it */
+.card-art.has-cutout img { width: 68%; height: 68%; margin-top: 10%; }
 .card-body { display: grid; gap: .15rem; padding: .75rem .9rem 1rem; }
 .card-name { font-weight: 900; font-variation-settings: "wdth" 110; font-size: 1.05rem; line-height: 1.15; text-transform: uppercase; }
 .card-meta { color: var(--muted); font-size: .9rem; }

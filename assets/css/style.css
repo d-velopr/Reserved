@@ -1134,6 +1134,12 @@ body:has(.sheet[open]) { overflow: hidden; }
 /* No sharp image yet: crest with a short note under it */
 .sheet-art.art-soon { grid-auto-rows: min-content; align-content: center; gap: .6rem; }
 .sheet-art.art-soon .art-crest { width: 36%; }
+.sheet-art.art-soon .art-logo {
+  width: 72%;
+  max-height: min(44vw, 225px); /* about 58% of the 4:3 art box, leaving room for the note */
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .55));
+}
 .art-soon-text {
   color: var(--white);
   font-size: .85rem;

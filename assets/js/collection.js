@@ -27,9 +27,12 @@
   // see-through background) sit whole on the category color.
   function artHtml(p, cls) {
     var c = catById[p.cat] || {};
+    // Better photos on the way: the strain logo (or the crest) with a note.
     if (cls === "sheet-art" && p.sheetSoon) {
-      return '<span class="sheet-art art-soon" style="--cat:' + esc(c.color || "#222") + '">' +
-        '<img class="art-crest" src="' + CREST + '" alt="" loading="lazy" />' +
+      var soonImg = p.sheetImg
+        ? '<img class="art-logo" src="' + esc(p.sheetImg) + '" alt="" loading="lazy" />'
+        : '<img class="art-crest" src="' + CREST + '" alt="" loading="lazy" />';
+      return '<span class="sheet-art art-soon" style="--cat:' + esc(c.color || "#222") + '">' + soonImg +
         '<span class="art-soon-text">Images coming soon</span></span>';
     }
     var useSheet = cls === "sheet-art" && p.sheetImg;

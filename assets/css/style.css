@@ -1245,10 +1245,11 @@ body:has(.sheet[open]) { overflow: hidden; }
 .page-head { padding: 2.5rem 0 1.75rem; text-align: center; }
 /* Contact Us: white envelope before the title (dark outline so it shows on cream too) */
 .h1-icon { width: 1.15em; height: 1.15em; margin: -.15em .3em -.15em 0; vertical-align: -.08em; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .25)); }
-/* Light mode: the envelope takes the page's cream instead of white */
 :root[data-theme="light"] .h1-icon { filter: none; }
-:root[data-theme="light"] .h1-icon .env-body { fill: var(--bg); }
-:root[data-theme="light"] .h1-icon rect, :root[data-theme="light"] .h1-icon path { stroke: #000; stroke-width: 2.1; }
+/* Light mode: solid black envelope (the mirror of dark mode's white one),
+   with the flap cut in the page's cream */
+:root[data-theme="light"] .h1-icon .env-body { fill: #000; stroke: #000; stroke-width: 2.1; }
+:root[data-theme="light"] .h1-icon path { stroke: var(--bg); stroke-width: 1.7; }
 /* Narrow phones (under ~350px): shrink the title a little so the envelope
    and "Contact Us" stay on one line. The pair is about 8.6em wide. */
 .h1-with-icon { font-size: min(clamp(2.3rem, 7vw, 4.6rem), calc((100vw - 32px) / 8.8)); }

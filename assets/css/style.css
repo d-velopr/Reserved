@@ -654,23 +654,22 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 
 /* Strain logo strip (Store Locator): glides left at a steady speed and loops.
    lineup.js moves it; a sideways drag scrubs it, vertical swipes scroll the page. */
-.lineup { --sw: min(72vw, 360px); background: var(--surface); padding: 2.25rem 0 1rem; border-top: 1px solid var(--line); }
-.lineup-view { overflow: hidden; touch-action: pan-y; padding: 4px 0 26px; /* room for the slide shadows */ }
-.lineup-track { display: flex; gap: 14px; width: max-content; margin: 0; padding: 0; list-style: none; will-change: transform; }
+.lineup { --sw: min(64vw, 320px); padding: .5rem 0 1.5rem; } /* sits on the page background, no band */
+.lineup-view { overflow: hidden; touch-action: pan-y; padding: 0; }
+.lineup-track { display: flex; gap: 0; width: max-content; margin: 0; padding: 0; list-style: none; will-change: transform; }
 .lineup-slide { flex: 0 0 var(--sw); }
+/* No card: the logo floats on the page with a soft glow of its own color */
 .lineup-stage {
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
-  border-radius: var(--radius);
-  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--glow) 70%, #0B0B0C), #0B0B0C 80%);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, .25);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--glow) 32%, transparent), transparent);
   -webkit-user-drag: none;
   user-select: none;
 }
-.lineup-stage img { width: 84%; height: 74%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .55)); pointer-events: none; }
+.lineup-stage img { width: 86%; height: 80%; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .3)); pointer-events: none; }
 a.lineup-stage { -webkit-tap-highlight-color: transparent; }
-a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; border-radius: var(--radius); }
 .sub-inner { display: grid; gap: 2rem; align-items: center; }
 /* Keep the crest's own 640x563 shape; never stretch it */
 .crest { width: min(180px, 55%); height: auto; aspect-ratio: 640 / 563; object-fit: contain; margin-inline: auto; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .35)); }

@@ -1,5 +1,6 @@
-/* Home page: category tiles (from products.js) and Coming Soon cards
-   (from stores.js), so editing those files updates the home page too. */
+/* Home page: category tiles (from products.js) and the Find a Store city
+   chips (from stores.js), so editing those files updates the home page too.
+   The strain logo strip is lineup.js. */
 (function () {
   "use strict";
 
@@ -84,22 +85,5 @@
     cityList.innerHTML = cities.map(function (c) {
       return '<li><a href="store-locator.html?q=' + encodeURIComponent(c) + '">' + esc(c) + "</a></li>";
     }).join("");
-  }
-
-  // Coming Soon cards. The block hides itself when the list is empty.
-  var SOON = window.RESERVED_COMING_SOON || [];
-  var COLORS = ["var(--t-green)", "var(--t-red)", "var(--t-gold)", "var(--t-blue)", "var(--t-orange)", "var(--t-purple)"];
-  var PIN = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 44S10 29.5 10 19a14 14 0 0 1 28 0c0 10.5-14 25-14 25z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="19" r="5" fill="currentColor"/></svg>';
-  var soonList = document.getElementById("coming-list");
-  if (soonList) {
-    if (!SOON.length) {
-      soonList.closest(".coming-soon").hidden = true;
-    } else {
-      soonList.innerHTML = SOON.map(function (s, i) {
-        var detail = [s.name, s.when].filter(Boolean).map(esc).join(" &middot; ");
-        return '<li class="soon-card" style="--tag:' + COLORS[i % COLORS.length] + '">' + PIN +
-          "<h3>" + esc(s.city) + "</h3>" + (detail ? "<p>" + detail + "</p>" : "") + "</li>";
-      }).join("");
-    }
   }
 })();

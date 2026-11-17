@@ -11,6 +11,7 @@
     return PRODUCTS.some(function (p) { return p.cat === c.id; });
   });
   var CREST = "assets/img/gen/crest.webp";
+  var STAMP = "assets/img/gen/stamp.webp";
 
   var catById = {}, productById = {};
   CATS.forEach(function (c) { catById[c.id] = c; });
@@ -31,7 +32,7 @@
     if (cls === "sheet-art" && p.sheetSoon) {
       var soonImg = p.sheetImg
         ? '<img class="art-logo" src="' + esc(p.sheetImg) + '" alt="" loading="lazy" />'
-        : '<img class="art-crest" src="' + CREST + '" alt="" loading="lazy" />';
+        : '<img class="art-stamp" src="' + STAMP + '" alt="" loading="lazy" />';
       return '<span class="sheet-art art-soon" style="--cat:' + esc(c.color || "#222") + '">' + soonImg +
         '<span class="art-soon-text">Images coming soon</span></span>';
     }

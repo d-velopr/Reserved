@@ -1,11 +1,12 @@
-/* Strain logo slideshow (Store Locator). Swipe it, tap a dot, or let it play.
-   Tapping a logo opens that product in the Collection when there is one.
+/* Strain logo strip (Store Locator). Glides left at one steady speed and
+   loops forever. Drag it sideways to scrub; tap a logo to open that product
+   in the Collection when there is one.
    To add a strain: drop its logo in assets/img/strains/ and add a line below. */
 (function () {
   "use strict";
 
   // name: alt text. logo: file in assets/img/strains/. glow: color behind it.
-  // id: optional product id in products.js (makes the slide a link).
+  // id: optional product id in products.js (makes the logo a link).
   var STRAINS = [
     { name: "Candy Paint OG",         logo: "candy-paint-og",         glow: "#7A1E8C", id: "candy-paint-og-vape" },
     { name: "Zandia",                 logo: "zandia",                 glow: "#1F7A4D", id: "zandia-tiger-ztripez" },
@@ -22,13 +23,11 @@
     { name: "Rainbow Jawbreaker",     logo: "rainbow-jawbreaker",     glow: "#1E5FD9" },
     { name: "Sour Diesel",            logo: "sour-diesel",            glow: "#3E8E1F" }
   ];
-  var EVERY = 3500;   // ms between slides
-  var RESUME = 8000;  // ms of quiet after a swipe before it plays again
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SPEED = 40; // pixels per second, the same on every screen
 
   var track = document.getElementById("lineup-track");
-  var dots = document.getElementById("lineup-dots");
-  if (!track || !dots) return;
+  if (!track) return;
+  var view = track.parentNode;
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -36,86 +35,80 @@
     });
   }
 
-  track.innerHTML = STRAINS.map(function (s, i) {
-    var img = '<img src="assets/img/strains/' + esc(s.logo) + '.webp" alt="' + esc(s.name) + '"' +
-      (i > 1 ? ' loading="lazy"' : "") + " />";
-    var inner = s.id
-      ? '<a class="lineup-stage" href="collection.html#' + esc(s.id) + '">' + img + "</a>"
-      : '<span class="lineup-stage">' + img + "</span>";
-    return '<li class="lineup-slide" style="--glow:' + esc(s.glow) + '" aria-label="' +
-      (i + 1) + " of " + STRAINS.length + '">' + inner + "</li>";
-  }).join("");
-
-  dots.innerHTML = STRAINS.map(function (s, i) {
-    return '<button type="button" class="lineup-dot" aria-label="Show ' + esc(s.name) + '" data-i="' + i + '"></button>';
-  }).join("");
-
-  var slides = track.children;
-  var dotEls = dots.children;
-  var current = -1;
-
-  function setCurrent(i) {
-    if (i === current) return;
-    if (dotEls[current]) dotEls[current].removeAttribute("aria-current");
-    current = i;
-    dotEls[i].setAttribute("aria-current", "true");
+  // Two copies back to back, so when the first slides off the second is in
+  // exactly its place and the loop has no seam. The copy is hidden from
+  // screen readers and the keyboard.
+  function slidesHtml(copy) {
+    return STRAINS.map(function (s, i) {
+      var img = '<img src="assets/img/strains/' + esc(s.logo) + '.webp" alt="' + (copy ? "" : esc(s.name)) + '"' +
+        (!copy && i < 3 ? "" : ' loading="lazy"') + ' draggable="false" />';
+      var inner = s.id
+        ? '<a class="lineup-stage" href="collection.html#' + esc(s.id) + '"' + (copy ? ' tabindex="-1"' : "") + ' draggable="false">' + img + "</a>"
+        : '<span class="lineup-stage">' + img + "</span>";
+      return '<li class="lineup-slide" style="--glow:' + esc(s.glow) + '"' + (copy ? ' aria-hidden="true"' : "") + ">" + inner + "</li>";
+    }).join("");
   }
+  track.innerHTML = slidesHtml(false) + slidesHtml(true);
 
-  function go(i) {
-    // The track is position: relative, so offsetLeft is measured inside it
-    var left = slides[i].offsetLeft - (track.clientWidth - slides[i].offsetWidth) / 2;
-    track.scrollTo({ left: left, behavior: reduce ? "auto" : "smooth" });
-    setCurrent(i);
+  var n = STRAINS.length;
+  var loopW = 0; // width of one full copy, including the gap after it
+  function measure() { loopW = track.children[n].offsetLeft - track.children[0].offsetLeft; }
+  measure();
+  window.addEventListener("resize", measure);
+
+  var x = 0;
+  function wrap() {
+    if (!loopW) return;
+    x = ((x % loopW) + loopW) % loopW;
   }
+  function paint() { track.style.transform = "translate3d(" + (-x) + "px,0,0)"; }
 
-  // Which slide is centered right now
-  var ticking = false;
-  track.addEventListener("scroll", function () {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function () {
-      ticking = false;
-      var mid = track.scrollLeft + track.clientWidth / 2;
-      var best = 0, bestD = Infinity;
-      for (var i = 0; i < slides.length; i++) {
-        var d = Math.abs(slides[i].offsetLeft + slides[i].offsetWidth / 2 - mid);
-        if (d < bestD) { bestD = d; best = i; }
-      }
-      setCurrent(best);
-    });
-  }, { passive: true });
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var onScreen = true, hovering = false, focused = false, dragging = false;
 
-  dots.addEventListener("click", function (e) {
-    var b = e.target.closest(".lineup-dot");
-    if (!b) return;
-    go(+b.dataset.i);
-    hold();
-  });
-
-  // Autoplay: off for reduced motion, paused while touched, hidden or off screen
-  var heldUntil = 0, onScreen = false;
-
-  function hold() { heldUntil = Date.now() + RESUME; }
-  function tick() {
-    if (!onScreen || document.hidden || Date.now() < heldUntil) return;
-    go((current + 1) % slides.length);
+  // The steady glide. Time-based, so it moves at SPEED whatever the frame rate.
+  var last = 0;
+  function frame(t) {
+    var dt = last ? Math.min(t - last, 100) / 1000 : 0;
+    last = t;
+    if (!reduce && onScreen && !hovering && !focused && !dragging) {
+      x += SPEED * dt;
+      wrap();
+      paint();
+    }
+    requestAnimationFrame(frame);
   }
-
-  setCurrent(0);
-  if (reduce) return;
-
-  track.addEventListener("pointerdown", hold, { passive: true });
-  track.addEventListener("wheel", hold, { passive: true });
-  track.addEventListener("focusin", hold);
-  track.addEventListener("mouseenter", function () { heldUntil = Infinity; });
-  track.addEventListener("mouseleave", hold);
+  requestAnimationFrame(frame);
 
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (entries) {
-      onScreen = entries[0].isIntersecting;
-    }, { threshold: 0.5 }).observe(track);
-  } else {
-    onScreen = true;
+    new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }).observe(view);
   }
-  setInterval(tick, EVERY);
+  // Mouse users can stop it to click; touch never triggers this.
+  view.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hovering = true; });
+  view.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") hovering = false; });
+  view.addEventListener("focusin", function () { focused = true; });
+  view.addEventListener("focusout", function () { focused = false; });
+
+  // Drag to scrub. Vertical swipes still scroll the page (touch-action: pan-y).
+  var startX = 0, startPos = 0, moved = false, pid = null;
+  view.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    pid = e.pointerId; startX = e.clientX; startPos = x; moved = false; dragging = true;
+  });
+  view.addEventListener("pointermove", function (e) {
+    if (e.pointerId !== pid) return;
+    var dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) > 6) { moved = true; view.setPointerCapture(pid); }
+    if (moved) { x = startPos - dx; wrap(); paint(); }
+  });
+  function end(e) {
+    if (e.pointerId !== pid) return;
+    pid = null; dragging = false; last = 0;
+  }
+  view.addEventListener("pointerup", end);
+  view.addEventListener("pointercancel", end);
+  // A drag is not a tap: don't open the product after scrubbing.
+  view.addEventListener("click", function (e) {
+    if (moved) { e.preventDefault(); moved = false; }
+  }, true);
 })();

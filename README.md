@@ -29,3 +29,7 @@ The 21+ entry gate is on the Home page only. A first-time visitor who opens anot
 - `collection.html#flower` opens one category
 - `collection.html#live-rosin` opens one product (`#strain-1` opens one flower strain)
 - `store-locator.html?q=Riverside` (or a ZIP code) starts with that search
+
+## Start Up Dev Server
+python3 -m http.server 8000
+- Then open `http://localhost:8000`

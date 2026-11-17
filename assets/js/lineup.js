@@ -64,14 +64,14 @@
   function paint() { track.style.transform = "translate3d(" + (-x) + "px,0,0)"; }
 
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var onScreen = true, hovering = false, focused = false, dragging = false;
+  var onScreen = true, focused = false, dragging = false;
 
   // The steady glide. Time-based, so it moves at SPEED whatever the frame rate.
   var last = 0;
   function frame(t) {
     var dt = last ? Math.min(t - last, 100) / 1000 : 0;
     last = t;
-    if (!reduce && onScreen && !hovering && !focused && !dragging) {
+    if (!reduce && onScreen && !focused && !dragging) {
       x += SPEED * dt;
       wrap();
       paint();
@@ -83,9 +83,6 @@
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }).observe(view);
   }
-  // Mouse users can stop it to click; touch never triggers this.
-  view.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hovering = true; });
-  view.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") hovering = false; });
   view.addEventListener("focusin", function () { focused = true; });
   view.addEventListener("focusout", function () { focused = false; });
 

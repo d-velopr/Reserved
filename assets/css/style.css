@@ -1244,7 +1244,10 @@ body:has(.sheet[open]) { overflow: hidden; }
    ====================================================================== */
 .page-head { padding: 2.5rem 0 1.75rem; text-align: center; }
 /* Contact Us: white envelope before the title (dark outline so it shows on cream too) */
-.h1-icon { width: .95em; height: .95em; margin-right: .28em; vertical-align: -.12em; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .25)); }
+.h1-icon { width: 1.15em; height: 1.15em; margin: -.15em .3em -.15em 0; vertical-align: -.2em; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .25)); }
+/* Narrow phones (under ~350px): shrink the title a little so the envelope
+   and "Contact Us" stay on one line. The pair is about 8.6em wide. */
+.h1-with-icon { font-size: min(clamp(2.3rem, 7vw, 4.6rem), calc((100vw - 32px) / 8.8)); }
 .page-sub { margin: .75rem auto 0; max-width: 40ch; color: var(--muted); font-size: 1.1rem; }
 .updated { margin: .5rem 0 0; color: var(--muted); font-size: .9rem; }
 

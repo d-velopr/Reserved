@@ -1142,11 +1142,10 @@ body:has(.sheet[open]) { overflow: hidden; }
 }
 .art-soon-text {
   color: var(--white);
-  font-size: .85rem;
-  font-weight: 800;
-  font-variation-settings: "wdth" 115;
-  letter-spacing: .14em;
-  text-transform: uppercase;
+  font-family: "Pirata One", "Archivo", serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .5);
 }
 .sheet-info { padding: 1.25rem 1.4rem 1.5rem; }
 .sheet-cat {

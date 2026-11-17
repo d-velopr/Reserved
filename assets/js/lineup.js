@@ -83,7 +83,11 @@
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }).observe(view);
   }
-  view.addEventListener("focusin", function () { focused = true; });
+  // Hold still only for keyboard focus. A mouse press also focuses a link, and
+  // pausing for that would stop the strip after a drag (or after Back).
+  view.addEventListener("focusin", function (e) {
+    try { focused = e.target.matches(":focus-visible"); } catch (err) { focused = false; }
+  });
   view.addEventListener("focusout", function () { focused = false; });
 
   // Drag to scrub. Vertical swipes still scroll the page (touch-action: pan-y).
@@ -102,8 +106,10 @@
     if (e.pointerId !== pid) return;
     pid = null; dragging = false; last = 0;
   }
-  view.addEventListener("pointerup", end);
-  view.addEventListener("pointercancel", end);
+  // On window, not the strip: a press that wanders off the strip before it
+  // lets go must still end the drag, or the strip would stay stopped.
+  window.addEventListener("pointerup", end);
+  window.addEventListener("pointercancel", end);
   // A drag is not a tap: don't open the product after scrubbing.
   view.addEventListener("click", function (e) {
     if (moved) { e.preventDefault(); moved = false; }

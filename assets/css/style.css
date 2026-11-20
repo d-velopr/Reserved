@@ -218,15 +218,22 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 }
 .nav a:hover { color: var(--text); }
 .nav a[aria-current="page"] { color: var(--text); background: var(--surface-3); }
-/* Tablets and small laptop windows: four links plus the logo and two round
-   buttons only fit if the links are a bit more compact */
-@media (min-width: 641px) and (max-width: 960px) {
-  .nav { gap: .1rem; }
-  .nav a { padding: .5rem .6rem; font-size: .95rem; }
+/* Wider screens: five links evenly spaced, with clear room before the round
+   light/dark and Instagram buttons */
+@media (min-width: 641px) {
+  .nav { gap: .15rem; margin-right: .6rem; }
+  .nav a { padding: .5rem .8rem; }
 }
-@media (min-width: 641px) and (max-width: 780px) {
-  .top { gap: .6rem; }
-  .nav a { padding: .45rem .5rem; font-size: .9rem; font-variation-settings: "wdth" 88; }
+/* Tablets and small laptop windows: the links get more compact so the logo,
+   five links and two round buttons fit on one row */
+@media (min-width: 641px) and (max-width: 1040px) {
+  .nav { gap: 0; margin-right: .25rem; }
+  .nav a { padding: .5rem .55rem; font-size: .95rem; }
+}
+@media (min-width: 641px) and (max-width: 860px) {
+  .top { gap: .5rem; }
+  .brand img { width: clamp(104px, 17vw, 150px); }
+  .nav a { padding: .45rem .4rem; font-size: .88rem; font-variation-settings: "wdth" 84; }
 }
 /* Instagram and light/dark: round icon buttons, gold outline */
 .ig-btn, .theme-btn {
@@ -948,7 +955,32 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
   .soon-list:empty { min-height: 170px; }
 }
 
-.home-cats { padding: 2.5rem 0; }
+/* Home: skinny scrolling strip of categories under the color thread */
+/* Whole-pixel height and its own drawing layer: the moving text is redrawn on
+   its own, never the section around it, so no seams at odd zoom levels. */
+.ticker {
+  display: flex; align-items: center; overflow: hidden;
+  box-sizing: border-box; height: 34px;
+  border-bottom: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  contain: paint; isolation: isolate;
+}
+.ticker-track {
+  flex: none; display: flex; margin: 0; padding: 0; list-style: none;
+  font: 800 13px/13px "Archivo", sans-serif; font-variation-settings: "wdth" 112;
+  will-change: transform;
+  text-transform: uppercase; letter-spacing: .2em;
+  color: var(--text); white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+}
+.ticker-track li { display: flex; align-items: center; }
+/* Separator: a small sharp gold diamond */
+.ticker-track li::after { content: ""; width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); margin: 0 1.3rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .ticker-track { animation: ticker 46s linear infinite; }
+}
+@keyframes ticker { to { transform: translateX(-100%); } }
+
+.home-cats { padding: 2rem 0 2.5rem; }
 .sec-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
 .sec-head h2 { text-transform: uppercase; letter-spacing: .02em; }
 .see-all {
@@ -1553,13 +1585,6 @@ body:has(.sheet[open]) { overflow: hidden; }
 .card { transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
 .card:hover, .faq details:hover { box-shadow: var(--gold-glow-strong); }
 @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
-
-/* ---------- Contact: menu link on phones, footer link on wider screens ---------- */
-.nav .nav-phone { display: none; }
-@media (max-width: 640px) {
-  .nav .nav-phone { display: inline-flex; }
-  .foot-links .foot-desk { display: none; }
-}
 
 /* ---------- Find a Store ---------- */
 /* The heading opens the Store Locator; it looks like a plain heading */

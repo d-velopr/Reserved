@@ -199,6 +199,9 @@ function saveCarry_(data, lock) {
   if (!data.name || !data.state || !data.message || !data.via) {
     return jsonResponse_({ status: 'error', message: 'Name, state, message and how to reach them are required.' });
   }
+  if (!data.attachments.length) {
+    return jsonResponse_({ status: 'error', message: 'License documents are required.' });
+  }
   // Save the files first (outside the lock: uploads can take a few seconds).
   // If Drive fails (e.g. Drive access not approved), the request still saves,
   // with the reason in the License Documents column, so no shop is lost.

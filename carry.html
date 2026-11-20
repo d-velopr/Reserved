@@ -42,7 +42,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=158" />
+  <link rel="stylesheet" href="assets/css/style.css?v=159" />
 </head>
 <body>
 
@@ -166,10 +166,10 @@
           <label class="choice"><input type="radio" name="via" value="Email" /><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.8 7l8.2 6 8.2-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Email</span></label>
           </div>
         </fieldset>
-        <span class="field-label" id="w-files-label">License documents <span class="opt">(optional)</span></span>
+        <span class="field-label" id="w-files-label">License documents <span class="req" aria-hidden="true">*</span></span>
         <!-- Tap to pick files, or drop them on the box. Images and PDFs, up to 5 files, 10 MB in all. -->
         <label class="drop" id="w-drop" for="w-files">
-          <input id="w-files" class="drop-input" type="file" multiple accept="image/*,application/pdf" aria-labelledby="w-files-label" />
+          <input id="w-files" class="drop-input" type="file" multiple accept="image/*,application/pdf" aria-labelledby="w-files-label" aria-required="true" />
           <span class="drop-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 15.5V4m0 0L7.5 8.5M12 4l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14.5v3.25A2.25 2.25 0 0 0 6.25 20h11.5A2.25 2.25 0 0 0 20 17.75V14.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="drop-text"><strong>Add license</strong> or drop files here</span>
         </label>
@@ -203,6 +203,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/site.js?v=21"></script>
+  <script src="assets/js/site.js?v=22"></script>
 </body>
 </html>

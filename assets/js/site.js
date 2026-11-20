@@ -336,9 +336,9 @@
     var wMsg = document.getElementById("carry-msg");
     var wf = carry.elements;
     var viaSet = document.getElementById("w-via");
-    var carryFields = [wf.name, wf.email, wf.phone, wf.state, wf.message, viaSet];
     var drop = document.getElementById("w-drop");
     var fileInput = document.getElementById("w-files");
+    var carryFields = [wf.name, wf.email, wf.phone, wf.state, wf.message, viaSet, fileInput];
     var fileList = document.getElementById("w-file-list");
     var MAX_FILES = 5, MAX_BYTES = 10 * 1024 * 1024; // 10 MB in all
     var files = [];
@@ -391,6 +391,7 @@
         else files.push(f);
       });
       renderFiles();
+      if (files.length) fileInput.removeAttribute("aria-invalid");
       if (problem) { wMsg.textContent = problem; wMsg.className = "form-msg err"; }
       else if (wMsg.classList.contains("err")) { wMsg.textContent = ""; wMsg.className = "form-msg"; }
     };
@@ -436,6 +437,7 @@
       if (!v.state) return carryError("Pick the state you're in.", wf.state);
       if (v.message.length < 2) return carryError("Write a message.", wf.message);
       if (!v.via) return carryError("Pick the best way to reach you.", viaSet);
+      if (!files.length) return carryError("Add your license (photo or PDF).", fileInput);
       carryError("");
       wMsg.className = "form-msg";
 

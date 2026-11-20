@@ -1560,6 +1560,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 .drop-icon svg { width: 24px; height: 24px; }
 .drop-text strong { color: var(--gold-text); font-weight: 800; }
 .contact-form label.drop:hover, .contact-form label.drop:focus-within { border-color: var(--gold-text); }
+.contact-form label.drop:has(.drop-input[aria-invalid="true"]) { border-color: var(--err); } /* no license added yet */
 /* Files dragged over the box: it lights up gold and the arrow lifts */
 .contact-form label.drop.over { border-color: var(--gold-text); background: color-mix(in srgb, var(--gold) 12%, var(--surface-2)); }
 .contact-form label.drop.over .drop-icon, .contact-form label.drop:hover .drop-icon { transform: translateY(-2px); }

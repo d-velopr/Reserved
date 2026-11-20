@@ -44,7 +44,7 @@
 
 // Shown when the /exec URL is opened in a browser. If it doesn't say this,
 // the live deployment is still running older code.
-var VERSION = 'carry-1';
+var VERSION = 'carry-3';
 var SHEET_NAME = 'Subscribers';
 // New columns go at the end so rows saved before they existed stay lined up.
 var HEADERS = ['Timestamp', 'Email', 'Signed Up From', 'Client Timestamp', 'ZIP Code', 'Source'];
@@ -107,11 +107,15 @@ function doPost(e) {
 
 /**
  * Run this once from the editor (pick it in the function menu, then Run) to
- * give the script Google Drive access for Carry Us license documents. It only
- * looks at your Drive's top folder and changes nothing.
+ * give the script Google Drive access for Carry Us license documents. On the
+ * permission screen, tick every box (or "Select all"): uploads need full Drive
+ * access, not just viewing. It makes the "Reserved Carry Us Attachments"
+ * folder if it isn't there yet, and logs its link.
  */
 function authorizeDrive() {
-  console.log('Drive access OK: ' + DriveApp.getRootFolder().getName());
+  var folders = DriveApp.getFoldersByName(CARRY_FOLDER);
+  var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(CARRY_FOLDER);
+  console.log('Drive access OK. License documents go to: ' + folder.getUrl());
 }
 
 /** Open the /exec URL in a browser to confirm the deployment is live. */
@@ -196,7 +200,15 @@ function saveCarry_(data, lock) {
     return jsonResponse_({ status: 'error', message: 'Name, state and how to reach them are required.' });
   }
   // Save the files first (outside the lock: uploads can take a few seconds).
-  var links = saveAttachments_(data);
+  // If Drive fails (e.g. Drive access not approved), the request still saves,
+  // with the reason in the License Documents column, so no shop is lost.
+  var links;
+  try {
+    links = saveAttachments_(data);
+  } catch (err) {
+    console.error('Attachment upload failed: ' + err);
+    links = [data.attachments.length + ' file(s) not saved: ' + String(err).substring(0, 200)];
+  }
   lock.waitLock(10000);
   var book = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = book.getSheetByName(CARRY_SHEET);

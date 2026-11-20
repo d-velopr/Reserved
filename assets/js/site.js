@@ -336,7 +336,7 @@
     var wMsg = document.getElementById("carry-msg");
     var wf = carry.elements;
     var viaSet = document.getElementById("w-via");
-    var carryFields = [wf.name, wf.email, wf.phone, wf.state, viaSet];
+    var carryFields = [wf.name, wf.email, wf.phone, wf.state, wf.message, viaSet];
     var drop = document.getElementById("w-drop");
     var fileInput = document.getElementById("w-files");
     var fileList = document.getElementById("w-file-list");
@@ -428,12 +428,13 @@
         dispensary: wf.dispensary.value.trim(), // optional
         license: wf.license.value.trim(), // optional
         via: wf.via.value, // "Phone call" or "Email"
-        message: wf.message.value.trim() // optional
+        message: wf.message.value.trim()
       };
       if (!v.name) return carryError("Enter your first and last name.", wf.name);
       if (!EMAIL_RE.test(v.from)) return carryError("Enter an email like name@email.com.", wf.email);
       if (!/^\d{10}$/.test(v.phone)) return carryError("Enter your 10-digit phone number.", wf.phone);
       if (!v.state) return carryError("Pick the state you're in.", wf.state);
+      if (v.message.length < 2) return carryError("Write a message.", wf.message);
       if (!v.via) return carryError("Pick the best way to reach you.", viaSet);
       carryError("");
       wMsg.className = "form-msg";

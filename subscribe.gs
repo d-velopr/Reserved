@@ -196,8 +196,8 @@ function saveCarry_(data, lock) {
   if (!/^\d{10}$/.test(data.phone)) {
     return jsonResponse_({ status: 'error', message: 'Invalid phone.' });
   }
-  if (!data.name || !data.state || !data.via) {
-    return jsonResponse_({ status: 'error', message: 'Name, state and how to reach them are required.' });
+  if (!data.name || !data.state || !data.message || !data.via) {
+    return jsonResponse_({ status: 'error', message: 'Name, state, message and how to reach them are required.' });
   }
   // Save the files first (outside the lock: uploads can take a few seconds).
   // If Drive fails (e.g. Drive access not approved), the request still saves,

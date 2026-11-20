@@ -105,6 +105,15 @@ function doPost(e) {
   }
 }
 
+/**
+ * Run this once from the editor (pick it in the function menu, then Run) to
+ * give the script Google Drive access for Carry Us license documents. It only
+ * looks at your Drive's top folder and changes nothing.
+ */
+function authorizeDrive() {
+  console.log('Drive access OK: ' + DriveApp.getRootFolder().getName());
+}
+
 /** Open the /exec URL in a browser to confirm the deployment is live. */
 function doGet() {
   return jsonResponse_({ status: 'ok', service: 'Reserved sign-up', version: VERSION });

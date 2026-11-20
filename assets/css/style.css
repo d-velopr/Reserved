@@ -1255,7 +1255,14 @@ body:has(.sheet[open]) { overflow: hidden; }
   font-size: .9rem;
   font-weight: 800;
 }
-.sheet-desc { margin: .9rem 0 0; color: var(--muted); }
+.sheet-desc {
+  margin: .9rem 0 0;
+  max-width: 34ch;
+  color: var(--muted);
+  font: 500 .82rem/1.55 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
 .sheet-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.4rem; }
 .sheet-actions .btn-red { flex: 1 1 200px; }
 .sheet .form-msg:empty { min-height: 0; margin: 0; }

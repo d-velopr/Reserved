@@ -338,7 +338,7 @@
     var viaSet = document.getElementById("w-via");
     var drop = document.getElementById("w-drop");
     var fileInput = document.getElementById("w-files");
-    var carryFields = [wf.name, wf.email, wf.phone, wf.state, wf.message, viaSet, fileInput];
+    var carryFields = [wf.name, wf.email, wf.phone, wf.state, wf.dispensary, wf.license, wf.message, viaSet, fileInput];
     var fileList = document.getElementById("w-file-list");
     var MAX_FILES = 5, MAX_BYTES = 10 * 1024 * 1024; // 10 MB in all
     var files = [];
@@ -426,8 +426,8 @@
         from: wf.email.value.trim(), // "from", not "email": see subscribe.gs
         phone: phoneDigits(wf.phone.value), // 10 digits; the Sheet shows it as +1 (201)987-0123
         state: wf.state.value,
-        dispensary: wf.dispensary.value.trim(), // optional
-        license: wf.license.value.trim(), // optional
+        dispensary: wf.dispensary.value.trim(),
+        license: wf.license.value.trim(),
         via: wf.via.value, // "Phone call" or "Email"
         message: wf.message.value.trim()
       };
@@ -435,6 +435,8 @@
       if (!EMAIL_RE.test(v.from)) return carryError("Enter an email like name@email.com.", wf.email);
       if (!/^\d{10}$/.test(v.phone)) return carryError("Enter your 10-digit phone number.", wf.phone);
       if (!v.state) return carryError("Pick the state you're in.", wf.state);
+      if (!v.dispensary) return carryError("Enter your dispensary's name.", wf.dispensary);
+      if (!v.license) return carryError("Enter your license number.", wf.license);
       if (v.message.length < 2) return carryError("Write a message.", wf.message);
       if (!v.via) return carryError("Pick the best way to reach you.", viaSet);
       if (!files.length) return carryError("Add your license (photo or PDF).", fileInput);

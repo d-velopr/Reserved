@@ -11,6 +11,12 @@
  * The contact form sends its email as "from", not "email", so an older
  * deployment of this script rejects it instead of adding it as a sign-up.
  *
+ * Also receives Carry Us requests from carry.html (kind: "carry", email sent
+ * as "from" for the same reason) and adds them to a "Carry Us" tab. Files
+ * attached to a request are saved to a private Google Drive folder,
+ * "Reserved Carry Us Attachments", and linked from the row. The first deploy
+ * after this was added asks for Google Drive permission; approve it.
+ *
  * SETUP (once, about 3 minutes)
  * -----------------------------------------------------------------------------
  *  1. Create a Google Sheet, e.g. "Reserved: Subscribers".
@@ -38,19 +44,29 @@
 
 // Shown when the /exec URL is opened in a browser. If it doesn't say this,
 // the live deployment is still running older code.
-var VERSION = 'contact-2';
+var VERSION = 'carry-1';
 var SHEET_NAME = 'Subscribers';
 // New columns go at the end so rows saved before they existed stay lined up.
 var HEADERS = ['Timestamp', 'Email', 'Signed Up From', 'Client Timestamp', 'ZIP Code', 'Source'];
 var ZIP_COL = 5;
 var MESSAGES_SHEET = 'Messages';
-var MESSAGE_HEADERS = ['Timestamp', 'Name', 'Email', 'License #', 'Message', 'Sent From'];
+// License # moved to the Carry Us form; the column stays (blank on new rows) so
+// older messages keep lining up.
+var MESSAGE_HEADERS = ['Timestamp', 'Name', 'Email', 'License #', 'Message', 'Sent From', 'Phone'];
+var MESSAGE_PHONE_COL = 7;
+var CARRY_SHEET = 'Carry Us';
+var CARRY_HEADERS = ['Timestamp', 'How Can We Help', 'Name', 'Email', 'Phone', 'State', 'Dispensary', 'License #', 'Message', 'Contact By', 'License Documents', 'Sent From'];
+var CARRY_PHONE_COL = 5;
+var CARRY_FOLDER = 'Reserved Carry Us Attachments';
+var CARRY_MAX_FILES = 5;
+var CARRY_MAX_BYTES = 10 * 1024 * 1024; // 10 MB in all, same as the page
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
     var data = parseRequest_(e);
     if (data.kind === 'contact') return saveMessage_(data, lock);
+    if (data.kind === 'carry') return saveCarry_(data, lock);
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) {
       return jsonResponse_({ status: 'error', message: 'Invalid email.' });
@@ -99,7 +115,10 @@ function parseRequest_(e) {
   if (e && e.postData && e.postData.contents) {
     try { raw = JSON.parse(e.postData.contents) || {}; } catch (ignored) { raw = {}; }
   }
-  if (!raw.email && e && e.parameter) raw = e.parameter;
+  // Form-encoded fallback only. A JSON POST still has an (empty) e.parameter,
+  // so checking just for a missing email threw away contact and Carry Us
+  // posts, which send "from" instead of "email".
+  if (!raw.email && !raw.from && e && e.parameter && (e.parameter.email || e.parameter.from)) raw = e.parameter;
   return {
     email: clean_(raw.email).toLowerCase(),
     zip: clean_(raw.zip),
@@ -111,7 +130,14 @@ function parseRequest_(e) {
     name: clean_(raw.name, 100),
     from: clean_(raw.from).toLowerCase(),
     license: clean_(raw.license, 40),
-    message: clean_(raw.message, 2000)
+    message: clean_(raw.message, 2000),
+    // Carry Us form
+    topic: clean_(raw.topic, 100),
+    phone: clean_(raw.phone, 15).replace(/\D/g, ''),
+    state: clean_(raw.state, 40),
+    dispensary: clean_(raw.dispensary, 120),
+    via: clean_(raw.via, 60),
+    attachments: Array.isArray(raw.attachments) ? raw.attachments.slice(0, CARRY_MAX_FILES) : []
   };
 }
 
@@ -123,6 +149,9 @@ function saveMessage_(data, lock) {
   if (!data.name || !data.message) {
     return jsonResponse_({ status: 'error', message: 'Name and message are required.' });
   }
+  if (data.phone && !/^\d{10}$/.test(data.phone)) { // optional
+    return jsonResponse_({ status: 'error', message: 'Invalid phone.' });
+  }
   lock.waitLock(10000);
   var book = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = book.getSheetByName(MESSAGES_SHEET);
@@ -131,11 +160,82 @@ function saveMessage_(data, lock) {
     sheet.appendRow(MESSAGE_HEADERS);
     sheet.getRange(1, 1, 1, MESSAGE_HEADERS.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
+  } else if (!sheet.getRange(1, MESSAGE_PHONE_COL).getValue()) {
+    // A Messages tab made before the Phone column existed: add its header.
+    sheet.getRange(1, MESSAGE_PHONE_COL).setValue('Phone').setFontWeight('bold');
   }
-  sheet.appendRow([new Date(), data.name, data.from, data.license, data.message, data.page]);
+  sheet.appendRow([new Date(), data.name, data.from, '', data.message, data.page, '']);
+  var p = data.phone; // optional; shown as +1 (201)987-0123, as text so the Sheet keeps it as typed
+  if (p) {
+    sheet.getRange(sheet.getLastRow(), MESSAGE_PHONE_COL).setNumberFormat('@')
+      .setValue('+1 (' + p.slice(0, 3) + ')' + p.slice(3, 6) + '-' + p.slice(6));
+  }
   SpreadsheetApp.flush();
   console.log('Message from: ' + data.from);
   return jsonResponse_({ status: 'ok' });
+}
+
+/** Adds one Carry Us request to the Carry Us tab; attachments go to Drive. */
+function saveCarry_(data, lock) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.from)) {
+    return jsonResponse_({ status: 'error', message: 'Invalid email.' });
+  }
+  if (!/^\d{10}$/.test(data.phone)) {
+    return jsonResponse_({ status: 'error', message: 'Invalid phone.' });
+  }
+  if (!data.name || !data.state || !data.via) {
+    return jsonResponse_({ status: 'error', message: 'Name, state and how to reach them are required.' });
+  }
+  // Save the files first (outside the lock: uploads can take a few seconds).
+  var links = saveAttachments_(data);
+  lock.waitLock(10000);
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = book.getSheetByName(CARRY_SHEET);
+  if (!sheet) {
+    sheet = book.insertSheet(CARRY_SHEET);
+    sheet.appendRow(CARRY_HEADERS);
+    sheet.getRange(1, 1, 1, CARRY_HEADERS.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
+  sheet.appendRow([new Date(), data.topic, data.name, data.from, '', data.state, data.dispensary,
+    data.license, data.message, data.via, links.join('\n'), data.page]);
+  // Shown as the page shows it, e.g. +1 (201)987-0123. Text format stops the
+  // Sheet turning it into a number or a formula.
+  var p = data.phone;
+  sheet.getRange(sheet.getLastRow(), CARRY_PHONE_COL).setNumberFormat('@')
+    .setValue('+1 (' + p.slice(0, 3) + ')' + p.slice(3, 6) + '-' + p.slice(6));
+  SpreadsheetApp.flush();
+  console.log('Carry Us request from: ' + data.from + ' (' + links.length + ' files)');
+  return jsonResponse_({ status: 'ok' });
+}
+
+/**
+ * Saves a request's attachments (images and PDFs only, 10 MB in all) to the
+ * Drive folder and returns their links. Files stay private to the Sheet's
+ * owner. Anything that isn't an image or PDF, or goes over the size limit,
+ * is skipped.
+ */
+function saveAttachments_(data) {
+  var links = [];
+  if (!data.attachments.length) return links;
+  var folders = DriveApp.getFoldersByName(CARRY_FOLDER);
+  var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(CARRY_FOLDER);
+  var stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HHmm');
+  var who = (data.dispensary || data.name).replace(/[^\w .-]/g, '').substring(0, 40);
+  var total = 0;
+  data.attachments.forEach(function (f) {
+    if (!f || typeof f.data !== 'string') return;
+    var type = String(f.type || '');
+    if (!/^image\//.test(type) && type !== 'application/pdf') return;
+    var bytes;
+    try { bytes = Utilities.base64Decode(f.data); } catch (err) { return; }
+    total += bytes.length;
+    if (total > CARRY_MAX_BYTES) return;
+    var name = String(f.name || 'file').replace(/[\\/:*?"<>|]/g, '').substring(0, 80);
+    var file = folder.createFile(Utilities.newBlob(bytes, type, stamp + ' ' + who + ' - ' + name));
+    links.push(file.getUrl());
+  });
+  return links;
 }
 
 /** Trims, caps length (500 by default), and blocks values a Sheet would run as a formula. */

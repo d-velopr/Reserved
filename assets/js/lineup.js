@@ -23,7 +23,7 @@
     { name: "Rainbow Jawbreaker",     logo: "rainbow-jawbreaker",     glow: "#1E5FD9" },
     { name: "Sour Diesel",            logo: "sour-diesel",            glow: "#3E8E1F" }
   ];
-  var SPEED = 40; // pixels per second, the same on every screen
+  var SPEED = 55; // pixels per second, the same on every screen
 
   var track = document.getElementById("lineup-track");
   if (!track) return;

@@ -243,13 +243,44 @@
   // Back/Forward can show a page as it was left: match the tab's current choice
   window.addEventListener("pageshow", function (e) { if (e.persisted) showTheme(savedLight()); });
 
+  /* ---------- US phone box (Contact and Carry Us) ---------- */
+  // The +1 is its own box next to the field. Typing 2019870123 shows
+  // (201)987-0123, building up as each digit goes in. A pasted or autofilled
+  // "+1 201 987 0123" drops its leading 1. The cursor stays after the same
+  // digit it was after, so fixing a digit in the middle works too.
+  function phoneDigits(value) {
+    var d = value.replace(/\D/g, "");
+    if (d.length > 10 && d.charAt(0) === "1") d = d.slice(1);
+    return d.slice(0, 10);
+  }
+  function formatPhone(d) {
+    if (d.length <= 3) return d ? "(" + d : "";
+    if (d.length <= 6) return "(" + d.slice(0, 3) + ")" + d.slice(3);
+    return "(" + d.slice(0, 3) + ")" + d.slice(3, 6) + "-" + d.slice(6);
+  }
+  function formatPhoneAsTyped(el) {
+    el.addEventListener("input", function () {
+      var caret = el.selectionStart == null ? el.value.length : el.selectionStart;
+      var before = phoneDigits(el.value.slice(0, caret)).length; // digits left of the cursor
+      var out = formatPhone(phoneDigits(el.value));
+      if (out === el.value) return;
+      el.value = out;
+      // Put the cursor back after the same number of digits.
+      var pos = 0, seen = 0;
+      while (pos < out.length && seen < before) { if (/\d/.test(out.charAt(pos))) seen++; pos++; }
+      if (before === 0) pos = Math.min(out.length, 1); // just after the "("
+      if (document.activeElement === el) el.setSelectionRange(pos, pos);
+    });
+  }
+
   /* ---------- Contact form (contact.html) ---------- */
   // Sends to the same Apps Script as sign-ups, as kind "contact"; it lands on
   // the Sheet's Messages tab and never adds anyone to the sign-up list.
   var contact = document.getElementById("contact-form");
   if (contact) {
     var cMsg = document.getElementById("contact-msg");
-    var cFields = [contact.elements.name, contact.elements.email, contact.elements.message];
+    var cFields = [contact.elements.name, contact.elements.email, contact.elements.phone, contact.elements.message];
+    formatPhoneAsTyped(contact.elements.phone);
 
     var contactError = function (text, field) {
       cMsg.textContent = text;
@@ -263,10 +294,12 @@
       if (contact.company.value) return; // bot
       var name = contact.elements.name.value.trim();
       var from = contact.elements.email.value.trim();
+      var phone = phoneDigits(contact.elements.phone.value); // 10 digits
       var text = contact.elements.message.value.trim();
-      var license = contact.elements.license.value.trim(); // optional
       if (!name) return contactError("Enter your name.", contact.elements.name);
       if (!EMAIL_RE.test(from)) return contactError("Enter an email like name@email.com.", contact.elements.email);
+      // Optional, but a number that's started must be all 10 digits.
+      if (phone && !/^\d{10}$/.test(phone)) return contactError("Enter all 10 digits, or leave phone blank.", contact.elements.phone);
       if (text.length < 2) return contactError("Write a message.", contact.elements.message);
       contactError("");
       cMsg.className = "form-msg";
@@ -278,7 +311,7 @@
         kind: "contact",
         name: name,
         from: from, // "from", not "email": see subscribe.gs
-        license: license,
+        phone: phone,
         message: text
       }).then(function () {
         contact.reset();
@@ -289,6 +322,139 @@
       }).then(function () {
         btn.disabled = false;
         btn.textContent = "Send Message";
+      });
+    });
+  }
+
+  /* ---------- Carry Us form (carry.html) ---------- */
+  // Same questions as 710 Labs' "Carry Us / Wholesale Inquiry" request form.
+  // Same Apps Script, kind "carry": the request lands on the Sheet's "Carry Us"
+  // tab, attachments go to a Drive folder linked from the row, and nobody is
+  // added to the email list.
+  var carry = document.getElementById("carry-form");
+  if (carry) {
+    var wMsg = document.getElementById("carry-msg");
+    var wf = carry.elements;
+    var viaSet = document.getElementById("w-via");
+    var carryFields = [wf.name, wf.email, wf.phone, wf.state, viaSet];
+    var drop = document.getElementById("w-drop");
+    var fileInput = document.getElementById("w-files");
+    var fileList = document.getElementById("w-file-list");
+    var MAX_FILES = 5, MAX_BYTES = 10 * 1024 * 1024; // 10 MB in all
+    var files = [];
+
+    formatPhoneAsTyped(wf.phone);
+
+    var carryError = function (text, field) {
+      wMsg.textContent = text;
+      wMsg.className = "form-msg err";
+      carryFields.forEach(function (f) { f.removeAttribute("aria-invalid"); });
+      if (field) {
+        field.setAttribute("aria-invalid", "true");
+        // A choice group: focus its first option
+        (field.tagName === "FIELDSET" ? field.querySelector("input") : field).focus();
+      }
+    };
+    // Picking a choice clears its red outline.
+    viaSet.addEventListener("change", function () { viaSet.removeAttribute("aria-invalid"); });
+
+    /* Attachments: images and PDFs, up to 5 files and 10 MB in all */
+    var fmtSize = function (n) {
+      return n < 1024 * 1024 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1024 / 1024).toFixed(1) + " MB";
+    };
+    var renderFiles = function () {
+      fileList.innerHTML = "";
+      files.forEach(function (f, i) {
+        var li = document.createElement("li");
+        var name = document.createElement("span");
+        name.className = "f-name";
+        name.textContent = f.name;
+        var size = document.createElement("span");
+        size.className = "f-size";
+        size.textContent = fmtSize(f.size);
+        var rm = document.createElement("button");
+        rm.type = "button";
+        rm.setAttribute("aria-label", "Remove " + f.name);
+        rm.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+        rm.addEventListener("click", function () { files.splice(i, 1); renderFiles(); fileInput.focus(); });
+        li.appendChild(name); li.appendChild(size); li.appendChild(rm);
+        fileList.appendChild(li);
+      });
+    };
+    var addFiles = function (picked) {
+      var problem = "";
+      Array.prototype.forEach.call(picked, function (f) {
+        var total = files.reduce(function (n, x) { return n + x.size; }, 0);
+        if (!/^image\//.test(f.type) && f.type !== "application/pdf") problem = f.name + " isn't an image or PDF.";
+        else if (files.length >= MAX_FILES) problem = "Up to " + MAX_FILES + " files.";
+        else if (total + f.size > MAX_BYTES) problem = "Attachments can be 10 MB in all.";
+        else files.push(f);
+      });
+      renderFiles();
+      if (problem) { wMsg.textContent = problem; wMsg.className = "form-msg err"; }
+      else if (wMsg.classList.contains("err")) { wMsg.textContent = ""; wMsg.className = "form-msg"; }
+    };
+    fileInput.addEventListener("change", function () { addFiles(fileInput.files); fileInput.value = ""; });
+    ["dragenter", "dragover"].forEach(function (t) {
+      drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add("over"); });
+    });
+    ["dragleave", "drop"].forEach(function (t) {
+      drop.addEventListener(t, function () { drop.classList.remove("over"); });
+    });
+    drop.addEventListener("drop", function (e) {
+      e.preventDefault();
+      if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+    });
+    // Each file as { name, type, data } with the data in base64.
+    var readFile = function (f) {
+      return new Promise(function (resolve, reject) {
+        var r = new FileReader();
+        r.onload = function () { resolve({ name: f.name, type: f.type, data: String(r.result).split(",")[1] || "" }); };
+        r.onerror = function () { reject(r.error); };
+        r.readAsDataURL(f);
+      });
+    };
+
+    carry.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (wf.company.value) return; // bot
+      var v = {
+        kind: "carry",
+        topic: wf.topic.value,
+        name: wf.name.value.trim(),
+        from: wf.email.value.trim(), // "from", not "email": see subscribe.gs
+        phone: phoneDigits(wf.phone.value), // 10 digits; the Sheet shows it as +1 (201)987-0123
+        state: wf.state.value,
+        dispensary: wf.dispensary.value.trim(), // optional
+        license: wf.license.value.trim(), // optional
+        via: wf.via.value, // "Phone call" or "Email"
+        message: wf.message.value.trim() // optional
+      };
+      if (!v.name) return carryError("Enter your first and last name.", wf.name);
+      if (!EMAIL_RE.test(v.from)) return carryError("Enter an email like name@email.com.", wf.email);
+      if (!/^\d{10}$/.test(v.phone)) return carryError("Enter your 10-digit phone number.", wf.phone);
+      if (!v.state) return carryError("Pick the state you're in.", wf.state);
+      if (!v.via) return carryError("Pick the best way to reach you.", viaSet);
+      carryError("");
+      wMsg.className = "form-msg";
+
+      var btn = carry.querySelector("button[type=submit]");
+      btn.disabled = true;
+      btn.textContent = files.length ? "Uploading..." : "Sending...";
+      Promise.all(files.map(readFile)).then(function (attachments) {
+        v.attachments = attachments;
+        return sendSignup(v);
+      }).then(function () {
+        carry.reset();
+        files = [];
+        renderFiles();
+        wMsg.textContent = "Request sent. We'll reply by email.";
+        wMsg.className = "form-msg ok";
+      }).catch(function () {
+        carryError("That didn't go through. Check your connection and try again.");
+      }).then(function () {
+        btn.disabled = false;
+        btn.textContent = "Submit";
       });
     });
   }

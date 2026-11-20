@@ -1259,7 +1259,7 @@ body:has(.sheet[open]) { overflow: hidden; }
   margin: .9rem 0 0;
   max-width: 34ch;
   color: var(--muted);
-  font: 500 .82rem/1.55 "IBM Plex Mono", ui-monospace, monospace;
+  font: 500 clamp(.88rem, 3.6vw, .95rem)/1.55 "IBM Plex Mono", ui-monospace, monospace;
   letter-spacing: .04em;
   text-transform: uppercase;
 }

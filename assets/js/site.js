@@ -335,10 +335,9 @@
   if (carry) {
     var wMsg = document.getElementById("carry-msg");
     var wf = carry.elements;
-    var viaSet = document.getElementById("w-via");
     var drop = document.getElementById("w-drop");
     var fileInput = document.getElementById("w-files");
-    var carryFields = [wf.name, wf.email, wf.phone, wf.state, wf.dispensary, wf.license, wf.message, viaSet, fileInput];
+    var carryFields = [wf.name, wf.email, wf.phone, wf.state, wf.dispensary, wf.license, wf.message, fileInput];
     var fileList = document.getElementById("w-file-list");
     var MAX_FILES = 5, MAX_BYTES = 10 * 1024 * 1024; // 10 MB in all
     var files = [];
@@ -349,14 +348,8 @@
       wMsg.textContent = text;
       wMsg.className = "form-msg err";
       carryFields.forEach(function (f) { f.removeAttribute("aria-invalid"); });
-      if (field) {
-        field.setAttribute("aria-invalid", "true");
-        // A choice group: focus its first option
-        (field.tagName === "FIELDSET" ? field.querySelector("input") : field).focus();
-      }
+      if (field) { field.setAttribute("aria-invalid", "true"); field.focus(); }
     };
-    // Picking a choice clears its red outline.
-    viaSet.addEventListener("change", function () { viaSet.removeAttribute("aria-invalid"); });
 
     /* Attachments: images and PDFs, up to 5 files and 10 MB in all */
     var fmtSize = function (n) {
@@ -428,7 +421,7 @@
         state: wf.state.value,
         dispensary: wf.dispensary.value.trim(),
         license: wf.license.value.trim(),
-        via: wf.via.value, // "Phone call" or "Email"
+        via: wf.via.value, // "Phone call", "Email" or "" (optional)
         message: wf.message.value.trim()
       };
       if (!v.name) return carryError("Enter your first and last name.", wf.name);
@@ -438,7 +431,6 @@
       if (!v.dispensary) return carryError("Enter your dispensary's name.", wf.dispensary);
       if (!v.license) return carryError("Enter your license number.", wf.license);
       if (v.message.length < 2) return carryError("Write a message.", wf.message);
-      if (!v.via) return carryError("Pick the best way to reach you.", viaSet);
       if (!files.length) return carryError("Add your license (photo or PDF).", fileInput);
       carryError("");
       wMsg.className = "form-msg";

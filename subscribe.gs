@@ -196,8 +196,8 @@ function saveCarry_(data, lock) {
   if (!/^\d{10}$/.test(data.phone)) {
     return jsonResponse_({ status: 'error', message: 'Invalid phone.' });
   }
-  if (!data.name || !data.state || !data.dispensary || !data.license || !data.message || !data.via) {
-    return jsonResponse_({ status: 'error', message: 'Name, state, dispensary, license #, message and how to reach them are required.' });
+  if (!data.name || !data.state || !data.dispensary || !data.license || !data.message) {
+    return jsonResponse_({ status: 'error', message: 'Name, state, dispensary, license # and message are required.' });
   }
   if (!data.attachments.length) {
     return jsonResponse_({ status: 'error', message: 'License documents are required.' });

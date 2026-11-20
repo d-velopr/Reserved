@@ -103,14 +103,55 @@
     });
   }
 
-  function directionsUrl(s) {
+  /* ---------- Directions: Apple Maps (default) or Google Maps ----------
+     Every Directions link points at Apple Maps, so it still works if this
+     script fails. A tap opens a small sheet to pick Apple Maps or Google Maps. */
+  function appleUrl(s) {
+    return "https://maps.apple.com/?daddr=" + encodeURIComponent(s.address);
+  }
+  function googleUrl(s) {
     return "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.name + ", " + s.address);
+  }
+
+  var dirSheet = document.getElementById("dir-sheet");
+  var dirApple = document.getElementById("dir-apple");
+  var dirGoogle = document.getElementById("dir-google");
+  var dirFrom = null;
+  function openDirections(s, from) {
+    dirFrom = from;
+    document.getElementById("dir-name").textContent = s.name;
+    dirApple.href = appleUrl(s);
+    dirGoogle.href = googleUrl(s);
+    dirApple.setAttribute("aria-label", "Directions to " + s.name + " in Apple Maps");
+    dirGoogle.setAttribute("aria-label", "Directions to " + s.name + " in Google Maps");
+    if (!dirSheet.open) dirSheet.showModal();
+    dirApple.focus(); // the default: Enter goes to Apple Maps
+  }
+  // Any Directions link on the page (store list or map pop-up)
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[data-dir]");
+    if (!a || !dirSheet || typeof dirSheet.showModal !== "function") return;
+    e.preventDefault();
+    openDirections(STORES[Number(a.dataset.dir)], a);
+  });
+  if (dirSheet) {
+    // Picking a map app opens it in a new tab; close the sheet behind it.
+    [dirApple, dirGoogle].forEach(function (a) {
+      a.addEventListener("click", function () { setTimeout(function () { dirSheet.close(); }, 0); });
+    });
+    document.getElementById("dir-close").addEventListener("click", function () { dirSheet.close(); });
+    // Tap the dimmed area around the sheet to close it.
+    dirSheet.addEventListener("click", function (e) { if (e.target === dirSheet) dirSheet.close(); });
+    dirSheet.addEventListener("close", function () {
+      if (dirFrom && document.contains(dirFrom)) dirFrom.focus();
+      dirFrom = null;
+    });
   }
 
   function popupHtml(s) {
     return '<div class="pop"><strong>' + esc(s.name) + "</strong>" +
       "<span>" + esc(s.address) + "</span>" +
-      '<a class="btn btn-red btn-sm" target="_blank" rel="noopener" href="' + directionsUrl(s) + '">Directions</a></div>';
+      '<a class="btn btn-red btn-sm" target="_blank" rel="noopener" data-dir="' + s.id + '" href="' + appleUrl(s) + '">Directions</a></div>';
   }
 
   STORES.forEach(function (s, i) {
@@ -214,7 +255,7 @@
           '<span class="store-name">' + esc(s.name) + "</span>" +
           (s.miles != null ? '<em class="store-mi">' + s.miles.toFixed(1) + " mi</em>" : "") +
         "</button>" +
-        '<a class="dir" target="_blank" rel="noopener" href="' + directionsUrl(s) + '" aria-label="Directions to ' + esc(s.name) + '">' +
+        '<a class="dir" target="_blank" rel="noopener" data-dir="' + s.id + '" href="' + appleUrl(s) + '" aria-label="Directions to ' + esc(s.name) + '">' +
           '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 10-10 10L2 12z" fill="currentColor"/><path d="M9 14v-2.5a1.5 1.5 0 0 1 1.5-1.5H15m-2-2l2 2-2 2" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         "</a>";
       var btn = li.querySelector(".store");

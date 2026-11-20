@@ -696,6 +696,11 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
   .sub-inner { grid-template-columns: 300px 1fr; gap: 3rem; }
   .crest { width: 100%; }
 }
+/* Light mode: no dark shadow under the crest or the big R. On cream it
+   showed as a gray smudge instead of blending into the page. */
+:root[data-theme="light"] .crest,
+:root[data-theme="light"] .coll-cta img,
+:root[data-theme="light"] .lost img { filter: none; }
 
 /* ---------- Footer ---------- */
 .foot { background: var(--bg); color: var(--muted); }
@@ -1089,6 +1094,10 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
 .art-crest { width: 66%; height: auto; aspect-ratio: 640 / 563; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .5)); }
 .has-photo { background: #111; }
 .has-photo img { width: 100%; height: 100%; object-fit: cover; }
+/* Sheet photos fill the 4:3 frame instead of sizing it: a full-size square
+   photo (Lila's Lotus, the badders) otherwise stretched the frame to a
+   square, taller than every other product's sheet. */
+.sheet-art.has-photo img { position: absolute; inset: 0; }
 /* Logos and labels with a see-through background: whole, on the category color */
 .has-cutout img { width: 80%; height: 80%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .55)); }
 .sheet-art.has-cutout img { width: 70%; height: 82%; }
@@ -1227,6 +1236,16 @@ body:has(.sheet[open]) { overflow: hidden; }
   }
   .sheet-actions .btn { flex: 1 1 100%; }
 }
+/* Directions sheet (Store Locator): no product art, so a smaller card on wide
+   screens, the close button and grip in page colors, and two stacked buttons */
+.dir-sheet { width: min(420px, 100% - 32px); }
+.dir-sheet .sheet-info { padding: 1.6rem 1.4rem 1.5rem; }
+.dir-sheet .sheet-label { margin: 0 0 .3rem; }
+.dir-sheet h2 { padding-right: 52px; font-size: clamp(1.6rem, 6vw, 2.1rem); }
+.dir-sheet .sheet-close { background: var(--surface-3); color: var(--text); }
+.dir-sheet .sheet-grip { background: var(--line-2); }
+.dir-sheet .sheet-actions .btn { flex: 1 1 100%; }
+@media (max-width: 640px) { .dir-sheet { width: 100%; } }
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .sheet[open] { animation: none; } }
 

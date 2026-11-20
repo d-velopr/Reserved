@@ -66,7 +66,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.css" />
-  <link rel="stylesheet" href="assets/css/style.css?v=138" />
+  <link rel="stylesheet" href="assets/css/style.css?v=139" />
 </head>
 <body>
 
@@ -149,12 +149,29 @@
     </div>
   </footer>
 
+  <!-- Directions: Apple Maps (the default) or Google Maps. Opened by locator.js
+       from the store list and the map pop-ups; slides up from the bottom on phones. -->
+  <dialog class="sheet dir-sheet" id="dir-sheet" aria-labelledby="dir-name">
+    <span class="sheet-grip" aria-hidden="true"></span>
+    <button type="button" class="sheet-close" id="dir-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+    <div class="sheet-info">
+      <p class="sheet-label">Directions to</p>
+      <h2 id="dir-name"></h2>
+      <div class="sheet-actions">
+        <a class="btn btn-red" id="dir-apple" target="_blank" rel="noopener">Apple Maps</a>
+        <a class="btn btn-ghost" id="dir-google" target="_blank" rel="noopener">Google Maps</a>
+      </div>
+    </div>
+  </dialog>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://unpkg.com/leaflet-gesture-handling@1.2.2/dist/leaflet-gesture-handling.min.js"></script>
   <script src="assets/js/stores.js?v=36"></script>
-  <script src="assets/js/site.js?v=11"></script>
-  <script src="assets/js/locator.js?v=3"></script>
+  <script src="assets/js/site.js?v=12"></script>
+  <script src="assets/js/locator.js?v=4"></script>
   <script src="assets/js/lineup.js?v=4"></script>
 </body>
 </html>

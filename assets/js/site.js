@@ -79,8 +79,19 @@
       gate.setAttribute("aria-labelledby", "gate-join-title");
       gateEmail.focus();
     };
-    var openSite = function () {
-      if (next) { location.replace(next); return; }
+    // zip: set only when the visitor has just joined. A first visit then lands on
+    // the Store Locator with their ZIP already searched, so the closest shop is
+    // the first thing they see (Back returns to Home). A visitor sent here from
+    // a shared link (?next=) still goes back to that page instead.
+    var openSite = function (zip) {
+      if (next) {
+        if (zip && /^store-locator(\.html)?(#.*)?$/.test(next)) {
+          next = next.replace(/^([^#]*)/, "$1?q=" + zip);
+        }
+        location.replace(next);
+        return;
+      }
+      if (zip) { location.href = "store-locator.html?q=" + zip; return; }
       gate.hidden = true;
       document.body.classList.remove("locked");
       window.RESERVED_OPEN = true;
@@ -135,7 +146,7 @@
       sendSignup({ email: emailVal, zip: zipVal, source: "entry gate" })
         .then(function () {
           remember("reservedJoined");
-          openSite();
+          openSite(zipVal);
         })
         .catch(function () {
           gateError("That didn't go through. Check your connection and try again.");

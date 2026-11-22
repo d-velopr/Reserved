@@ -61,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=170" />
+  <link rel="stylesheet" href="assets/css/style.css?v=173" />
 </head>
 <body>
 
@@ -98,15 +98,49 @@
 
     <section class="wrap tz-what">
       <div class="tz-copy">
-        <h2>Flower + live resin, in three stripes</h2>
-        <p>Premium nug flower with three stripes of live resin badder, hand rolled for an even, slow burn.</p>
-        <ul class="tz-spec">
-          <li>1.5g premium nug flower</li>
-          <li>0.5g live resin badder</li>
-          <li>2.0g total</li>
-          <li>Glass tip</li>
-          <li>Child-resistant tube</li>
+        <p class="eyebrow">What's inside one</p>
+        <!-- The pre-roll, drawn: flower with three stripes of live resin, glass tip -->
+        <svg class="tz-roll" viewBox="0 0 360 150" role="img" aria-label="A Tiger Ztripez pre-roll: premium nug flower with three stripes of live resin badder, and a glass tip">
+          <defs>
+            <clipPath id="roll-body"><path d="M24 50 L282 61 L282 89 L24 100 Z"/></clipPath>
+            <pattern id="roll-bud" width="9" height="9" patternUnits="userSpaceOnUse">
+              <rect width="9" height="9" fill="#1F7A4D"/>
+              <circle cx="2.5" cy="2.5" r="1.6" fill="#2E9A63"/><circle cx="7" cy="6.5" r="1.3" fill="#16603C"/>
+            </pattern>
+          </defs>
+          <path class="roll-twist" d="M24 50 L8 70 L14 75 L8 80 L24 100 Z"/>
+          <g clip-path="url(#roll-body)">
+            <rect x="20" y="40" width="270" height="70" fill="url(#roll-bud)"/>
+            <path d="M78 40 h15 l-30 70 h-15 Z M150 40 h15 l-30 70 h-15 Z M222 40 h15 l-30 70 h-15 Z" fill="#C27C0E"/>
+          </g>
+          <path class="roll-paper" d="M24 50 L282 61 L282 89 L24 100 Z"/>
+          <rect class="roll-tip" x="282" y="62" width="52" height="26" rx="6"/>
+          <path class="roll-tip-shine" d="M290 68 h34"/>
+          <g class="roll-call">
+            <path d="M50 80 V122"/><circle cx="50" cy="80" r="2.5"/><text x="44" y="138">Nug flower</text>
+            <path d="M146 66 V24"/><circle cx="146" cy="66" r="2.5"/><text x="140" y="17">Live resin badder</text>
+            <path d="M318 76 V122"/><circle cx="318" cy="76" r="2.5"/><text x="336" y="138" text-anchor="end">Glass tip</text>
+          </g>
+        </svg>
+
+        <!-- 2.0g, split by weight. Tap a part for its name and share. -->
+        <div class="tz-mix">
+          <p class="tz-total"><span>2.0g</span> per pre-roll</p>
+          <div class="tz-bar" role="img" aria-label="2.0g: 1.5g premium nug flower (75%) and 0.5g live resin badder (25%)">
+            <span class="tz-seg tz-flower" style="flex-grow:1.5" tabindex="0" data-tip="Premium nug flower · 75%">1.5g</span>
+            <span class="tz-seg tz-resin" style="flex-grow:.5" tabindex="0" data-tip="Live resin badder · 25%">0.5g</span>
+          </div>
+          <ul class="tz-legend">
+            <li><i class="tz-flower" aria-hidden="true"></i>Premium nug flower</li>
+            <li><i class="tz-resin" aria-hidden="true"></i>Live resin badder</li>
+          </ul>
+        </div>
+
+        <ul class="tz-tags">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="9" width="16" height="6" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Glass tip</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Child-resistant tube</li>
         </ul>
+
         <a class="btn btn-red" href="store-locator.html">Find a Store</a>
       </div>
       <figure class="tz-photo">

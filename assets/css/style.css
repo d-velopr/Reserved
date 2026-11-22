@@ -1643,6 +1643,79 @@ body:has(.sheet[open]) { overflow: hidden; }
   text-transform: uppercase;
 }
 .tz-spec li:last-child { border-bottom: 1px solid var(--line); }
+/* Tiger Ztripez, what's inside: the drawing, then 2.0g split by weight.
+   Flower #1F7A4D and resin #C27C0E pass the colorblind checks on both
+   themes; the parts are also named in the legend and on tap. */
+.tz-roll { display: block; width: 100%; max-width: 460px; height: auto; margin: 0 0 1.25rem; }
+.roll-paper { fill: none; stroke: var(--text); stroke-opacity: .55; stroke-width: 1.5; stroke-linejoin: round; }
+.roll-twist { fill: var(--surface-3); stroke: var(--text); stroke-opacity: .55; stroke-width: 1.5; stroke-linejoin: round; }
+.roll-tip { fill: var(--text); fill-opacity: .08; stroke: var(--text); stroke-opacity: .6; stroke-width: 1.5; }
+.roll-tip-shine { stroke: var(--text); stroke-opacity: .3; stroke-width: 2; stroke-linecap: round; }
+.roll-call path { fill: none; stroke: var(--text); stroke-opacity: .6; stroke-width: 1.2; }
+.roll-call circle { fill: var(--text); }
+.roll-call text { fill: var(--text); font: 800 11.5px/1 Archivo, sans-serif; font-variation-settings: "wdth" 110; letter-spacing: .06em; text-transform: uppercase; }
+
+.tz-mix { max-width: 460px; margin-bottom: 1.25rem; }
+.tz-total { margin: 0 0 .5rem; color: var(--muted); font-weight: 800; }
+.tz-total span { margin-right: .25rem; color: var(--text); font-size: clamp(2.6rem, 9vw, 3.4rem); font-weight: 900; font-variation-settings: "wdth" 110; line-height: 1; letter-spacing: -.01em; }
+.tz-bar { display: flex; gap: 2px; height: 28px; }
+.tz-seg {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 .55rem;
+  border-radius: 4px;
+  font-size: .85rem;
+  font-weight: 800;
+  cursor: pointer;
+  outline: none;
+  transition: opacity .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.tz-flower { background: #1F7A4D; color: #fff; }
+.tz-resin { background: #C27C0E; color: #15120D; }
+.tz-bar:has(.tz-seg:hover, .tz-seg:focus) .tz-seg:not(:hover):not(:focus) { opacity: .4; }
+.tz-seg:focus-visible { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--text); }
+/* The tip: name and share, under the part (over the legend, which says the same) */
+.tz-seg::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 5;
+  padding: .4rem .6rem;
+  border-radius: 8px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: .8rem;
+  white-space: nowrap;
+  box-shadow: var(--menu-shadow);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .15s ease, transform .15s ease;
+  pointer-events: none;
+}
+.tz-resin::after { left: auto; right: 0; }
+.tz-seg:hover::after, .tz-seg:focus::after { opacity: 1; transform: none; }
+.tz-legend { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; margin: .6rem 0 0; padding: 0; list-style: none; color: var(--text-soft); font-size: .9rem; }
+.tz-legend li { display: flex; align-items: center; gap: .4rem; }
+.tz-legend i { width: 12px; height: 12px; border-radius: 3px; }
+
+.tz-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.5rem; padding: 0; list-style: none; }
+.tz-tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .8rem .4rem .6rem;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: .9rem;
+  font-weight: 800;
+}
+.tz-tags svg { width: 20px; height: 20px; color: var(--tz); }
+@media (prefers-reduced-motion: reduce) { .tz-seg, .tz-seg::after { transition: none; } }
+
 /* Four "why" tiles: icon, short title, one line */
 .tz-why { padding-bottom: 3.5rem; }
 .tz-feats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }

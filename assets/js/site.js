@@ -326,7 +326,7 @@
     });
   }
 
-  /* ---------- Carry Us form (carry.html) ---------- */
+  /* ---------- Carry Us form (carry-us.html) ---------- */
   // Same questions as 710 Labs' "Carry Us / Wholesale Inquiry" request form.
   // Same Apps Script, kind "carry": the request lands on the Sheet's "Carry Us"
   // tab, attachments go to a Drive folder linked from the row, and nobody is

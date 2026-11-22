@@ -11,7 +11,7 @@
  * The contact form sends its email as "from", not "email", so an older
  * deployment of this script rejects it instead of adding it as a sign-up.
  *
- * Also receives Carry Us requests from carry.html (kind: "carry", email sent
+ * Also receives Carry Us requests from carry-us.html (kind: "carry", email sent
  * as "from" for the same reason) and adds them to a "Carry Us" tab. Files
  * attached to a request are saved to a private Google Drive folder,
  * "Reserved Carry Us Attachments", and linked from the row. The first deploy

@@ -1626,9 +1626,9 @@ body:has(.sheet[open]) { overflow: hidden; }
   text-wrap: balance;
 }
 .tz-hero h1 span, .tz-hero .tz-q span { display: block; }
-/* Tiger Ztripez header: a dark band with tiger stripes from both edges, the
-   stamp as a faded watermark and a warm glow behind the question. Dark in
-   both themes, like a banner. */
+/* Tiger Ztripez header: a dark band with three resin stripes on each edge
+   (the three stripes of concentrate), the stamp as a faded watermark and a
+   warm glow behind the question. Dark in both themes, like a banner. */
 .edu-tiger .tz-hero {
   position: relative;
   isolation: isolate;
@@ -1640,8 +1640,18 @@ body:has(.sheet[open]) { overflow: hidden; }
   border-bottom: 3px solid #E8641B;
 }
 .edu-tiger .tz-hero::before, .edu-tiger .tz-hero::after { content: ""; position: absolute; z-index: -1; pointer-events: none; }
-/* stripes */
-.edu-tiger .tz-hero::before { inset: 0; background: url("../img/gen/tiger-stripes.svg?v=2") center / 100% 100% no-repeat; opacity: .55; }
+/* resin stripes, three per side; pushed out past the edges on phones so
+   they frame the question without running under it */
+.edu-tiger .tz-hero::before {
+  inset: 0;
+  background:
+    url("../img/gen/resin-stripes-l.svg") left -90px center / auto 100% no-repeat,
+    url("../img/gen/resin-stripes-r.svg") right -90px center / auto 100% no-repeat;
+  opacity: .85;
+}
+@media (min-width: 860px) {
+  .edu-tiger .tz-hero::before { background-position: left -20px center, right -20px center; }
+}
 /* stamp watermark */
 .edu-tiger .tz-hero::after {
   top: 50%;

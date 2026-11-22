@@ -51,7 +51,12 @@
   }
   // Sheet line: adds lineage and THC when a strain has them
   function sheetMeta(p) {
-    return [p.line, p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc).join(" · ");
+    var meta = [p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc);
+    if (p.line) {
+      var page = (window.RESERVED_LINES || {})[p.line];
+      meta.unshift(page ? '<a href="' + esc(page) + '">' + esc(p.line) + "</a>" : esc(p.line));
+    }
+    return meta.join(" · ");
   }
 
   /* ---------- Chips ---------- */

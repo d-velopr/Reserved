@@ -45,6 +45,12 @@ window.RESERVED_CATEGORIES = [
   { id: "flower",       name: "Flower",       color: "#1F7A4D", unit: "strain" } // last while it's a placeholder
 ];
 
+// Product lines with their own page. On the product sheet, the line name
+// (e.g. "Tiger Ztripez") links to it.
+window.RESERVED_LINES = {
+  "Tiger Ztripez": "tiger-ztripez.html"
+};
+
 window.RESERVED_PRODUCTS = [
   // Pre-rolls: Tiger Ztripez (infused) and Minis (flower only)
   { id: "lilas-lotus-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Lila's Lotus", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes",

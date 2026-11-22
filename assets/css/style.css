@@ -1606,3 +1606,34 @@ body:has(.sheet[open]) { overflow: hidden; }
 @media (max-width: 639px) {
   .contact-form .form-note, .contact-form .form-msg { text-align: center; }
 }
+
+/* ======================================================================
+   Tiger Ztripez: big centered question, then the answer beside a photo
+   ====================================================================== */
+.tz { --tz: #E8641B; }
+:root[data-theme="light"] .tz { --tz: #B8480C; } /* deeper orange reads on cream */
+.tz-hero { padding: 3.5rem 0 2.5rem; text-align: center; }
+.tz-hero h1 {
+  color: var(--tz);
+  font-size: clamp(2.6rem, 9vw, 6rem);
+  line-height: .95;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.tz-hero h1 span { display: block; }
+.tz-what { display: grid; gap: 1.75rem; padding-bottom: 3.5rem; }
+.tz-copy h2 { text-transform: uppercase; text-wrap: balance; }
+.tz-copy p { margin: 1rem 0 1.5rem; max-width: 34ch; color: var(--text-soft); font-size: 1.2rem; }
+.tz-photo { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--gold-glow); }
+.tz-photo img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+@media (min-width: 860px) {
+  .tz-hero { padding: 5rem 0 4rem; }
+  .tz-what { grid-template-columns: 1fr 1fr; align-items: center; gap: 3rem; padding-bottom: 5rem; }
+}
+@media (max-width: 639px) {
+  .tz-copy .btn { width: 100%; }
+}
+
+/* Product sheet: a product line with its own page links there */
+.sheet-meta a { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; }
+.sheet-meta a:hover { color: var(--text); }

@@ -54,6 +54,14 @@
     return [p.line, p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc).join(" · ");
   }
 
+  // "What is a Tiger Ztripez?": for a product whose line has its own page
+  function learnHtml(p) {
+    var page = p.line && (window.RESERVED_LINES || {})[p.line];
+    if (!page) return "";
+    return '<a class="btn btn-sm btn-outline sheet-learn" href="' + esc(page) + '">What is a ' + esc(p.line) +
+      '?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
+  }
+
   /* ---------- Chips ---------- */
   var chipBar = document.getElementById("chips");
   var chipData = [{ id: "all", name: "All" }].concat(CATS);
@@ -127,6 +135,7 @@
         (sheetMeta(p) ? '<p class="sheet-meta">' + sheetMeta(p) + "</p>" : "") +
         (p.soon ? '<p class="soon soon-inline">Coming soon</p>' : "") +
         (p.desc ? '<p class="sheet-desc">' + esc(p.desc) + "</p>" : "") +
+        learnHtml(p) +
         // Flower strains: the sizes it comes in
         ((p.sizes || []).length
           ? '<p class="sheet-label">Available in</p><ul class="formats">' +

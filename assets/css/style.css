@@ -1263,6 +1263,8 @@ body:has(.sheet[open]) { overflow: hidden; }
   letter-spacing: .04em;
   text-transform: uppercase;
 }
+/* "What is a Tiger Ztripez?" under the description */
+.sheet-learn { margin-top: 1rem; }
 .sheet-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.4rem; }
 .sheet-actions .btn-red { flex: 1 1 200px; }
 .sheet .form-msg:empty { min-height: 0; margin: 0; }

@@ -6,7 +6,7 @@ Static site for Reserved LLC (reservedwayornoway.com). No build step: open the H
 |------|------|--------|
 | Home | `index.html` | `assets/js/home.js` |
 | Collection | `collection.html` | `assets/js/collection.js` |
-| Tiger Ztripez | `tiger-ztripez.html` | none (nothing links here yet) |
+| Tiger Ztripez | `tiger-ztripez.html` | none (linked from the FAQ and About pages) |
 | Store Locator | `store-locator.html` | `assets/js/locator.js` |
 | About | `about.html` | none |
 | FAQ | `faq.html` | none |

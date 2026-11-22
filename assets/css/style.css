@@ -1626,6 +1626,37 @@ body:has(.sheet[open]) { overflow: hidden; }
   text-wrap: balance;
 }
 .tz-hero h1 span, .tz-hero .tz-q span { display: block; }
+/* Tiger Ztripez header: a dark band with tiger stripes from both edges, the
+   stamp as a faded watermark and a warm glow behind the question. Dark in
+   both themes, like a banner. */
+.edu-tiger .tz-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 4.5rem 0 4rem;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 50%, rgba(232, 100, 27, .32), transparent 70%),
+    linear-gradient(180deg, #17100B, #0B0807);
+  border-bottom: 3px solid #E8641B;
+}
+.edu-tiger .tz-hero::before, .edu-tiger .tz-hero::after { content: ""; position: absolute; z-index: -1; pointer-events: none; }
+/* stripes */
+.edu-tiger .tz-hero::before { inset: 0; background: url("../img/gen/tiger-stripes.svg?v=2") center / 100% 100% no-repeat; opacity: .55; }
+/* stamp watermark */
+.edu-tiger .tz-hero::after {
+  top: 50%;
+  left: 50%;
+  width: min(78vw, 440px);
+  aspect-ratio: 1;
+  background: url("../img/gen/stamp.webp") center / contain no-repeat;
+  opacity: .13;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  filter: grayscale(1) brightness(1.6);
+}
+.edu-tiger .tz-hero h1 { color: #F07A2E; text-shadow: 0 4px 24px rgba(0, 0, 0, .55); }
+@media (min-width: 860px) { .edu-tiger .tz-hero { padding: 6.5rem 0 6rem; } }
+.edu-tiger .tz-what { padding-top: 3rem; }
+
 .tz-what { display: grid; gap: 1.75rem; padding-bottom: 3.5rem; }
 .tz-copy h2 { text-transform: uppercase; text-wrap: balance; }
 .tz-copy p { margin: 1rem 0 1.5rem; max-width: 34ch; color: var(--text-soft); font-size: 1.2rem; }

@@ -59,7 +59,7 @@
   if (ageOk) startAnalytics();
 
   // Only our own pages are allowed as a place to go back to.
-  var NEXT_RE = /^(store-locator|collection|tiger-ztripez|about|faq)(\.html)?([?#].*)?$/;
+  var NEXT_RE = /^(store-locator|collection|product-edu|about|faq)(\.html)?([?#].*)?$/;
   var next = new URLSearchParams(location.search).get("next");
   if (next && !NEXT_RE.test(next)) next = null;
 

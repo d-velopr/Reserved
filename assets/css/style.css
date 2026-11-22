@@ -1612,20 +1612,26 @@ body:has(.sheet[open]) { overflow: hidden; }
    ====================================================================== */
 .tz { --tz: #E8641B; }
 :root[data-theme="light"] .tz { --tz: #B8480C; } /* deeper orange reads on cream */
+/* Terp Tunnel: the gold of its logo */
+.tz .edu-terp { --tz: var(--gold); }
+:root[data-theme="light"] .tz .edu-terp { --tz: #8A5A0E; }
+.edu { scroll-margin-top: var(--head-h, 72px); }
+.edu + .edu { border-top: 1px solid var(--line); }
 .tz-hero { padding: 3.5rem 0 2.5rem; text-align: center; }
-.tz-hero h1 {
+.tz-hero h1, .tz-hero .tz-q {
   color: var(--tz);
   font-size: clamp(2.6rem, 9vw, 6rem);
   line-height: .95;
   text-transform: uppercase;
   text-wrap: balance;
 }
-.tz-hero h1 span { display: block; }
+.tz-hero h1 span, .tz-hero .tz-q span { display: block; }
 .tz-what { display: grid; gap: 1.75rem; padding-bottom: 3.5rem; }
 .tz-copy h2 { text-transform: uppercase; text-wrap: balance; }
 .tz-copy p { margin: 1rem 0 1.5rem; max-width: 34ch; color: var(--text-soft); font-size: 1.2rem; }
 .tz-photo { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--gold-glow); }
-.tz-photo img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.tz-photo { background: #fff; }
+.tz-photo img { width: 100%; height: auto; }
 /* What's in one: brochure spec lines, in the mono spec-label style */
 .tz-spec { list-style: none; margin: 0 0 1.5rem; padding: 0; max-width: 30ch; }
 .tz-spec li {

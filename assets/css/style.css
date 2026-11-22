@@ -1616,7 +1616,6 @@ body:has(.sheet[open]) { overflow: hidden; }
 .tz .edu-terp { --tz: var(--gold); }
 :root[data-theme="light"] .tz .edu-terp { --tz: #8A5A0E; }
 .edu { scroll-margin-top: var(--head-h, 72px); }
-.edu + .edu { border-top: 1px solid var(--line); }
 .tz-hero { padding: 3.5rem 0 2.5rem; text-align: center; }
 .tz-hero h1, .tz-hero .tz-q {
   color: var(--tz);
@@ -1626,14 +1625,17 @@ body:has(.sheet[open]) { overflow: hidden; }
   text-wrap: balance;
 }
 .tz-hero h1 span, .tz-hero .tz-q span { display: block; }
-/* Tiger Ztripez header: a dark band with a warm glow, the Tiger Ztripez
-   logo, and the question under it. Dark in both themes, like a banner. */
-.edu-tiger .tz-hero {
+/* Product headers: a dark band with a warm glow, the product's logo, and
+   the question under it. Dark in both themes, like a banner. Tiger Ztripez
+   in orange, Terp Tunnel in gold. */
+.edu { --hero-glow: rgba(232, 100, 27, .32); --hero-line: #E8641B; --hero-text: #F07A2E; }
+.edu-terp { --hero-glow: rgba(231, 177, 94, .28); --hero-line: #E7B15E; --hero-text: #F0BE6A; }
+.edu .tz-hero {
   padding: 2.5rem 0 3rem;
   background:
-    radial-gradient(ellipse 60% 70% at 50% 45%, rgba(232, 100, 27, .32), transparent 70%),
+    radial-gradient(ellipse 60% 70% at 50% 45%, var(--hero-glow), transparent 70%),
     linear-gradient(180deg, #17100B, #0B0807);
-  border-bottom: 3px solid #E8641B;
+  border-bottom: 3px solid var(--hero-line);
 }
 .tz-logo {
   display: block;
@@ -1642,9 +1644,11 @@ body:has(.sheet[open]) { overflow: hidden; }
   margin: 0 auto 1.25rem;
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, .6));
 }
-.edu-tiger .tz-hero h1 { color: #F07A2E; text-shadow: 0 4px 24px rgba(0, 0, 0, .55); }
-@media (min-width: 860px) { .edu-tiger .tz-hero { padding: 3rem 0 4rem; } }
-.edu-tiger .tz-what { padding-top: 3rem; }
+.edu-terp .tz-logo { width: min(56vw, 280px); }
+.edu .tz-hero h1, .edu .tz-hero .tz-q { color: var(--hero-text); text-shadow: 0 4px 24px rgba(0, 0, 0, .55); }
+@media (min-width: 860px) { .edu .tz-hero { padding: 3rem 0 4rem; } }
+.edu .tz-what { padding-top: 3rem; }
+
 
 .tz-what { display: grid; gap: 1.75rem; padding-bottom: 3.5rem; }
 .tz-copy h2 { text-transform: uppercase; text-wrap: balance; }

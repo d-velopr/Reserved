@@ -17,6 +17,10 @@
  * "Reserved Carry Us Attachments", and linked from the row. The first deploy
  * after this was added asks for Google Drive permission; approve it.
  *
+ * Also receives Gold Card sign-ups from the-list.html (kind: "gold", email sent
+ * as "from") and adds them to a "Gold Card" tab: name, birthday, pickup shop
+ * A repeat email updates its row instead of adding one.
+ *
  * SETUP (once, about 3 minutes)
  * -----------------------------------------------------------------------------
  *  1. Create a Google Sheet, e.g. "Reserved: Subscribers".
@@ -44,7 +48,7 @@
 
 // Shown when the /exec URL is opened in a browser. If it doesn't say this,
 // the live deployment is still running older code.
-var VERSION = 'carry-3';
+var VERSION = 'gold-1';
 var SHEET_NAME = 'Subscribers';
 // New columns go at the end so rows saved before they existed stay lined up.
 var HEADERS = ['Timestamp', 'Email', 'Signed Up From', 'Client Timestamp', 'ZIP Code', 'Source'];
@@ -60,6 +64,9 @@ var CARRY_PHONE_COL = 5;
 var CARRY_FOLDER = 'Reserved Carry Us Attachments';
 var CARRY_MAX_FILES = 5;
 var CARRY_MAX_BYTES = 10 * 1024 * 1024; // 10 MB in all, same as the page
+var GOLD_SHEET = 'Gold Card';
+// Email is column 2, like the Subscribers tab, so findSubscriber_ works on both.
+var GOLD_HEADERS = ['Timestamp', 'Email', 'Name', 'Birthday', 'Pickup Shop', 'Sent From', 'Updated'];
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -67,6 +74,7 @@ function doPost(e) {
     var data = parseRequest_(e);
     if (data.kind === 'contact') return saveMessage_(data, lock);
     if (data.kind === 'carry') return saveCarry_(data, lock);
+    if (data.kind === 'gold') return saveGold_(data, lock);
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) {
       return jsonResponse_({ status: 'error', message: 'Invalid email.' });
@@ -150,7 +158,10 @@ function parseRequest_(e) {
     state: clean_(raw.state, 40),
     dispensary: clean_(raw.dispensary, 120),
     via: clean_(raw.via, 60),
-    attachments: Array.isArray(raw.attachments) ? raw.attachments.slice(0, CARRY_MAX_FILES) : []
+    attachments: Array.isArray(raw.attachments) ? raw.attachments.slice(0, CARRY_MAX_FILES) : [],
+    // Gold Card form
+    birthday: clean_(raw.birthday, 10),
+    shop: clean_(raw.shop, 120)
   };
 }
 
@@ -185,6 +196,45 @@ function saveMessage_(data, lock) {
   }
   SpreadsheetApp.flush();
   console.log('Message from: ' + data.from);
+  return jsonResponse_({ status: 'ok' });
+}
+
+/** Adds a Gold Card member to the Gold Card tab, or updates their row. */
+function saveGold_(data, lock) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.from)) {
+    return jsonResponse_({ status: 'error', message: 'Invalid email.' });
+  }
+  if (!data.name || !data.shop) {
+    return jsonResponse_({ status: 'error', message: 'Name and pickup shop are required.' });
+  }
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(data.birthday);
+  if (!m) return jsonResponse_({ status: 'error', message: 'Invalid birthday.' });
+  var now = new Date();
+  var turned21 = new Date(Number(m[1]) + 21, Number(m[2]) - 1, Number(m[3]));
+  if (turned21 > now) return jsonResponse_({ status: 'error', message: 'Must be 21 or older.' });
+
+  lock.waitLock(10000);
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = book.getSheetByName(GOLD_SHEET);
+  if (!sheet) {
+    sheet = book.insertSheet(GOLD_SHEET);
+    sheet.appendRow(GOLD_HEADERS);
+    sheet.getRange(1, 1, 1, GOLD_HEADERS.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
+  // Birthday stays text (YYYY-MM-DD) so Sheets doesn't shift it by time zone.
+  var values = [data.name, data.birthday, data.shop, data.page];
+  var row = findSubscriber_(sheet, data.from);
+  if (row) {
+    sheet.getRange(row, 3, 1, 4).setNumberFormat('@').setValues([values]);
+    sheet.getRange(row, 7).setValue(now);
+  } else {
+    sheet.appendRow([now, data.from, '', '', '', '', '']);
+    row = sheet.getLastRow();
+    sheet.getRange(row, 3, 1, 4).setNumberFormat('@').setValues([values]);
+  }
+  SpreadsheetApp.flush();
+  console.log('Gold Card: ' + data.from);
   return jsonResponse_({ status: 'ok' });
 }
 

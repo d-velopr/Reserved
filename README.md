@@ -8,6 +8,7 @@ Static site for Reserved LLC (reservedwayornoway.com). No build step: open the H
 | Collection | `collection.html` | `assets/js/collection.js`, `assets/js/sheet.js` (the product sheet) |
 | Tiger Ztripez | `tiger-ztripez.html` | `assets/js/sheet.js` (strain cards open the product sheet on the page); linked from the FAQ and About pages |
 | Terp Tunnel | `terp-tunnel.html` | none; linked from the FAQ and About pages |
+| The Reserved List | `the-list.html` | Gold Card + sign-up form in `assets/js/site.js` (shops from `assets/js/stores.js`); in the Learn menu (modeled on 710labs.com/thelist) |
 | Store Locator | `store-locator.html` | `assets/js/locator.js` |
 | About | `about.html` | none |
 | FAQ | `faq.html` | none |
@@ -24,7 +25,7 @@ The 21+ entry gate is on the Home page only. A first-time visitor who opens anot
 
 - **Products:** `assets/js/products.js`. Flower is listed by strain (type and sizes); the other categories by product. The Collection page and the Home tiles both read it. A category with no products is hidden on both (Flower, until strains are added).
 - **Stores:** `assets/js/stores.js`. The map and the store list read it, and the Home page's Coming Soon cards come from `RESERVED_COMING_SOON` in the same file.
-- **Sign-ups:** go to a Google Sheet through `subscribe.gs`. Contact-page messages go to the same Sheet, on its Messages tab.
+- **Sign-ups:** go to a Google Sheet through `subscribe.gs`. Contact-page messages go to the same Sheet, on its Messages tab. Gold Card sign-ups go to its Gold Card tab (a repeat email updates its row).
 
 ## Links you can share
 

@@ -59,7 +59,7 @@
   if (ageOk) startAnalytics();
 
   // Only our own pages are allowed as a place to go back to.
-  var NEXT_RE = /^(store-locator|collection|tiger-ztripez|terp-tunnel|about|faq)(\.html)?([?#].*)?$/;
+  var NEXT_RE = /^(store-locator|collection|tiger-ztripez|terp-tunnel|the-list|about|faq)(\.html)?([?#].*)?$/;
   var next = new URLSearchParams(location.search).get("next");
   if (next && !NEXT_RE.test(next)) next = null;
 
@@ -171,7 +171,7 @@
   if (header && "ResizeObserver" in window) new ResizeObserver(measureHeader).observe(header);
 
   /* ---------- Learn (sub-menu in the page links) ---------- */
-  // The Learn button opens its two links: a drop-down panel on wider screens,
+  // The Learn button opens its links: a drop-down panel on wider screens,
   // indented rows in the phone menu. A tap outside or Escape closes it.
   var subBtns = document.querySelectorAll(".nav-sub-btn");
   var closeSubs = function (except) {
@@ -535,4 +535,130 @@
     }
   });
   if (location.hash) openSection(decodeURIComponent(location.hash.slice(1)), false);
+
+  /* ---------- Gold Card (the-list.html) ---------- */
+  // The card shows JOIN until the visitor signs up, then MEMBER and their pickup
+  // shop. That's remembered on this device only (localStorage reservedGold and
+  // reservedGoldShop). The sign-up goes to the same Apps Script, kind "gold",
+  // and lands on the Sheet's "Gold Card" tab. A repeat email updates its row.
+  var pass = document.querySelector(".pass");
+  var gold = document.getElementById("gold-form");
+  if (pass && gold) {
+    var flipBtn = pass.querySelector(".pass-flip");
+    var joinBtn = pass.querySelector(".pass-join");
+    var shopLine = document.getElementById("pass-shop");
+    var done = document.getElementById("gold-done");
+    var gMsg = document.getElementById("gold-msg");
+    var stored = function (k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+    var store = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+
+    var setFlip = function (on) {
+      pass.classList.toggle("is-flipped", on);
+      flipBtn.setAttribute("aria-pressed", String(on));
+    };
+    var showMember = function (shop) {
+      pass.setAttribute("data-member", "yes");
+      shopLine.textContent = shop ? "Pickup: " + shop : "";
+    };
+    if (stored("reservedGold") === "yes") showMember(stored("reservedGoldShop"));
+
+    // Tap anywhere on the card to flip it, except JOIN.
+    pass.addEventListener("click", function (e) {
+      if (e.target.closest(".pass-join")) return;
+      setFlip(!pass.classList.contains("is-flipped"));
+    });
+    joinBtn.addEventListener("click", function () {
+      gold.hidden = false;
+      joinBtn.setAttribute("aria-expanded", "true");
+      gold.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
+      gold.elements.name.focus({ preventScroll: true });
+    });
+
+    // Pickup shops: one tap tile per shop in stores.js, with its logo.
+    var shopRow = gold.querySelector(".gold-shops");
+    (window.RESERVED_STORES || []).forEach(function (s) {
+      var label = document.createElement("label");
+      label.className = "choice";
+      var input = document.createElement("input");
+      input.type = "radio";
+      input.name = "shop";
+      input.value = s.name + ", " + s.city;
+      var span = document.createElement("span");
+      if (s.logo) {
+        var img = document.createElement("img");
+        img.src = s.logo;
+        img.alt = "";
+        img.loading = "lazy";
+        span.appendChild(img);
+      }
+      var b = document.createElement("b");
+      b.textContent = s.name;
+      span.appendChild(b);
+      span.appendChild(document.createTextNode(s.city));
+      label.appendChild(input);
+      label.appendChild(span);
+      shopRow.appendChild(label);
+    });
+
+    // Birthday: the picker stops at the day someone turned 21.
+    var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+    var now = new Date();
+    var cutoff = new Date(now.getFullYear() - 21, now.getMonth(), now.getDate());
+    gold.elements.birthday.max = cutoff.getFullYear() + "-" + pad(cutoff.getMonth() + 1) + "-" + pad(cutoff.getDate());
+
+    var gFields = [gold.elements.name, gold.elements.email, gold.elements.birthday,
+      document.getElementById("g-shop")];
+    var goldError = function (text, field) {
+      gMsg.textContent = text;
+      gMsg.className = "form-msg err";
+      gFields.forEach(function (f) { f.removeAttribute("aria-invalid"); });
+      if (field) {
+        field.setAttribute("aria-invalid", "true");
+        (field.tagName === "FIELDSET" ? field.querySelector("input") : field).focus();
+      }
+    };
+
+    gold.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (gold.company.value) return; // bot
+      var name = gold.elements.name.value.trim();
+      var email = gold.elements.email.value.trim();
+      var bday = gold.elements.birthday.value; // YYYY-MM-DD
+      var shop = (gold.querySelector('input[name="shop"]:checked') || {}).value;
+      if (!name) return goldError("Enter your name.", gold.elements.name);
+      if (!EMAIL_RE.test(email)) return goldError("Enter an email like name@email.com.", gold.elements.email);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(bday)) return goldError("Enter your birthday.", gold.elements.birthday);
+      if (bday > gold.elements.birthday.max) return goldError("The Gold Card is for adults 21 and older.", gold.elements.birthday);
+      if (!shop) return goldError("Pick your pickup shop.", gFields[3]);
+      goldError("");
+      gMsg.className = "form-msg";
+
+      var btn = gold.querySelector("button[type=submit]");
+      btn.disabled = true;
+      btn.textContent = "Sending...";
+      sendSignup({
+        kind: "gold",
+        name: name,
+        from: email, // "from", not "email": see subscribe.gs
+        birthday: bday,
+        shop: shop
+      }).then(function () {
+        store("reservedGold", "yes");
+        store("reservedGoldShop", shop);
+        gold.reset();
+        gold.hidden = true;
+        joinBtn.setAttribute("aria-expanded", "false");
+        showMember(shop);
+        setFlip(false);
+        done.textContent = "You're a Gold Card member.";
+        done.className = "form-msg ok gold-done";
+        pass.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "center" });
+      }).catch(function () {
+        goldError("That didn't go through. Check your connection and try again.");
+      }).then(function () {
+        btn.disabled = false;
+        btn.textContent = "Get my Gold Card";
+      });
+    });
+  }
 })();

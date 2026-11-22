@@ -1626,9 +1626,48 @@ body:has(.sheet[open]) { overflow: hidden; }
 .tz-copy p { margin: 1rem 0 1.5rem; max-width: 34ch; color: var(--text-soft); font-size: 1.2rem; }
 .tz-photo { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--gold-glow); }
 .tz-photo img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+/* What's in one: brochure spec lines, in the mono spec-label style */
+.tz-spec { list-style: none; margin: 0 0 1.5rem; padding: 0; max-width: 30ch; }
+.tz-spec li {
+  padding: .5rem 0;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font: 500 .85rem/1.4 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.tz-spec li:last-child { border-bottom: 1px solid var(--line); }
+/* Four "why" tiles: icon, short title, one line */
+.tz-why { padding-bottom: 3.5rem; }
+.tz-feats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.tz-feat { padding: 1.25rem 1.1rem 1.35rem; background: var(--surface); box-shadow: var(--gold-glow); }
+.tz-feat svg { width: 34px; height: 34px; color: var(--tz); }
+.tz-feat h3 { margin: .6rem 0 .3rem; font-size: 1rem; font-weight: 900; font-variation-settings: "wdth" 110; line-height: 1.15; text-transform: uppercase; }
+.tz-feat p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.45; }
+/* The strains: Collection cards that open each one's sheet */
+.tz-strains { padding-bottom: 4rem; }
+.tz-strains h2 { margin-bottom: 1rem; font-size: clamp(1.5rem, 5vw, 2.2rem); text-transform: uppercase; }
+.tz-strains .card { text-decoration: none; }
+@media (min-width: 1000px) { .tz-strains .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } } /* six strains: two even rows */
+.tz-strains .card-body { justify-items: start; gap: .4rem; }
+.tz-type {
+  padding: .1rem .5rem;
+  border-radius: 4px;
+  color: var(--white);
+  font-size: .72rem;
+  font-weight: 800;
+  font-variation-settings: "wdth" 80;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.tz-sativa { background: var(--t-green); }
+.tz-hybrid { background: #A8740F; }
+.tz-indica { background: var(--t-purple); }
 @media (min-width: 860px) {
   .tz-hero { padding: 5rem 0 4rem; }
   .tz-what { grid-template-columns: 1fr 1fr; align-items: center; gap: 3rem; padding-bottom: 5rem; }
+  .tz-feats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .tz-why { padding-bottom: 5rem; }
 }
 @media (max-width: 639px) {
   .tz-copy .btn { width: 100%; }

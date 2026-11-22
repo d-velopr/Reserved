@@ -46,16 +46,20 @@
     return '<span class="' + cls + kind + '" style="--cat:' + esc(c.color || "#222") + '">' + img + "</span>";
   }
 
+  // The product line, linked when it has its own page (RESERVED_LINES)
+  function lineHtml(p, cls) {
+    var page = (window.RESERVED_LINES || {})[p.line];
+    return page ? '<a class="' + cls + '" href="' + esc(page) + '">' + esc(p.line) + "</a>" : esc(p.line);
+  }
   function metaLine(p) {
-    return [p.line, p.size, p.type].filter(Boolean).map(esc).join(" · ");
+    var meta = [p.size, p.type].filter(Boolean).map(esc);
+    if (p.line) meta.unshift(lineHtml(p, "card-line"));
+    return meta.join(" · ");
   }
   // Sheet line: adds lineage and THC when a strain has them
   function sheetMeta(p) {
     var meta = [p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc);
-    if (p.line) {
-      var page = (window.RESERVED_LINES || {})[p.line];
-      meta.unshift(page ? '<a href="' + esc(page) + '">' + esc(p.line) + "</a>" : esc(p.line));
-    }
+    if (p.line) meta.unshift(lineHtml(p, "sheet-line"));
     return meta.join(" · ");
   }
 
@@ -76,11 +80,13 @@
     return '<section class="shelf-cat" data-cat="' + esc(c.id) + '" aria-labelledby="cat-' + esc(c.id) + '">' +
       '<div class="shelf-head"><h2 id="cat-' + esc(c.id) + '">' + esc(c.name) + "</h2></div>" +
       '<ul class="cards">' + items.map(function (p) {
-        return '<li><button type="button" class="card" data-id="' + esc(p.id) + '" aria-haspopup="dialog">' +
+        // The name is the button; it stretches over the whole card, so a tap
+        // anywhere opens the sheet. The line link sits above it.
+        return '<li><div class="card" data-id="' + esc(p.id) + '">' +
           artHtml(p, "card-art") +
           (p.soon ? '<span class="soon">Coming soon</span>' : "") +
-          '<span class="card-body"><span class="card-name">' + esc(p.name) + "</span>" +
-          '<span class="card-meta">' + metaLine(p) + "</span></span></button></li>";
+          '<span class="card-body"><button type="button" class="card-name card-open" aria-haspopup="dialog">' + esc(p.name) + "</button>" +
+          '<span class="card-meta">' + metaLine(p) + "</span></span></div></li>";
       }).join("") + "</ul></section>";
   }).join("");
 
@@ -166,10 +172,10 @@
   }
 
   shelf.addEventListener("click", function (e) {
-    var card = e.target.closest(".card");
-    if (!card) return;
-    lastCard = card;
-    openProduct(card.dataset.id);
+    var btn = e.target.closest(".card-open");
+    if (!btn) return;
+    lastCard = btn;
+    openProduct(btn.closest(".card").dataset.id);
   });
 
   document.getElementById("sheet-close").addEventListener("click", function () { sheet.close(); });
@@ -187,7 +193,7 @@
   } else {
     showCat("all", false);
     if (productById[start]) {
-      lastCard = shelf.querySelector('.card[data-id="' + start + '"]');
+      lastCard = shelf.querySelector('.card[data-id="' + start + '"] .card-open');
       openProduct(start);
     }
   }

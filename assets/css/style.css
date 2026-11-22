@@ -1129,11 +1129,8 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: inherit;
-  font: inherit;
   text-align: left;
-  cursor: pointer;
   transition: transform .15s ease, border-color .15s ease;
-  -webkit-tap-highlight-color: transparent;
 }
 .card:hover { transform: translateY(-3px); border-color: var(--line-2); }
 .card:active { transform: scale(.98); }
@@ -1634,6 +1631,23 @@ body:has(.sheet[open]) { overflow: hidden; }
   .tz-copy .btn { width: 100%; }
 }
 
-/* Product sheet: a product line with its own page links there */
-.sheet-meta a { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; }
-.sheet-meta a:hover { color: var(--text); }
+/* Product line with its own page (Tiger Ztripez): linked on the sheet and the cards */
+.sheet-line, .card-line { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; }
+.sheet-line:hover, .card-line:hover { color: var(--text); }
+
+/* Collection cards: the name button stretches over the whole card (a tap
+   anywhere opens the sheet); the line link sits above it */
+.card .card-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.card .card-open::after { content: ""; position: absolute; inset: 0; z-index: 2; }
+.card .card-open:focus-visible { outline: none; }
+.card:has(.card-open:focus-visible) { outline: 3px solid var(--text); outline-offset: 3px; }
+.card-line { position: relative; z-index: 3; display: inline-block; padding-block: .2rem; }

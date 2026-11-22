@@ -54,14 +54,6 @@
     return [p.line, p.size, p.type, p.lineage, p.thc ? "THC " + p.thc : ""].filter(Boolean).map(esc).join(" · ");
   }
 
-  // "What is a Tiger Ztripez?": for a product whose line has its own page
-  function learnHtml(p) {
-    var page = p.line && (window.RESERVED_LINES || {})[p.line];
-    if (!page) return "";
-    return '<a class="btn btn-sm btn-outline sheet-learn" href="' + esc(page) + '">What is a ' + esc(p.line) +
-      '?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
-  }
-
   /* ---------- Chips ---------- */
   var chipBar = document.getElementById("chips");
   var chipData = [{ id: "all", name: "All" }].concat(CATS);
@@ -135,7 +127,6 @@
         (sheetMeta(p) ? '<p class="sheet-meta">' + sheetMeta(p) + "</p>" : "") +
         (p.soon ? '<p class="soon soon-inline">Coming soon</p>' : "") +
         (p.desc ? '<p class="sheet-desc">' + esc(p.desc) + "</p>" : "") +
-        learnHtml(p) +
         // Flower strains: the sizes it comes in
         ((p.sizes || []).length
           ? '<p class="sheet-label">Available in</p><ul class="formats">' +
@@ -156,16 +147,47 @@
     sheet.scrollTop = 0;
   }
 
+  // Phones (iPhone included) get their own share menu: Messages, AirDrop,
+  // WhatsApp and the rest. It has to be called straight from the tap, so
+  // nothing async runs before navigator.share. Where there's no share menu
+  // (most desktops, some in-app browsers), or it fails, the link is copied.
   function share(p) {
     var url = location.href.split("#")[0] + "#" + p.id;
+    var title = "Reserved " + [p.line, p.name].filter(Boolean).join(" ");
     var shareMsg = document.getElementById("share-msg");
-    if (navigator.share) {
-      navigator.share({ title: "Reserved " + [p.line, p.name].filter(Boolean).join(" "), url: url }).catch(function () {});
-    } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(function () {
-        shareMsg.textContent = "Link copied.";
-        shareMsg.className = "form-msg ok";
+    function say(text, ok) {
+      shareMsg.textContent = text;
+      shareMsg.className = "form-msg" + (ok ? " ok" : "");
+    }
+    function copy() {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(function () { say("Link copied.", true); }, oldCopy);
+      } else {
+        oldCopy();
+      }
+    }
+    // Older browsers: copy from a hidden text box
+    function oldCopy() {
+      var box = document.createElement("textarea");
+      box.value = url;
+      box.setAttribute("readonly", "");
+      box.style.cssText = "position:fixed;top:0;left:0;opacity:0;font-size:16px";
+      sheet.appendChild(box);
+      box.select();
+      box.setSelectionRange(0, url.length);
+      var done = false;
+      try { done = document.execCommand("copy"); } catch (e) {}
+      box.remove();
+      say(done ? "Link copied." : "Copy this link: " + url, done);
+    }
+    var data = { title: title, url: url };
+    if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+      navigator.share(data).catch(function (err) {
+        // Closing the menu without sharing is fine; anything else, copy instead
+        if (!err || err.name !== "AbortError") copy();
       });
+    } else {
+      copy();
     }
   }
 

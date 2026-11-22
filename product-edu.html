@@ -160,27 +160,27 @@
     <section class="wrap tz-strains">
       <h2>The strains</h2>
       <ul class="cards">
-          <li><a class="card" href="collection.html#lilas-lotus-tiger-ztripez">
+          <li><a class="card" href="collection.html#lilas-lotus-tiger-ztripez" data-sheet="lilas-lotus-tiger-ztripez" aria-haspopup="dialog">
             <span class="card-art has-photo"><img src="assets/img/prerolls/lilas-lotus-tiger-ztripez.webp" alt="" width="900" height="900" loading="lazy" /></span>
             <span class="card-body"><span class="tz-type tz-sativa">Sativa</span><span class="card-name">Lila's Lotus</span></span>
           </a></li>
-          <li><a class="card" href="collection.html#hardcore-og-tiger-ztripez">
+          <li><a class="card" href="collection.html#hardcore-og-tiger-ztripez" data-sheet="hardcore-og-tiger-ztripez" aria-haspopup="dialog">
             <span class="card-art has-photo"><img src="assets/img/prerolls/hardcore-og-tiger-ztripez.webp" alt="" width="900" height="900" loading="lazy" /></span>
             <span class="card-body"><span class="tz-type tz-hybrid">Hybrid</span><span class="card-name">Hardcore OG</span></span>
           </a></li>
-          <li><a class="card" href="collection.html#matcha-tiger-ztripez">
+          <li><a class="card" href="collection.html#matcha-tiger-ztripez" data-sheet="matcha-tiger-ztripez" aria-haspopup="dialog">
             <span class="card-art has-photo"><img src="assets/img/prerolls/matcha-tiger-ztripez.webp" alt="" width="900" height="900" loading="lazy" /></span>
             <span class="card-body"><span class="tz-type tz-hybrid">Hybrid</span><span class="card-name">Matcha</span></span>
           </a></li>
-          <li><a class="card" href="collection.html#rainbow-z-tiger-ztripez">
+          <li><a class="card" href="collection.html#rainbow-z-tiger-ztripez" data-sheet="rainbow-z-tiger-ztripez" aria-haspopup="dialog">
             <span class="card-art has-photo"><img src="assets/img/prerolls/rainbow-z-tiger-ztripez.webp" alt="" width="900" height="900" loading="lazy" /></span>
             <span class="card-body"><span class="tz-type tz-indica">Indica</span><span class="card-name">Rainbow Z</span></span>
           </a></li>
-          <li><a class="card" href="collection.html#toad-venom-tiger-ztripez">
+          <li><a class="card" href="collection.html#toad-venom-tiger-ztripez" data-sheet="toad-venom-tiger-ztripez" aria-haspopup="dialog">
             <span class="card-art has-photo"><img src="assets/img/prerolls/toad-venom-tiger-ztripez.webp" alt="" width="900" height="900" loading="lazy" /></span>
             <span class="card-body"><span class="tz-type tz-indica">Indica</span><span class="card-name">Toad Venom</span></span>
           </a></li>
-          <li><a class="card" href="collection.html#zandia-tiger-ztripez">
+          <li><a class="card" href="collection.html#zandia-tiger-ztripez" data-sheet="zandia-tiger-ztripez" aria-haspopup="dialog">
             <span class="card-art has-photo"><img src="assets/img/prerolls/zandia-tiger-ztripez.webp" alt="" width="900" height="900" loading="lazy" /></span>
             <span class="card-body"><span class="card-name">Zandia</span></span>
           </a></li>
@@ -273,6 +273,19 @@
     </div>
   </footer>
 
+  <!-- Product sheet: slides up from the bottom on phones, centered on wider
+       screens. Filled in by sheet.js. -->
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <span class="sheet-grip" aria-hidden="true"></span>
+    <button type="button" class="sheet-close" id="sheet-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+    <div id="sheet-body"></div>
+  </dialog>
+
+  <script src="assets/js/products.js?v=24"></script>
   <script src="assets/js/site.js?v=26"></script>
+  <script src="assets/js/sheet.js?v=1"></script>
+  <script>ReservedSheet.openFromHash();</script>
 </body>
 </html>

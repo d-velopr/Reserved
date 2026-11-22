@@ -1649,6 +1649,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 .tz-roll { display: block; width: 100%; max-width: 460px; height: auto; margin: 0 0 1.25rem; }
 .roll-paper { fill: none; stroke: var(--text); stroke-opacity: .55; stroke-width: 1.5; stroke-linejoin: round; }
 .roll-twist { fill: var(--surface-3); stroke: var(--text); stroke-opacity: .55; stroke-width: 1.5; stroke-linejoin: round; }
+.roll-end { stroke: var(--text); stroke-opacity: .55; stroke-width: 1.5; }
 .roll-tip { fill: var(--text); fill-opacity: .08; stroke: var(--text); stroke-opacity: .6; stroke-width: 1.5; }
 .roll-tip-shine { stroke: var(--text); stroke-opacity: .3; stroke-width: 2; stroke-linecap: round; }
 .roll-call path { fill: none; stroke: var(--text); stroke-opacity: .6; stroke-width: 1.2; }
@@ -1663,7 +1664,8 @@ body:has(.sheet[open]) { overflow: hidden; }
   position: relative;
   display: flex;
   align-items: center;
-  padding: 0 .55rem;
+  min-width: 0;
+  padding: 0 .4rem;
   border-radius: 4px;
   font-size: .85rem;
   font-weight: 800;

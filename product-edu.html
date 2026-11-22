@@ -61,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=173" />
+  <link rel="stylesheet" href="assets/css/style.css?v=174" />
 </head>
 <body>
 
@@ -198,15 +198,53 @@
 
     <section class="wrap tz-what">
       <div class="tz-copy">
-        <h2>A live resin tunnel, through the middle</h2>
-        <p>Indoor nug flower hand rolled around a core of live resin badder, for an even, slow burn.</p>
-        <ul class="tz-spec">
-          <li>2g premium nug flower</li>
-          <li>0.3g live resin badder</li>
-          <li>Element paper</li>
-          <li>Glass tip</li>
-          <li>Child-resistant tube</li>
+        <p class="eyebrow">What's inside one</p>
+        <!-- The pre-roll, drawn: flower around a core of live resin (the tunnel), Element paper, glass tip -->
+        <svg class="tz-roll" viewBox="0 0 360 150" role="img" aria-label="A Terp Tunnel pre-roll: indoor nug flower rolled around a core of live resin badder, in Element paper, with a glass tip">
+          <defs>
+            <clipPath id="terp-body"><path d="M24 50 L282 61 L282 89 L24 100 Z"/></clipPath>
+            <pattern id="terp-bud" width="9" height="9" patternUnits="userSpaceOnUse">
+              <rect width="9" height="9" fill="#1F7A4D"/>
+              <circle cx="2.5" cy="2.5" r="1.6" fill="#2E9A63"/><circle cx="7" cy="6.5" r="1.3" fill="#16603C"/>
+            </pattern>
+          </defs>
+          <g clip-path="url(#terp-body)">
+            <rect x="20" y="40" width="270" height="70" fill="url(#terp-bud)"/>
+            <rect x="24" y="70" width="248" height="10" rx="5" fill="#C27C0E"/>
+          </g>
+          <path class="roll-paper" d="M24 50 L282 61 L282 89 L24 100 Z"/>
+          <!-- Open end: the tunnel of resin through the flower -->
+          <ellipse cx="24" cy="75" rx="9" ry="25" fill="url(#terp-bud)" class="roll-end"/>
+          <ellipse cx="24" cy="75" rx="3.5" ry="6" fill="#C27C0E"/>
+          <rect class="roll-tip" x="282" y="62" width="52" height="26" rx="6"/>
+          <path class="roll-tip-shine" d="M290 68 h34"/>
+          <g class="roll-call">
+            <path d="M60 75 V24"/><circle cx="60" cy="75" r="2.5"/><text x="54" y="17">Live resin badder</text>
+            <path d="M262 61 V24"/><circle cx="262" cy="61" r="2.5"/><text x="336" y="17" text-anchor="end">Element paper</text>
+            <path d="M110 88 V122"/><circle cx="110" cy="88" r="2.5"/><text x="104" y="138">Indoor flower</text>
+            <path d="M318 76 V122"/><circle cx="318" cy="76" r="2.5"/><text x="336" y="138" text-anchor="end">Glass tip</text>
+          </g>
+        </svg>
+
+        <!-- 2.3g, split by weight. Tap a part for its name and share. -->
+        <div class="tz-mix">
+          <p class="tz-total"><span>2.3g</span> per pre-roll</p>
+          <div class="tz-bar" role="img" aria-label="2.3g: 2.0g premium nug flower (87%) and 0.3g live resin badder (13%)">
+            <span class="tz-seg tz-flower" style="flex-grow:2" tabindex="0" data-tip="Premium nug flower · 87%">2.0g</span>
+            <span class="tz-seg tz-resin" style="flex-grow:.3" tabindex="0" data-tip="Live resin badder · 13%">0.3g</span>
+          </div>
+          <ul class="tz-legend">
+            <li><i class="tz-flower" aria-hidden="true"></i>Premium nug flower</li>
+            <li><i class="tz-resin" aria-hidden="true"></i>Live resin badder</li>
+          </ul>
+        </div>
+
+        <ul class="tz-tags">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z M15 3v3h3 M9 11h6 M9 15h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>Element paper</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="9" width="16" height="6" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Glass tip</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Child-resistant tube</li>
         </ul>
+
         <a class="btn btn-red" href="store-locator.html">Find a Store</a>
       </div>
       <figure class="tz-photo">

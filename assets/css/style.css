@@ -204,7 +204,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .brand img { width: clamp(130px, 22vw, 180px); height: auto; }
 /* Page links: inline on wider screens, a drop-down menu on phones */
 .nav { display: flex; align-items: center; gap: .25rem; margin-left: auto; }
-.nav a {
+.nav a, .nav-sub-btn {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -216,24 +216,31 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   text-decoration: none;
   white-space: nowrap;
 }
-.nav a:hover { color: var(--text); }
-.nav a[aria-current="page"] { color: var(--text); background: var(--surface-3); }
+.nav a:hover, .nav-sub-btn:hover { color: var(--text); }
+.nav a[aria-current="page"], .nav-sub-btn.nav-current { color: var(--text); background: var(--surface-3); }
 /* Wider screens: five links evenly spaced, with clear room before the round
    light/dark and Instagram buttons */
 @media (min-width: 641px) {
   .nav { gap: .15rem; margin-right: .6rem; }
-  .nav a { padding: .5rem .8rem; }
+  .nav a, .nav-sub-btn { padding: .5rem .8rem; }
 }
 /* Tablets and small laptop windows: the links get more compact so the logo,
    five links and two round buttons fit on one row */
 @media (min-width: 641px) and (max-width: 1040px) {
   .nav { gap: 0; margin-right: .25rem; }
-  .nav a { padding: .5rem .55rem; font-size: .95rem; }
+  .nav a, .nav-sub-btn { padding: .5rem .55rem; font-size: .95rem; }
 }
 @media (min-width: 641px) and (max-width: 860px) {
   .top { gap: .5rem; }
   .brand img { width: clamp(104px, 17vw, 150px); }
-  .nav a { padding: .45rem .4rem; font-size: .88rem; font-variation-settings: "wdth" 84; }
+  .nav a, .nav-sub-btn { padding: .45rem .34rem; font-size: .88rem; font-variation-settings: "wdth" 84; }
+  .nav-sub-btn { gap: .15rem; }
+  .nav-chev { width: 13px; height: 13px; }
+}
+/* Narrowest tablet widths: a touch tighter still so the six links fit */
+@media (min-width: 641px) and (max-width: 700px) {
+  .top { gap: .3rem; }
+  .nav a, .nav-sub-btn { padding-inline: .28rem; }
 }
 /* Instagram and light/dark: round icon buttons, gold outline */
 .ig-btn, .theme-btn {
@@ -264,6 +271,42 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .nav .nav-theme { display: none; }
 /* Menu button (phones only): three lines that turn into an X when open */
 .menu-btn { display: none; }
+
+/* Learn: a button in the links that opens two sub-links (site.js toggles
+   aria-expanded). A drop-down panel on wider screens; on phones the links
+   open indented under it in the menu. */
+.nav-group { position: relative; }
+.nav-sub-btn {
+  gap: .3rem;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-chev { width: 16px; height: 16px; transition: transform .15s ease; }
+.nav-sub-btn[aria-expanded="true"] .nav-chev { transform: rotate(180deg); }
+.nav-sub {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1001;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 250px;
+  padding: .4rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--menu-shadow);
+}
+.nav-sub-btn[aria-expanded="true"] + .nav-sub { display: flex; }
+.nav .nav-sub a { justify-content: flex-start; border-radius: 10px; color: var(--text); }
+.nav .nav-sub a:hover { background: var(--surface-2); }
+.nav .nav-sub a[aria-current="page"] { background: var(--surface-3); }
+@media (prefers-reduced-motion: reduce) { .nav-chev { transition: none; } }
 
 /* ---------- Phone header: logo left, menu button right ---------- */
 @media (max-width: 640px) {
@@ -323,7 +366,7 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
     box-shadow: var(--menu-shadow);
   }
   .top.menu-open .nav { display: flex; animation: menu-down .18s ease-out; }
-  .nav a {
+  .nav a, .nav-sub-btn {
     min-height: 52px;
     padding: .5rem .9rem;
     border-radius: 0;
@@ -332,6 +375,22 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   }
   .nav a[aria-current="page"] { background: none; box-shadow: inset 3px 0 0 var(--red); }
   .nav a:last-of-type { border-bottom: 0; } /* no divider under the last link */
+  /* Learn: a full-width row; its two links open indented under it */
+  .nav-sub-btn { width: 100%; justify-content: space-between; }
+  .nav-sub-btn.nav-current { background: none; }
+  .nav-sub {
+    position: static;
+    min-width: 0;
+    padding: 0 0 0 1rem;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    gap: 0;
+  }
+  .nav .nav-sub a, .nav .nav-sub a:last-of-type { border-radius: 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; color: var(--text-soft); }
+  .nav .nav-sub a:hover { background: none; }
+  .nav .nav-sub a[aria-current="page"] { background: none; color: var(--text); }
   /* Light/dark switch: sits at the right end of the Home row (no row of its own).
      Top matches the menu's top padding; height matches a menu row. */
   .theme-btn { display: none; }

@@ -170,6 +170,30 @@
   window.addEventListener("load", measureHeader);
   if (header && "ResizeObserver" in window) new ResizeObserver(measureHeader).observe(header);
 
+  /* ---------- Learn (sub-menu in the page links) ---------- */
+  // The Learn button opens its two links: a drop-down panel on wider screens,
+  // indented rows in the phone menu. A tap outside or Escape closes it.
+  var subBtns = document.querySelectorAll(".nav-sub-btn");
+  var closeSubs = function (except) {
+    subBtns.forEach(function (b) { if (b !== except) b.setAttribute("aria-expanded", "false"); });
+  };
+  subBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var open = b.getAttribute("aria-expanded") !== "true";
+      closeSubs(b);
+      b.setAttribute("aria-expanded", String(open));
+    });
+  });
+  if (subBtns.length) {
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".nav-group")) closeSubs();
+    });
+    document.addEventListener("keydown", function (e) {
+      var open = document.querySelector('.nav-sub-btn[aria-expanded="true"]');
+      if (e.key === "Escape" && open) { closeSubs(); open.focus(); }
+    });
+  }
+
   /* ---------- Phone menu ---------- */
   // The menu button only shows on phones (see style.css). It opens the page
   // links as a drop-down under the header. A tap outside, Escape, or picking
@@ -177,6 +201,7 @@
   var menuBtn = document.querySelector(".menu-btn");
   if (header && menuBtn) {
     var setMenu = function (open) {
+      if (!open) closeSubs();
       header.classList.toggle("menu-open", open);
       menuBtn.setAttribute("aria-expanded", String(open));
       menuBtn.setAttribute("aria-label", open ? "Close menu" : "Menu");

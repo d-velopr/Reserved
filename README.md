@@ -6,7 +6,8 @@ Static site for Reserved LLC (reservedwayornoway.com). No build step: open the H
 |------|------|--------|
 | Home | `index.html` | `assets/js/home.js` |
 | Collection | `collection.html` | `assets/js/collection.js`, `assets/js/sheet.js` (the product sheet) |
-| Tiger Ztripez & Terp Tunnel | `product-edu.html` | `assets/js/sheet.js` (strain cards open the product sheet on the page); linked from the FAQ and About pages |
+| Tiger Ztripez | `tiger-ztripez.html` | `assets/js/sheet.js` (strain cards open the product sheet on the page); linked from the FAQ and About pages |
+| Terp Tunnel | `terp-tunnel.html` | none; linked from the FAQ and About pages |
 | Store Locator | `store-locator.html` | `assets/js/locator.js` |
 | About | `about.html` | none |
 | FAQ | `faq.html` | none |

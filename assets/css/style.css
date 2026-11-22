@@ -1608,23 +1608,23 @@ body:has(.sheet[open]) { overflow: hidden; }
 }
 
 /* ======================================================================
-   Tiger Ztripez: big centered question, then the answer beside a photo
+   Tiger Ztripez and Terp Tunnel pages: a header with the logo and the
+   question, then what's inside beside the menu image
    ====================================================================== */
 .tz { --tz: #E8641B; }
 :root[data-theme="light"] .tz { --tz: #B8480C; } /* deeper orange reads on cream */
 /* Terp Tunnel: the gold of its logo */
 .tz .edu-terp { --tz: var(--gold); }
 :root[data-theme="light"] .tz .edu-terp { --tz: #8A5A0E; }
-.edu { scroll-margin-top: var(--head-h, 72px); }
 .tz-hero { padding: 3.5rem 0 2.5rem; text-align: center; }
-.tz-hero h1, .tz-hero .tz-q {
+.tz-hero h1 {
   color: var(--tz);
   font-size: clamp(2.6rem, 9vw, 6rem);
   line-height: .95;
   text-transform: uppercase;
   text-wrap: balance;
 }
-.tz-hero h1 span, .tz-hero .tz-q span { display: block; }
+.tz-hero h1 span { display: block; }
 /* Product headers: a dark band with a warm glow, the product's logo, and
    the question under it. Dark in both themes, like a banner. Tiger Ztripez
    in orange, Terp Tunnel in gold. */
@@ -1645,28 +1645,15 @@ body:has(.sheet[open]) { overflow: hidden; }
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, .6));
 }
 .edu-terp .tz-logo { width: min(56vw, 280px); }
-.edu .tz-hero h1, .edu .tz-hero .tz-q { color: var(--hero-text); text-shadow: 0 4px 24px rgba(0, 0, 0, .55); }
+.edu .tz-hero h1 { color: var(--hero-text); text-shadow: 0 4px 24px rgba(0, 0, 0, .55); }
 @media (min-width: 860px) { .edu .tz-hero { padding: 3rem 0 4rem; } }
 .edu .tz-what { padding-top: 3rem; }
 
 
 .tz-what { display: grid; gap: 1.75rem; padding-bottom: 3.5rem; }
-.tz-copy h2 { text-transform: uppercase; text-wrap: balance; }
 .tz-copy p { margin: 1rem 0 1.5rem; max-width: 34ch; color: var(--text-soft); font-size: 1.2rem; }
-.tz-photo { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--gold-glow); }
-.tz-photo { background: #fff; }
+.tz-photo { margin: 0; border-radius: var(--radius); overflow: hidden; background: #fff; box-shadow: var(--gold-glow); }
 .tz-photo img { width: 100%; height: auto; }
-/* What's in one: brochure spec lines, in the mono spec-label style */
-.tz-spec { list-style: none; margin: 0 0 1.5rem; padding: 0; max-width: 30ch; }
-.tz-spec li {
-  padding: .5rem 0;
-  border-top: 1px solid var(--line);
-  color: var(--text);
-  font: 500 .85rem/1.4 "IBM Plex Mono", ui-monospace, monospace;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-}
-.tz-spec li:last-child { border-bottom: 1px solid var(--line); }
 /* Tiger Ztripez, what's inside: the drawing, then 2.0g split by weight.
    Flower #1F7A4D and resin #C27C0E pass the colorblind checks on both
    themes; the parts are also named in the legend and on tap. */
@@ -1769,7 +1756,6 @@ body:has(.sheet[open]) { overflow: hidden; }
 .tz-hybrid { background: #A8740F; }
 .tz-indica { background: var(--t-purple); }
 @media (min-width: 860px) {
-  .tz-hero { padding: 5rem 0 4rem; }
   .tz-what { grid-template-columns: 1fr 1fr; align-items: center; gap: 3rem; padding-bottom: 5rem; }
   .tz-feats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   .tz-why { padding-bottom: 5rem; }

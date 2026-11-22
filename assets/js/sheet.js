@@ -1,6 +1,6 @@
 /* Product sheet: the card that opens over the page with one product's photo,
    details, "Find it in a store" and Share. Used by the Collection and the
-   product-edu page. Products come from products.js; the page needs the
+   Tiger Ztripez page. Products come from products.js; the page needs the
    <dialog id="sheet"> markup (see collection.html).
 
    Any link or button with data-sheet="<product id>" opens that product's

@@ -441,14 +441,15 @@ var RESERVED_GENETICS_FILTERS = [
   mark();
 })();
 
-/* Header seal: a DNA helix drawn down the middle of the alchemy circle.
-   Two strands pinch together at the ends; the side facing you is brighter
-   and thicker. It turns while on screen; reduced motion draws it once. */
+/* Header seal: a DNA helix bent into a ring around the Reserved stamp,
+   like a plasmid. The side of each strand facing you is brighter and
+   thicker. It twists and slowly orbits while on screen; reduced motion
+   draws it once. */
 (function () {
   var g = document.getElementById("gen-helix");
   if (!g) return;
   var NS = "http://www.w3.org/2000/svg";
-  var CX = 200, TOP = 92, BOT = 308, AMP = 38, TURNS = 1.75, SEGS = 44, RUNGS = 14;
+  var CX = 200, CY = 200, R0 = 123, AMP = 9.5, TWISTS = 14, SEGS = 168, RUNGS = 56;
   var TAU = Math.PI * 2;
 
   function el(name, attrs) {
@@ -460,68 +461,53 @@ var RESERVED_GENETICS_FILTERS = [
 
   // Rungs behind, then strands, then the beads on top
   var rungs = [], strands = [[], []], beads = [];
-  for (var i = 0; i < RUNGS; i++) {
-    rungs.push([
-      el("line", { stroke: "#E7B15E", "stroke-linecap": "round" }),
-      el("line", { stroke: "#D6C8AE", "stroke-linecap": "round" })
-    ]);
-  }
+  for (var i = 0; i < RUNGS; i++)
+    rungs.push(el("line", { stroke: "#D6C8AE", "stroke-width": "1.3", "stroke-linecap": "round" }));
   for (var s = 0; s < 2; s++)
     for (var k = 0; k < SEGS; k++)
       strands[s].push(el("line", { stroke: s ? "#D99A1E" : "#F0BE6A", "stroke-linecap": "round" }));
   for (i = 0; i < RUNGS * 2; i++) beads.push(el("circle", { fill: "#F0BE6A" }));
 
-  // Position along the helix: u from 0 (top) to 1 (bottom), strand 0 or 1
-  function at(u, s, phase) {
-    var a = u * TURNS * TAU + phase + s * Math.PI;
-    var w = AMP * Math.pow(Math.sin(Math.PI * u), 0.7); // pinch at the ends
-    return { x: CX + w * Math.sin(a), y: TOP + (BOT - TOP) * u, d: (Math.cos(a) + 1) / 2 };
+  // Point on strand s at fraction u of the way round (0 = top, clockwise)
+  function at(u, s, twist, spin) {
+    var a = u * TWISTS * TAU + twist + s * Math.PI;
+    var r = R0 + AMP * Math.sin(a);
+    var th = u * TAU + spin - Math.PI / 2;
+    return { x: CX + r * Math.cos(th), y: CY + r * Math.sin(th), d: (Math.cos(a) + 1) / 2 };
   }
+  function set(e, o) { for (var k in o) e.setAttribute(k, o[k]); }
+  function f(n) { return n.toFixed(1); }
 
-  function draw(phase) {
+  function draw(twist, spin) {
     var s, k, p, q;
     for (s = 0; s < 2; s++) {
       for (k = 0; k < SEGS; k++) {
-        p = at(k / SEGS, s, phase);
-        q = at((k + 1) / SEGS, s, phase);
+        p = at(k / SEGS, s, twist, spin);
+        q = at((k + 1) / SEGS, s, twist, spin);
         var d = (p.d + q.d) / 2;
-        var ln = strands[s][k];
-        ln.setAttribute("x1", p.x.toFixed(1)); ln.setAttribute("y1", p.y.toFixed(1));
-        ln.setAttribute("x2", q.x.toFixed(1)); ln.setAttribute("y2", q.y.toFixed(1));
-        ln.setAttribute("stroke-width", (1.6 + 2.6 * d).toFixed(2));
-        ln.setAttribute("stroke-opacity", (0.25 + 0.75 * d).toFixed(2));
+        set(strands[s][k], { x1: f(p.x), y1: f(p.y), x2: f(q.x), y2: f(q.y),
+          "stroke-width": (1.4 + 2.2 * d).toFixed(2), "stroke-opacity": (0.25 + 0.75 * d).toFixed(2) });
       }
     }
     for (k = 0; k < RUNGS; k++) {
       var u = (k + 0.5) / RUNGS;
-      p = at(u, 0, phase); q = at(u, 1, phase);
-      var mx = (p.x + q.x) / 2;
-      var o = (0.3 + 0.4 * Math.abs(p.x - q.x) / (AMP * 2)).toFixed(2);
-      var r = rungs[k];
-      r[0].setAttribute("x1", p.x.toFixed(1)); r[0].setAttribute("y1", p.y.toFixed(1));
-      r[0].setAttribute("x2", mx.toFixed(1)); r[0].setAttribute("y2", p.y.toFixed(1));
-      r[1].setAttribute("x1", mx.toFixed(1)); r[1].setAttribute("y1", p.y.toFixed(1));
-      r[1].setAttribute("x2", q.x.toFixed(1)); r[1].setAttribute("y2", q.y.toFixed(1));
-      r[0].setAttribute("stroke-width", "1.6"); r[1].setAttribute("stroke-width", "1.6");
-      r[0].setAttribute("stroke-opacity", o); r[1].setAttribute("stroke-opacity", o);
-      [p, q].forEach(function (pt, j) {
-        var b = beads[k * 2 + j];
-        b.setAttribute("cx", pt.x.toFixed(1)); b.setAttribute("cy", pt.y.toFixed(1));
-        b.setAttribute("r", (1.6 + 2.4 * pt.d).toFixed(2));
-        b.setAttribute("fill-opacity", (0.3 + 0.7 * pt.d).toFixed(2));
-      });
+      p = at(u, 0, twist, spin); q = at(u, 1, twist, spin);
+      var gap = Math.hypot(p.x - q.x, p.y - q.y) / (AMP * 2);
+      set(rungs[k], { x1: f(p.x), y1: f(p.y), x2: f(q.x), y2: f(q.y), "stroke-opacity": (0.15 + 0.45 * gap).toFixed(2) });
+      set(beads[k * 2], { cx: f(p.x), cy: f(p.y), r: (1.2 + 1.8 * p.d).toFixed(2), "fill-opacity": (0.3 + 0.7 * p.d).toFixed(2) });
+      set(beads[k * 2 + 1], { cx: f(q.x), cy: f(q.y), r: (1.2 + 1.8 * q.d).toFixed(2), "fill-opacity": (0.3 + 0.7 * q.d).toFixed(2) });
     }
   }
 
   var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  draw(0.6);
+  draw(0.6, 0);
   if (calm) return;
 
-  var on = true, raf = 0, t0 = 0, last = 0.6;
+  var on = true, raf = 0, t0 = 0, last = 0;
   function tick(t) {
-    if (!t0) t0 = t - last / 0.0009;
-    last = (t - t0) * 0.0009; // about one turn every 7 seconds
-    draw(last);
+    if (!t0) t0 = t - last;
+    last = t - t0;
+    draw(0.6 + last * 0.0011, last * 0.00006); // twists every ~6s, orbits every ~100s
     raf = on ? requestAnimationFrame(tick) : 0;
   }
   raf = requestAnimationFrame(tick);

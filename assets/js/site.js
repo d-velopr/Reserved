@@ -562,7 +562,7 @@
     };
     if (stored("reservedGold") === "yes") showMember(stored("reservedGoldShop"));
 
-    // Tap anywhere on the card to flip it, except JOIN.
+    // Tap anywhere on the card to flip it, except APPLY.
     pass.addEventListener("click", function (e) {
       if (e.target.closest(".pass-join")) return;
       setFlip(!pass.classList.contains("is-flipped"));
@@ -650,14 +650,14 @@
         joinBtn.setAttribute("aria-expanded", "false");
         showMember(shop);
         setFlip(false);
-        done.textContent = "You're a Gold Card member.";
+        done.textContent = "Applied. If you're picked, we'll email you.";
         done.className = "form-msg ok gold-done";
         pass.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "center" });
       }).catch(function () {
         goldError("That didn't go through. Check your connection and try again.");
       }).then(function () {
         btn.disabled = false;
-        btn.textContent = "Get my Gold Card";
+        btn.textContent = "Apply for the List";
       });
     });
   }

@@ -1721,8 +1721,25 @@ body:has(.sheet[open]) { overflow: hidden; }
 /* The Reserved List: a gold title over a gold line (the same 3px line the
    old header band had), then the Gold Card (flips on tap), its sign-up form,
    and three steps. */
-.list-head { border-bottom: 3px solid var(--gold); }
-.list-head h1 { color: var(--gold-text); }
+/* Hero: the guest list art over the title, in the gold band */
+.list-art {
+  display: block;
+  width: min(62vw, 260px);
+  height: auto;
+  margin: 0 auto 1rem;
+  overflow: visible;
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, .6));
+}
+.list-sub b { font-size: 1em; }
+@media (prefers-reduced-motion: no-preference) {
+  .list-art .la-check { stroke-dasharray: 1; stroke-dashoffset: 1; animation: la-draw .5s .7s ease-out forwards; }
+  .list-art .la-bars rect { animation: la-pulse 3.2s ease-in-out infinite; }
+  .list-art .la-bars rect:nth-child(2) { animation-delay: .4s; }
+  .list-art .la-bars rect:nth-child(3) { animation-delay: .8s; }
+  .list-art .la-bars rect:nth-child(4) { animation-delay: 1.2s; }
+}
+@keyframes la-draw { to { stroke-dashoffset: 0; } }
+@keyframes la-pulse { 50% { fill-opacity: .4; } }
 .list-page { display: grid; justify-items: center; gap: 2.25rem; max-width: 760px; padding-top: 2.5rem; padding-bottom: 4rem; }
 
 .pass {
@@ -1773,7 +1790,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 .pass-member svg { width: 16px; height: 16px; }
 .pass-perk { display: flex; align-items: center; gap: .7rem; color: #F5EEDF; font-size: clamp(1rem, 4.6vw, 1.2rem); font-weight: 800; text-align: left; }
 .pass-perk svg { flex: none; width: 26px; height: 26px; color: #E7B15E; }
-/* JOIN until they sign up, then MEMBER and their pickup shop */
+/* APPLY until they apply, then APPLIED and their pickup shop */
 .pass[data-member="no"] .pass-member, .pass[data-member="no"] .pass-shop, .pass[data-member="yes"] .pass-join { display: none; }
 .pass-join {
   min-width: 140px;

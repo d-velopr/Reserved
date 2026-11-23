@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Reserved | The Reserved List</title>
-  <meta name="description" content="The Reserved List: Gold Card members pre-order before the drop and pick up at their nearest shop on drop day." />
+  <meta name="description" content="The Reserved List: apply, and we hand-pick who gets on it. Members pre-order before the drop and pick up at their nearest shop on drop day." />
   <meta name="theme-color" content="#F5EEDF" />
   <!-- Light mode lasts for this tab only (sessionStorage); every visit opens dark.
        Set before the page draws, so changing pages never flashes dark. The
@@ -49,7 +49,7 @@
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Reserved | The Reserved List" />
-  <meta property="og:description" content="The Reserved List: Gold Card members pre-order before the drop and pick up at their nearest shop on drop day." />
+  <meta property="og:description" content="The Reserved List: apply, and we hand-pick who gets on it. Members pre-order before the drop and pick up at their nearest shop on drop day." />
   <meta property="og:url" content="https://reservedwayornoway.com/the-list.html" />
   <meta property="og:image" content="https://d-velopr.github.io/Reserved/assets/img/gen/og-preview.jpg?v=6" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -61,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=211" />
+  <link rel="stylesheet" href="assets/css/style.css?v=212" />
 </head>
 <body>
 
@@ -99,25 +99,65 @@
 
   <main class="tz">
     <div class="edu edu-terp edu-list">
-    <!-- A plain gold title with a gold line under it, then the Gold Card -->
-    <section class="page-head list-head">
+    <!-- Hero: a guest list with the names blacked out and one row picked.
+         Apply, and we hand-pick who gets on it. The check draws in once
+         (style.css); reduced motion shows it already drawn. -->
+    <section class="tz-hero list-hero">
       <div class="wrap">
-        <h1>Reserved List</h1>
+        <svg class="list-art" viewBox="0 0 300 300" role="img" aria-label="A guest list with the names hidden and one name checked">
+          <defs>
+            <radialGradient id="la-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#E7B15E" stop-opacity=".25" />
+              <stop offset="1" stop-color="#E7B15E" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="la-card" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2A1C0F" />
+              <stop offset=".7" stop-color="#0B0807" />
+            </linearGradient>
+            <linearGradient id="la-gold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#F6D08A" />
+              <stop offset=".55" stop-color="#E7B15E" />
+              <stop offset="1" stop-color="#C98F32" />
+            </linearGradient>
+          </defs>
+          <circle cx="150" cy="150" r="148" fill="url(#la-glow)" />
+          <rect x="62" y="34" width="176" height="232" rx="14" fill="url(#la-card)" stroke="#E7B15E" stroke-opacity=".7" stroke-width="1.5" />
+          <!-- crown -->
+          <path d="M128 70l5-16 10 9 7-13 7 13 10-9 5 16z" fill="url(#la-gold)" />
+          <path d="M84 84h132" stroke="#E7B15E" stroke-opacity=".45" stroke-width="1" />
+          <g font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="500" fill="#E7B15E" fill-opacity=".6">
+            <text x="84" y="113">01</text><text x="84" y="145">02</text><text x="84" y="177">03</text><text x="84" y="209">04</text><text x="84" y="241">05</text>
+          </g>
+          <g class="la-bars" fill="#E7B15E" fill-opacity=".22">
+            <rect x="106" y="104" width="94" height="11" rx="3" />
+            <rect x="106" y="136" width="72" height="11" rx="3" />
+            <rect x="106" y="200" width="86" height="11" rx="3" />
+            <rect x="106" y="232" width="64" height="11" rx="3" />
+          </g>
+          <!-- the picked row -->
+          <rect x="76" y="164" width="148" height="21" rx="5" fill="#E7B15E" fill-opacity=".12" stroke="#E7B15E" stroke-opacity=".55" />
+          <rect x="106" y="168" width="80" height="11" rx="3" fill="url(#la-gold)" />
+          <circle cx="208" cy="174.5" r="8" fill="url(#la-gold)" />
+          <path class="la-check" d="M204 174.8l2.8 2.8 5.4-5.6" fill="none" stroke="#0B0807" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1" />
+        </svg>
+        <h1>The Reserved <span>List</span></h1>
+        <p class="gen-stat list-sub">Apply. <b>We hand-pick.</b></p>
       </div>
     </section>
 
     <div class="wrap list-page">
-      <!-- The Gold Card. Shows JOIN until the visitor signs up (site.js remembers
-           it on this device as reservedGold), then MEMBER and their pickup shop.
+      <!-- The Gold Card. Shows APPLY until the visitor applies (site.js remembers
+           it on this device as reservedGold), then APPLIED and their pickup shop.
+           We hand-pick who gets on the List from the applications.
            Tap the card (or the flip button) to see what members get. -->
       <div class="pass" data-member="no">
         <div class="pass-in">
           <div class="pass-face pass-front">
             <img src="assets/img/gen/crest.webp" alt="" width="640" height="563" />
             <span class="pass-name">Gold Card</span>
-            <span class="pass-member"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Member</span>
+            <span class="pass-member"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Applied</span>
             <span class="pass-shop" id="pass-shop"></span>
-            <button class="pass-join" type="button" aria-controls="gold-form" aria-expanded="false">Join</button>
+            <button class="pass-join" type="button" aria-controls="gold-form" aria-expanded="false">Apply</button>
           </div>
           <div class="pass-face pass-back" aria-label="What Gold Card members get">
             <span class="pass-perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Pre-order before the drop</span>
@@ -129,7 +169,7 @@
       </div>
       <p class="form-msg gold-done" id="gold-done" role="status" aria-live="polite"></p>
 
-      <!-- Gold Card sign-up: opens from JOIN. Goes to the Sheet's "Gold Card"
+      <!-- Application: opens from APPLY. Goes to the Sheet's "Gold Card"
            tab (subscribe.gs, kind "gold"). Shops come from stores.js. -->
       <form id="gold-form" class="contact-form gold-form" novalidate hidden>
         <label for="g-name">Name</label>
@@ -144,7 +184,7 @@
         </fieldset>
         <!-- Honeypot: real people never see or fill this. -->
         <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <button class="btn btn-red" type="submit">Get my Gold Card</button>
+        <button class="btn btn-red" type="submit">Apply for the List</button>
         <p class="form-msg" id="gold-msg" role="status" aria-live="polite"></p>
       </form>
 
@@ -178,6 +218,6 @@
   </footer>
 
   <script src="assets/js/stores.js?v=36"></script>
-  <script src="assets/js/site.js?v=31"></script>
+  <script src="assets/js/site.js?v=32"></script>
 </body>
 </html>

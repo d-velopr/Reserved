@@ -43,6 +43,7 @@ var RESERVED_GENETICS = [
    (not assets/img/genetics/, which never leaves this computer), and tappable
    parents with parents: ["Name", "Name"] when both are on the list. */
 var RESERVED_GENETICS_INFO = {
+  "92 OG": "A phenotype of OG Kush.",
   "Alpha Runtz": "A Runtz cross: Runtz bred with Alpha Express.",
   "Angel Cake": "Fire OG crossed with Forum Cut Cookies, credited to RedEyed Genetics.",
   "Bacio": "Bacio Gelato, also known as Gelato #41, from Sherbinskis. Sunset Sherbet crossed with Thin Mint Cookies.",
@@ -66,6 +67,7 @@ var RESERVED_GENETICS_INFO = {
   "Jack Herrer": "Named after cannabis activist Jack Herer. A Sensi Seeds classic built from Haze, Northern Lights #5 and Shiva Skunk.",
   "Kush Co OG": "A clone-only member of the OG Kush family.",
   "Larry OG": "OG Kush crossed with SFV OG.",
+  "LCG Runtz": "Lemon Cherry Gelato crossed with Runtz. The best-known cut, from Tiki Madman, uses Forbidden Runtz.",
   "Legend OG": "A clone-only OG Kush descendant with Southern California roots.",
   "Lemonatti": { info: "Gelonade crossed with Biscotti.", parents: ["Gelonade", "Biscotti"] },
   "Lip Smacker": "Exotic Genetix's cross of Sherbert and Strawberries & Cream.",

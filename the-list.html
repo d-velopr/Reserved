@@ -61,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=212" />
+  <link rel="stylesheet" href="assets/css/style.css?v=213" />
 </head>
 <body>
 
@@ -99,51 +99,8 @@
 
   <main class="tz">
     <div class="edu edu-terp edu-list">
-    <!-- Hero: a guest list with the names blacked out and one row picked.
-         Apply, and we hand-pick who gets on it. The check draws in once
-         (style.css); reduced motion shows it already drawn. -->
-    <section class="tz-hero list-hero">
-      <div class="wrap">
-        <svg class="list-art" viewBox="0 0 300 300" role="img" aria-label="A guest list with the names hidden and one name checked">
-          <defs>
-            <radialGradient id="la-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0" stop-color="#E7B15E" stop-opacity=".25" />
-              <stop offset="1" stop-color="#E7B15E" stop-opacity="0" />
-            </radialGradient>
-            <linearGradient id="la-card" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#2A1C0F" />
-              <stop offset=".7" stop-color="#0B0807" />
-            </linearGradient>
-            <linearGradient id="la-gold" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#F6D08A" />
-              <stop offset=".55" stop-color="#E7B15E" />
-              <stop offset="1" stop-color="#C98F32" />
-            </linearGradient>
-          </defs>
-          <circle cx="150" cy="150" r="148" fill="url(#la-glow)" />
-          <rect x="62" y="34" width="176" height="232" rx="14" fill="url(#la-card)" stroke="#E7B15E" stroke-opacity=".7" stroke-width="1.5" />
-          <!-- crown -->
-          <path d="M128 70l5-16 10 9 7-13 7 13 10-9 5 16z" fill="url(#la-gold)" />
-          <path d="M84 84h132" stroke="#E7B15E" stroke-opacity=".45" stroke-width="1" />
-          <g font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="500" fill="#E7B15E" fill-opacity=".6">
-            <text x="84" y="113">01</text><text x="84" y="145">02</text><text x="84" y="177">03</text><text x="84" y="209">04</text><text x="84" y="241">05</text>
-          </g>
-          <g class="la-bars" fill="#E7B15E" fill-opacity=".22">
-            <rect x="106" y="104" width="94" height="11" rx="3" />
-            <rect x="106" y="136" width="72" height="11" rx="3" />
-            <rect x="106" y="200" width="86" height="11" rx="3" />
-            <rect x="106" y="232" width="64" height="11" rx="3" />
-          </g>
-          <!-- the picked row -->
-          <rect x="76" y="164" width="148" height="21" rx="5" fill="#E7B15E" fill-opacity=".12" stroke="#E7B15E" stroke-opacity=".55" />
-          <rect x="106" y="168" width="80" height="11" rx="3" fill="url(#la-gold)" />
-          <circle cx="208" cy="174.5" r="8" fill="url(#la-gold)" />
-          <path class="la-check" d="M204 174.8l2.8 2.8 5.4-5.6" fill="none" stroke="#0B0807" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pathLength="1" />
-        </svg>
-        <h1>The Reserved <span>List</span></h1>
-        <p class="gen-stat list-sub">Apply. <b>We hand-pick.</b></p>
-      </div>
-    </section>
+    <!-- No hero: the page opens on the Gold Card. The title is for screen readers. -->
+    <h1 class="sr-only">The Reserved List</h1>
 
     <div class="wrap list-page">
       <!-- The Gold Card. Shows APPLY until the visitor applies (site.js remembers

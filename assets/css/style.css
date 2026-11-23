@@ -1971,6 +1971,14 @@ body:has(.sheet[open]) { overflow: hidden; }
   .gen-seal .seal-orbit { animation: seal-spin 90s linear infinite reverse; }
 }
 @keyframes seal-spin { to { transform: rotate(360deg); } }
+/* Genetics header: deep clone-room green, not Terp Tunnel's brown. The gold
+   seal, line and title stay; the glow turns green. */
+.edu-gen { --hero-glow: rgba(52, 150, 96, .30); }
+.edu-gen .tz-hero {
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 45%, var(--hero-glow), transparent 70%),
+    linear-gradient(180deg, #0F2219, #06100B);
+}
 .gen-stat { margin: .9rem 0 0; color: #D6C8AE; font-weight: 800; font-size: 1.05rem; letter-spacing: .02em; text-transform: uppercase; }
 .gen-stat b { color: var(--hero-text); font-size: 1.5em; font-weight: 900; }
 .gen-tools { display: flex; flex-direction: column; gap: .1rem; padding-top: .7rem; }

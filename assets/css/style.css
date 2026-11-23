@@ -391,6 +391,8 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .nav .nav-sub a, .nav .nav-sub a:last-of-type { border-radius: 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; color: var(--text-soft); }
   .nav .nav-sub a:hover { background: none; }
   .nav .nav-sub a[aria-current="page"] { background: none; color: var(--text); }
+  /* Phone menu: Genetics goes last under Learn (it's first on wider screens) */
+  .nav .nav-sub a[href$="genetics.html"] { order: 1; }
   /* Light/dark switch: sits at the right end of the Home row (no row of its own).
      Top matches the menu's top padding; height matches a menu row. */
   .theme-btn { display: none; }
@@ -1708,9 +1710,11 @@ body:has(.sheet[open]) { overflow: hidden; }
 @media (min-width: 860px) { .edu .tz-hero { padding: 3rem 0 4rem; } }
 .edu .tz-what { padding-top: 3rem; }
 
-/* The Reserved List: Terp Tunnel's gold header with the crest, then the
-   Gold Card (flips on tap), its sign-up form, and three steps. */
-.edu-list .tz-logo { width: min(58vw, 300px); }
+/* The Reserved List: a gold title over a gold line (the same 3px line the
+   old header band had), then the Gold Card (flips on tap), its sign-up form,
+   and three steps. */
+.list-head { border-bottom: 3px solid var(--gold); }
+.list-head h1 { color: var(--gold-text); }
 .list-page { display: grid; justify-items: center; gap: 2.25rem; max-width: 760px; padding-top: 2.5rem; padding-bottom: 4rem; }
 
 .pass {
@@ -1961,10 +1965,17 @@ body:has(.sheet[open]) { overflow: hidden; }
 .gen-list { padding: 1.25rem 0 3rem; }
 .gen-count { margin: 0 0 .9rem; color: var(--muted); font-weight: 700; }
 .gen-count b { color: var(--text); }
-.gen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(150px, 44%), 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+/* Strains come in letter groups (genetics.js). Wide screens: the groups melt
+   into one grid of tiles, no letter headings. */
+.gen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(150px, 44%), 1fr)); gap: 10px; }
+.gen-group, .gen-rows { display: contents; }
+.gen-rows { margin: 0; padding: 0; list-style: none; }
+.gen-letter { display: none; }
+.gen-item[hidden], .gen-group[hidden] { display: none; }
 .gen-tile {
   display: flex;
   align-items: center;
+  width: 100%;
   min-height: 56px;
   padding: .6rem .85rem;
   border: 1px solid var(--line);
@@ -1972,19 +1983,169 @@ body:has(.sheet[open]) { overflow: hidden; }
   border-radius: 12px;
   background: var(--surface);
   box-shadow: var(--gold-glow);
+  color: var(--text);
+  font: inherit;
   font-weight: 800;
   font-variation-settings: "wdth" 100;
   line-height: 1.15;
+  text-align: left;
   overflow-wrap: anywhere;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
-.gen-tile[hidden] { display: none; }
+@media (hover: hover) { .gen-tile:hover { box-shadow: var(--gold-glow-strong); } }
+.gen-tile:focus-visible { outline: 2px solid var(--tz); outline-offset: 2px; }
 .gen-tile i { margin: 0 .05em; color: var(--tz); font-style: normal; font-weight: 900; }
+.gen-chev { display: none; }
 .gen-empty { margin: 1rem 0 0; color: var(--muted); font-weight: 700; }
 :root[data-theme="light"] .gen-tile { background: #FBF6EC; }
+.gen-rail { display: none; }
+
+/* Phones: a letter heading over a panel of rows, each with a gold arrow, and
+   the A-Z rail on the right edge (only while the list is on screen) */
+@media (max-width: 640px) {
+  .gen-grid { display: block; margin-right: 22px; }
+  .gen-group { display: block; margin-bottom: 1.1rem; scroll-margin-top: calc(var(--head-h, 72px) + var(--gen-bar-h, 120px) + 6px); }
+  .gen-letter {
+    display: block;
+    margin: 0 0 .4rem .2rem;
+    color: var(--gold-text);
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+  }
+  .gen-rows {
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--gold-glow);
+    overflow: hidden;
+  }
+  :root[data-theme="light"] .gen-rows { background: #FBF6EC; }
+  .gen-item + .gen-item .gen-tile { border-top: 1px solid var(--line); }
+  .gen-tile {
+    justify-content: space-between;
+    gap: .75rem;
+    min-height: 52px;
+    padding: .7rem .9rem .7rem 1rem;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  :root[data-theme="light"] .gen-tile { background: none; }
+  .gen-tile:active { background: var(--surface-3); }
+  .gen-chev { display: block; flex: none; width: 16px; height: 16px; color: var(--tz); }
+
+  .gen-rail {
+    position: fixed;
+    top: calc(var(--head-h, 72px) + var(--gen-bar-h, 120px) + 8px);
+    bottom: 12px;
+    right: 2px;
+    z-index: 800;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+    touch-action: none;
+  }
+  .gen-rail.is-on { opacity: 1; pointer-events: auto; }
+  .gen-rail button {
+    flex: 0 1 22px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--gold-text);
+    font: inherit;
+    font-size: .7rem;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .gen-rail button:disabled { opacity: .25; }
+  .gen-rail button.is-at { color: var(--text); }
+  .gen-rail.is-touch { background: var(--surface-2); border-radius: 12px; }
+}
+
+/* Strain card (the product sheet's look). With no photo it's a compact card. */
+.gen-card { --tz: var(--gold-text); width: min(440px, 100% - 32px); }
+.gen-card .sheet-info { padding: 1.6rem 1.4rem 1.6rem; }
+.gen-card:not(.has-img) .sheet-close { background: var(--surface-3); color: var(--text); }
+.gen-card:not(.has-img) .sheet-grip { background: var(--line-2); }
+.gen-card .sheet-info > .sheet-label:first-child { margin: 0 0 .3rem; color: var(--gold-text); }
+.gen-card h2 { padding-right: 52px; font-size: clamp(1.6rem, 6vw, 2.1rem); overflow-wrap: anywhere; }
+.gen-card h2 i { color: var(--tz); font-style: normal; }
+.gen-card-art { aspect-ratio: 4 / 3; overflow: hidden; background: #0B0B0C; }
+.gen-card-art img { width: 100%; height: 100%; object-fit: cover; }
+.gen-parents button {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.gen-parents li:has(button) { border-color: var(--tz); }
+.gen-parents .gen-chev { display: block; width: 12px; height: 12px; color: var(--tz); }
+.gen-info { margin: 1rem 0 0; color: var(--text-soft); line-height: 1.5; }
+.gen-soon { margin: 1.1rem 0 0; color: var(--muted); font-size: .85rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+@media (max-width: 640px) { .gen-card { width: 100%; } }
 
 .gen-jar { padding-bottom: 4rem; }
 .gen-jar h2 { margin-bottom: 1rem; font-size: clamp(1.5rem, 5vw, 2.2rem); text-transform: uppercase; }
-.gen-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+/* The heading opens the Collection; the gold arrow says it can be tapped */
+.gen-head-link svg { display: inline-block; width: .8em; height: .8em; margin-left: .15em; vertical-align: -.02em; color: var(--tz); transition: transform .15s; }
+.gen-head-link:hover svg { transform: translateX(3px); }
+.gen-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.gen-dots { display: none; }
+/* Phones: one photo at a time, full width, swipe for the next. It snaps to
+   each photo; the dots under it show which one and jump on a tap. */
+@media (max-width: 640px) {
+  .gen-photos {
+    position: relative; /* photos measure their place from the strip (genetics.js) */
+    display: flex;
+    gap: 12px;
+    margin-inline: -16px;
+    padding: 4px 16px 18px; /* room for the glow, top and bottom */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .gen-photos::-webkit-scrollbar { display: none; }
+  .gen-photo { flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+  .gen-dots { display: flex; justify-content: center; gap: 4px; margin-top: -4px; }
+  .gen-dots button {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .gen-dots button::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--line-2);
+    transition: width .2s, background .2s;
+  }
+  .gen-dots button[aria-current="true"]::before { width: 22px; background: var(--tz); }
+}
 .gen-photo { position: relative; margin: 0; aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden; background: #0B0B0C; box-shadow: var(--gold-glow); }
 .gen-photo img { width: 100%; height: 100%; object-fit: cover; }
 .gen-photo-white { background: #fff; }
@@ -2002,13 +2163,70 @@ body:has(.sheet[open]) { overflow: hidden; }
   text-transform: uppercase;
   letter-spacing: .03em;
 }
-.gen-cta { margin-top: 1.75rem; }
 @media (min-width: 860px) {
-  .gen-photos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .gen-photos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .gen-list { padding-bottom: 4rem; }
 }
 @media (max-width: 640px) {
-  .gen-cta { width: 100%; }
   /* The chip row stays full-bleed; the search box keeps the page gutter */
   .gen-tools .search { margin-inline: 16px; }
+}
+/* Genetics photos open full size: each photo is a button */
+.gen-zoom { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+.gen-zoom img { transition: transform .25s; }
+@media (hover: hover) { .gen-zoom:hover img { transform: scale(1.03); } }
+.gen-zoom:focus-visible { outline: 3px solid var(--tz); outline-offset: -3px; border-radius: var(--radius); }
+.gen-photo figcaption { pointer-events: none; }
+
+/* Photo viewer: the photo as big as the screen allows, dark around it in both themes */
+body:has(.gen-viewer[open]) { overflow: hidden; }
+.gen-viewer {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  overscroll-behavior: contain;
+}
+.gen-viewer::backdrop { background: rgba(8, 8, 9, .92); backdrop-filter: blur(6px); }
+.gen-viewer[open] { display: grid; place-items: center; }
+.gen-viewer-fig { display: grid; justify-items: center; gap: .75rem; margin: 0; padding: 64px 16px 24px; }
+.gen-viewer-fig img {
+  max-width: min(100%, 1000px);
+  max-height: calc(100dvh - 140px);
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .7);
+}
+.gen-viewer-fig figcaption { color: #D6D6DA; font-size: .9rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; }
+.gen-viewer .sheet-close { position: fixed; top: max(12px, env(safe-area-inset-top)); right: 12px; background: rgba(255, 255, 255, .14); }
+.gen-viewer-nav {
+  position: fixed;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-top: -24px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  cursor: pointer;
+}
+.gen-viewer-nav:hover, .gen-viewer .sheet-close:hover { background: rgba(255, 255, 255, .26); }
+.gen-viewer-nav svg { width: 24px; height: 24px; }
+.gen-viewer-prev { left: 12px; }
+.gen-viewer-next { right: 12px; }
+/* Phones: arrows drop to the bottom corners so they don't cover the photo */
+@media (max-width: 640px) {
+  .gen-viewer-nav { top: auto; bottom: max(16px, env(safe-area-inset-bottom)); margin-top: 0; }
+  .gen-viewer-fig { padding-bottom: 80px; }
+  .gen-viewer-fig img { max-height: calc(100dvh - 190px); }
 }

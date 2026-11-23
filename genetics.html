@@ -61,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=190" />
+  <link rel="stylesheet" href="assets/css/style.css?v=204" />
 </head>
 <body>
 
@@ -75,14 +75,14 @@
     <nav class="nav" id="site-nav" aria-label="Main">
       <a href="index.html">Home</a>
       <a href="collection.html">Collection</a>
-      <!-- Learn: opens What is a Tiger Ztripez? / Terp Tunnel? / The Reserved List / Genetics (site.js) -->
+      <!-- Learn: opens Genetics / What is a Tiger Ztripez? / Terp Tunnel? / The Reserved List (site.js) -->
       <div class="nav-group">
         <button type="button" class="nav-sub-btn nav-current" aria-expanded="false" aria-controls="learn-menu">Learn <svg class="nav-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-sub" id="learn-menu">
+          <a href="genetics.html" aria-current="page">Genetics</a>
           <a href="tiger-ztripez.html">What is a Tiger Ztripez?</a>
           <a href="terp-tunnel.html">What is a Terp Tunnel?</a>
           <a href="the-list.html">The Reserved List</a>
-          <a href="genetics.html" aria-current="page">Genetics</a>
         </div>
       </div>
       <a href="store-locator.html">Store Locator</a>
@@ -122,30 +122,32 @@
 
     <section class="wrap gen-list" aria-label="Strains">
       <p class="gen-count" aria-live="polite"><b id="gen-count">0</b> of <span data-gen-total>99</span></p>
-      <ul class="gen-grid" id="gen-grid"></ul>
+      <!-- Letter groups, built by genetics.js. Wide screens: one grid of tiles.
+           Phones: letter headings over rows, and the A-Z rail on the right. -->
+      <div class="gen-grid" id="gen-grid"></div>
+      <nav class="gen-rail" id="gen-rail" aria-label="Jump to letter"></nav>
       <p class="gen-empty" id="gen-empty" hidden>No match. Try another name.</p>
     </section>
 
     <section class="wrap gen-jar">
-      <h2>In the jar</h2>
-      <div class="gen-photos">
-        <figure class="gen-photo gen-photo-tall">
-          <img src="assets/img/misc/jars.webp" alt="Reserved jars: Orange Creamsicle, Zunami, Jokerz 33 and more" width="1000" height="1305" loading="lazy" />
-        </figure>
+      <h2><a class="find-link gen-head-link" href="collection.html">Explore the Collection<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a></h2>
+      <!-- Tap a photo to see it full size (the viewer is at the end of the page).
+           Phones: one photo at a time, swipe for the next; the dots show where
+           you are (genetics.js). -->
+      <div class="gen-photos" id="gen-photos">
         <figure class="gen-photo gen-photo-white">
-          <img src="assets/img/marketing/flower-lineup.webp" alt="Sixteen Reserved flower jars, from Candy Paint OG to Peach Bellini" width="1000" height="1081" loading="lazy" />
+          <button type="button" class="gen-zoom" aria-label="Enlarge photo"><img src="assets/img/marketing/flower-lineup.webp" alt="Sixteen Reserved flower jars, from Candy Paint OG to Peach Bellini" width="1000" height="1081" loading="lazy" /></button>
           <figcaption>Flower</figcaption>
         </figure>
+        <figure class="gen-photo gen-photo-tall">
+          <button type="button" class="gen-zoom" aria-label="Enlarge photo"><img src="assets/img/misc/jars.webp" alt="Reserved jars: Orange Creamsicle, Zunami, Jokerz 33 and more" width="1000" height="1305" loading="lazy" /></button>
+        </figure>
         <figure class="gen-photo gen-photo-white">
-          <img src="assets/img/marketing/vape-lineup.webp" alt="Ten Reserved Live Resin Vapes with their boxes" width="1000" height="981" loading="lazy" />
+          <button type="button" class="gen-zoom" aria-label="Enlarge photo"><img src="assets/img/marketing/vape-lineup.webp" alt="Ten Reserved Live Resin Vapes with their boxes" width="1000" height="981" loading="lazy" /></button>
           <figcaption>Live Resin Vapes</figcaption>
         </figure>
-        <figure class="gen-photo gen-photo-tall">
-          <img src="assets/img/misc/grow-room.webp" alt="The grow room controller: temperature, humidity and day count for every room" width="900" height="1580" loading="lazy" />
-          <figcaption>Every room, dialed in</figcaption>
-        </figure>
       </div>
-      <a class="btn btn-red gen-cta" href="store-locator.html">Find a Store</a>
+      <div class="gen-dots" id="gen-dots" role="group" aria-label="Photos"></div>
     </section>
     </div>
   </main>
@@ -169,7 +171,35 @@
     </div>
   </footer>
 
+  <!-- Strain card: opens on a tap. Name, parents for a cross, and its info
+       and photo once genetics.js has them (genetics.js). -->
+  <dialog class="sheet gen-card" id="gen-card" aria-labelledby="gen-card-title">
+    <span class="sheet-grip" aria-hidden="true"></span>
+    <button type="button" class="sheet-close" id="gen-card-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+    <div id="gen-card-body"></div>
+  </dialog>
+
+  <!-- Photo viewer: the tapped photo full size. Arrows / swipe for the next
+       one; tap outside, the X or Escape to close (genetics.js). -->
+  <dialog class="gen-viewer" id="gen-viewer" aria-label="Photo">
+    <button type="button" class="sheet-close" id="gen-viewer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+    <figure class="gen-viewer-fig">
+      <img id="gen-viewer-img" src="" alt="" />
+      <figcaption id="gen-viewer-cap"></figcaption>
+    </figure>
+    <button type="button" class="gen-viewer-nav gen-viewer-prev" id="gen-viewer-prev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="gen-viewer-nav gen-viewer-next" id="gen-viewer-next" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </dialog>
+
   <script src="assets/js/site.js?v=31"></script>
-  <script src="assets/js/genetics.js?v=3"></script>
+  <script src="assets/js/genetics.js?v=9"></script>
 </body>
 </html>

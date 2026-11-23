@@ -101,10 +101,10 @@
     <div class="edu edu-terp edu-gen">
     <section class="tz-hero">
       <div class="wrap">
-        <!-- Genetics seal: an alchemy circle with a DNA helix down the middle.
-             The rings turn slowly (style.css); genetics.js draws the helix and
-             spins it. Reduced motion: everything holds still. -->
-        <svg class="gen-seal" viewBox="0 0 400 400" role="img" aria-label="Reserved genetics seal: a DNA helix inside an alchemy circle">
+        <!-- Genetics seal: the Reserved R over a DNA helix, inside an alchemy
+             circle. The rings turn slowly (style.css); genetics.js draws the
+             helix and spins it. Reduced motion: everything holds still. -->
+        <svg class="gen-seal" viewBox="0 0 400 400" role="img" aria-label="Reserved genetics seal: the Reserved R over a DNA helix inside an alchemy circle">
           <defs>
             <radialGradient id="seal-glow" cx="50%" cy="50%" r="50%">
               <stop offset="0" stop-color="#E7B15E" stop-opacity=".22" />
@@ -122,13 +122,11 @@
             <text fill="#F0BE6A" stroke="none" font-family="'IBM Plex Mono', monospace" font-size="12.5" font-weight="500"><textPath href="#seal-text" textLength="995" lengthAdjust="spacing">RESERVED ✦ GENETICS ✦ CLONE ROOM ✦ CULTIVATED BY PALM TREES ✦</textPath></text>
             <circle cx="200" cy="200" r="150" stroke-width="1.2" opacity=".85" />
           </g>
-          <g class="seal-hex" fill="none" stroke="#D99A1E" stroke-width="1.4">
-            <circle cx="200" cy="200" r="142" stroke-dasharray="3 6" opacity=".6" />
-            <path d="M200 58L323 271H77Z" />
-            <path d="M200 342L77 129H323Z" opacity=".75" />
+          <g class="seal-orbit" fill="none" stroke="#D99A1E" stroke-width="1.4">
+            <circle cx="200" cy="200" r="142" stroke-dasharray="3 6" opacity=".7" />
             <g fill="#17100B" stroke="#F0BE6A" stroke-width="1.6">
-              <circle cx="200" cy="58" r="6" /><circle cx="323" cy="271" r="6" /><circle cx="77" cy="271" r="6" />
-              <circle cx="200" cy="342" r="5" /><circle cx="77" cy="129" r="5" /><circle cx="323" cy="129" r="5" />
+              <circle cx="300.4" cy="99.6" r="5.5" /><circle cx="99.6" cy="99.6" r="5.5" />
+              <circle cx="99.6" cy="300.4" r="5.5" /><circle cx="300.4" cy="300.4" r="5.5" />
             </g>
           </g>
           <g class="seal-mol" fill="none" stroke="#E7B15E" stroke-width="1.6" opacity=".9">
@@ -139,6 +137,7 @@
           </g>
           <circle cx="200" cy="200" r="86" fill="#0B0807" fill-opacity=".55" stroke="#E7B15E" stroke-width="1" stroke-opacity=".5" />
           <g id="gen-helix"></g>
+          <image class="seal-r" href="assets/img/gen/pin-r.webp" x="146" y="140" width="108" height="121" />
         </svg>
         <h1>Our <span>Genetics</span></h1>
         <p class="gen-stat"><b data-gen-total>99</b> strains in the clone room</p>

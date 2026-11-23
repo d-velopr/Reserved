@@ -1970,12 +1970,13 @@ body:has(.sheet[open]) { overflow: hidden; }
   overflow: visible;
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, .6));
 }
-.gen-seal .seal-outer, .gen-seal .seal-hex { transform-box: view-box; transform-origin: 200px 200px; }
+.gen-seal .seal-outer, .gen-seal .seal-orbit { transform-box: view-box; transform-origin: 200px 200px; }
 @media (prefers-reduced-motion: no-preference) {
   .gen-seal .seal-outer { animation: seal-spin 160s linear infinite; }
-  .gen-seal .seal-hex { animation: seal-spin 90s linear infinite reverse; }
+  .gen-seal .seal-orbit { animation: seal-spin 90s linear infinite reverse; }
 }
 @keyframes seal-spin { to { transform: rotate(360deg); } }
+.gen-seal .seal-r { filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .85)); }
 .gen-stat { margin: .9rem 0 0; color: #D6C8AE; font-weight: 800; font-size: 1.05rem; letter-spacing: .02em; text-transform: uppercase; }
 .gen-stat b { color: var(--hero-text); font-size: 1.5em; font-weight: 900; }
 .gen-tools { display: flex; flex-direction: column; gap: .1rem; padding-top: .7rem; }

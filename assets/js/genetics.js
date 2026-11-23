@@ -440,3 +440,95 @@ var RESERVED_GENETICS_FILTERS = [
   window.addEventListener("resize", mark);
   mark();
 })();
+
+/* Header seal: a DNA helix drawn down the middle of the alchemy circle.
+   Two strands pinch together at the ends; the side facing you is brighter
+   and thicker. It turns while on screen; reduced motion draws it once. */
+(function () {
+  var g = document.getElementById("gen-helix");
+  if (!g) return;
+  var NS = "http://www.w3.org/2000/svg";
+  var CX = 200, TOP = 92, BOT = 308, AMP = 38, TURNS = 1.75, SEGS = 44, RUNGS = 14;
+  var TAU = Math.PI * 2;
+
+  function el(name, attrs) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    g.appendChild(e);
+    return e;
+  }
+
+  // Rungs behind, then strands, then the beads on top
+  var rungs = [], strands = [[], []], beads = [];
+  for (var i = 0; i < RUNGS; i++) {
+    rungs.push([
+      el("line", { stroke: "#E7B15E", "stroke-linecap": "round" }),
+      el("line", { stroke: "#D6C8AE", "stroke-linecap": "round" })
+    ]);
+  }
+  for (var s = 0; s < 2; s++)
+    for (var k = 0; k < SEGS; k++)
+      strands[s].push(el("line", { stroke: s ? "#D99A1E" : "#F0BE6A", "stroke-linecap": "round" }));
+  for (i = 0; i < RUNGS * 2; i++) beads.push(el("circle", { fill: "#F0BE6A" }));
+
+  // Position along the helix: u from 0 (top) to 1 (bottom), strand 0 or 1
+  function at(u, s, phase) {
+    var a = u * TURNS * TAU + phase + s * Math.PI;
+    var w = AMP * Math.pow(Math.sin(Math.PI * u), 0.7); // pinch at the ends
+    return { x: CX + w * Math.sin(a), y: TOP + (BOT - TOP) * u, d: (Math.cos(a) + 1) / 2 };
+  }
+
+  function draw(phase) {
+    var s, k, p, q;
+    for (s = 0; s < 2; s++) {
+      for (k = 0; k < SEGS; k++) {
+        p = at(k / SEGS, s, phase);
+        q = at((k + 1) / SEGS, s, phase);
+        var d = (p.d + q.d) / 2;
+        var ln = strands[s][k];
+        ln.setAttribute("x1", p.x.toFixed(1)); ln.setAttribute("y1", p.y.toFixed(1));
+        ln.setAttribute("x2", q.x.toFixed(1)); ln.setAttribute("y2", q.y.toFixed(1));
+        ln.setAttribute("stroke-width", (1.6 + 2.6 * d).toFixed(2));
+        ln.setAttribute("stroke-opacity", (0.25 + 0.75 * d).toFixed(2));
+      }
+    }
+    for (k = 0; k < RUNGS; k++) {
+      var u = (k + 0.5) / RUNGS;
+      p = at(u, 0, phase); q = at(u, 1, phase);
+      var mx = (p.x + q.x) / 2;
+      var o = (0.3 + 0.4 * Math.abs(p.x - q.x) / (AMP * 2)).toFixed(2);
+      var r = rungs[k];
+      r[0].setAttribute("x1", p.x.toFixed(1)); r[0].setAttribute("y1", p.y.toFixed(1));
+      r[0].setAttribute("x2", mx.toFixed(1)); r[0].setAttribute("y2", p.y.toFixed(1));
+      r[1].setAttribute("x1", mx.toFixed(1)); r[1].setAttribute("y1", p.y.toFixed(1));
+      r[1].setAttribute("x2", q.x.toFixed(1)); r[1].setAttribute("y2", q.y.toFixed(1));
+      r[0].setAttribute("stroke-width", "1.6"); r[1].setAttribute("stroke-width", "1.6");
+      r[0].setAttribute("stroke-opacity", o); r[1].setAttribute("stroke-opacity", o);
+      [p, q].forEach(function (pt, j) {
+        var b = beads[k * 2 + j];
+        b.setAttribute("cx", pt.x.toFixed(1)); b.setAttribute("cy", pt.y.toFixed(1));
+        b.setAttribute("r", (1.6 + 2.4 * pt.d).toFixed(2));
+        b.setAttribute("fill-opacity", (0.3 + 0.7 * pt.d).toFixed(2));
+      });
+    }
+  }
+
+  var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  draw(0.6);
+  if (calm) return;
+
+  var on = true, raf = 0, t0 = 0, last = 0.6;
+  function tick(t) {
+    if (!t0) t0 = t - last / 0.0009;
+    last = (t - t0) * 0.0009; // about one turn every 7 seconds
+    draw(last);
+    raf = on ? requestAnimationFrame(tick) : 0;
+  }
+  raf = requestAnimationFrame(tick);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      on = es[0].isIntersecting;
+      if (on && !raf) { t0 = 0; raf = requestAnimationFrame(tick); }
+    }).observe(g.ownerSVGElement);
+  }
+})();

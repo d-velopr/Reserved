@@ -306,6 +306,16 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
 .nav .nav-sub a { justify-content: flex-start; border-radius: 10px; color: var(--text); }
 .nav .nav-sub a:hover { background: var(--surface-2); }
 .nav .nav-sub a[aria-current="page"] { background: var(--surface-3); }
+/* Red dash in front of each sub-option (desktop drop-down and phone menu) */
+.nav .nav-sub a::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 2.5px;
+  margin-right: .6rem;
+  border-radius: 2px;
+  background: var(--red);
+}
 @media (prefers-reduced-motion: reduce) { .nav-chev { transition: none; } }
 
 /* ---------- Phone header: logo left, menu button right ---------- */
@@ -2151,6 +2161,11 @@ body:has(.sheet[open]) { overflow: hidden; }
 .gen-photo img { width: 100%; height: 100%; object-fit: cover; }
 .gen-photo-white { background: #fff; }
 .gen-photo-white img { object-fit: contain; padding: 4%; box-sizing: border-box; }
+/* No card behind the photo: the cut-out sits right on the page (home page) */
+.gen-photo-clear { background: none; box-shadow: none; border-radius: 0; }
+.gen-photo-clear img { object-fit: contain; }
+/* Home has two photos: two across, capped so the small cut-outs stay sharp */
+@media (min-width: 641px) { .home-jar .gen-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 760px; } }
 .gen-photo figcaption {
   position: absolute;
   left: 8px;

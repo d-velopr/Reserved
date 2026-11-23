@@ -2073,16 +2073,16 @@ body:has(.sheet[open]) { overflow: hidden; }
   .gen-rail.is-touch { background: var(--surface-2); border-radius: 12px; }
 }
 
-/* Strain card (the product sheet's look). With no photo it's a compact card. */
+/* Strain card (the product sheet's look): the strain's photo, or the Reserved
+   stamp on a gold fade with "Images coming soon", then its name and write-up */
 .gen-card { --tz: var(--gold-text); width: min(440px, 100% - 32px); }
-.gen-card .sheet-info { padding: 1.6rem 1.4rem 1.6rem; }
-.gen-card:not(.has-img) .sheet-close { background: var(--surface-3); color: var(--text); }
-.gen-card:not(.has-img) .sheet-grip { background: var(--line-2); }
+.gen-card .sheet-info { padding: 1.3rem 1.4rem 1.6rem; }
 .gen-card .sheet-info > .sheet-label:first-child { margin: 0 0 .3rem; color: var(--gold-text); }
-.gen-card h2 { padding-right: 52px; font-size: clamp(1.6rem, 6vw, 2.1rem); overflow-wrap: anywhere; }
+.gen-card h2 { font-size: clamp(1.6rem, 6vw, 2.1rem); overflow-wrap: anywhere; }
 .gen-card h2 i { color: var(--tz); font-style: normal; }
-.gen-card-art { aspect-ratio: 4 / 3; overflow: hidden; background: #0B0B0C; }
-.gen-card-art img { width: 100%; height: 100%; object-fit: cover; }
+.gen-card-art { --cat: #A8740F; position: relative; overflow: hidden; }
+.gen-card-art.has-photo img { width: 100%; height: 100%; object-fit: cover; }
+.gen-card-art.art-soon .art-stamp { width: 36%; }
 .gen-parents button {
   display: inline-flex;
   align-items: center;
@@ -2096,7 +2096,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 }
 .gen-parents li:has(button) { border-color: var(--tz); }
 .gen-parents .gen-chev { display: block; width: 12px; height: 12px; color: var(--tz); }
-.gen-info { margin: 1rem 0 0; color: var(--text-soft); line-height: 1.5; }
+.gen-info { margin: .75rem 0 0; color: var(--text-soft); line-height: 1.5; }
 .gen-soon { margin: 1.1rem 0 0; color: var(--muted); font-size: .85rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 @media (max-width: 640px) { .gen-card { width: 100%; } }
 

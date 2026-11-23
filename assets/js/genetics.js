@@ -5,10 +5,11 @@
    Write crosses with " x " (e.g. "Bacio x RS11") so the Crosses filter finds
    them and the strain's card lists its parents.
 
-   Tap a strain to open its card. To give one more to show, swap its name for
-   an object (both fields optional):
-     { name: "Bacio", info: "A sentence or two about it.", img: "assets/img/strains/bacio.webp" }
-   Without info or a photo, the card says "More info coming soon". */
+   Tap a strain to open its card. What the card says comes from
+   RESERVED_GENETICS_INFO below; a cross with no entry there describes itself
+   from its parents (spelled out with RESERVED_GENETICS_NAMES). Anything else
+   says "More info coming soon". Every card shows the "Images coming soon"
+   art until a strain gets its own photo (img). */
 var RESERVED_GENETICS = [
   "92 OG", "A8", "Alpha Runtz", "Angel Cake",
   "Bacio", "Bacio x G33Z", "Bacio x LCG", "Bacio x RS11", "Bacio x RS11 x Z",
@@ -33,6 +34,113 @@ var RESERVED_GENETICS = [
   "Zkit x Bacio", "Zkit x RS11 x Bacio", "ZKittlez", "Zoap",
   "Zombie Brainz #14", "Zombie Brainz #71", "Zookies"
 ];
+
+/* What each strain's card says. Researched November 2026 from public strain
+   databases, breeder notes and growers' posts on X (Leafly, Seedfinder, Weedmaps and others).
+   Lineage only, no effects or potency claims. Where sources disagreed, or the
+   name belongs to more than one strain, there is no entry and the card says
+   "More info coming soon". Add a photo with img: "assets/img/strains/x.webp"
+   (not assets/img/genetics/, which never leaves this computer), and tappable
+   parents with parents: ["Name", "Name"] when both are on the list. */
+var RESERVED_GENETICS_INFO = {
+  "Alpha Runtz": "A Runtz cross: Runtz bred with Alpha Express.",
+  "Angel Cake": "Fire OG crossed with Forum Cut Cookies, credited to RedEyed Genetics.",
+  "Bacio": "Bacio Gelato, also known as Gelato #41, from Sherbinskis. Sunset Sherbet crossed with Thin Mint Cookies.",
+  "Banana OG": "OG Kush crossed with Banana, with a sweet banana nose over OG fuel.",
+  "Billy Kimber": "An OG Kush phenotype from California curator Garrison Lane, named after the Peaky Blinders crime boss. A 2018 High Times Cannabis Cup winner.",
+  "Biscotti": "From Cookies: Gelato #25 crossed with South Florida OG.",
+  "Blue Dream": "A California classic: Blueberry crossed with Haze, with sweet berry notes.",
+  "DJSBB": "DJ Short Blueberry, the berry line from breeder DJ Short that's behind decades of blueberry crosses.",
+  "Double Bubba": "Bubba on Bubba: Pre-98 Bubba Kush crossed with Bubba Kush.",
+  "Gary Payton": "From Cookies and Powerzzzup: The Y crossed with Snowman, named after the NBA Hall of Famer.",
+  "Gaszilla": "Gas Face crossed with Gorilla Glue #4, credited to Small Barn Farms.",
+  "GDP": "Granddaddy Purple: Purple Urkle crossed with Big Bud, known for grape and berry notes.",
+  "Gelonade": "Connected Cannabis' cross of Lemon Tree and Gelato 41, with lemon and citrus up front.",
+  "Ghost OG": "A well-known cut of OG Kush.",
+  "GMO": "Also called Garlic Cookies: Chemdawg crossed with Girl Scout Cookies, with a savory garlic-and-diesel nose.",
+  "Gorilla Fett #1": "Han Solo Burger crossed with Gorilla Glue #4. Our #1 selection.",
+  "Gorilla Fett #2": "Han Solo Burger crossed with Gorilla Glue #4. Our #2 selection.",
+  "Gorilla Fett #3": "Han Solo Burger crossed with Gorilla Glue #4. Our #3 selection.",
+  "Hells Angel OG": "An OG Kush line, usually listed as OG Kush crossed with Blackberry. Original breeder unknown.",
+  "Honey Crisp": "Forbidden Jelly crossed with Gas Bugnes, credited to ALTVM.",
+  "Jack Herrer": "Named after cannabis activist Jack Herer. A Sensi Seeds classic built from Haze, Northern Lights #5 and Shiva Skunk.",
+  "Kush Co OG": "A clone-only member of the OG Kush family.",
+  "Larry OG": "OG Kush crossed with SFV OG.",
+  "Legend OG": "A clone-only OG Kush descendant with Southern California roots.",
+  "Lemonatti": { info: "Gelonade crossed with Biscotti.", parents: ["Gelonade", "Biscotti"] },
+  "Lip Smacker": "Exotic Genetix's cross of Sherbert and Strawberries & Cream.",
+  "Mega Wellness OG": "From Nameless Genetics in Los Angeles: a Chemdawg mother crossed with an OG Kush father.",
+  "Papaya": "Nirvana Seeds' cross of Citral #13 and Ice #2, with a ripe tropical-fruit nose.",
+  "Pink Runtz": "A pink-hued member of the Runtz family (Zkittlez crossed with Gelato).",
+  "Sour Diesel #1": "Our #1 cut of Sour Diesel, the East Coast classic known for its sharp diesel aroma.",
+  "Sour Diesel #2": "Our #2 cut of Sour Diesel, the East Coast classic known for its sharp diesel aroma.",
+  "Sundae Driver": "Cannarado Genetics' cross of Fruity Pebbles OG and Grape Pie.",
+  "Sunset Sherbert": "Sherbinskis' cross of Girl Scout Cookies and Pink Panties, and a parent of the Gelato line.",
+  "Super Runtz": "Lemon Cherry Gelato crossed with Runtz.",
+  "The Rucker": "From New York breeder N.Y.Ceeds, who keep its lineage private.",
+  "TK OG": "An OG from the Triangle Kush (TK) line, the Florida cut many growers credit as an OG Kush ancestor.",
+  "Toad Venom": "Credited to Ronin; most often listed as Animal Face crossed with SinMint Cookies.",
+  "White Himalaya": "From Backpackboyz; reportedly LA Traffic crossed with Birkinz.",
+  "ZKittlez": "Grape Ape crossed with Grapefruit, made famous by Terp Hogz and 3rd Gen Family. Sweet, fruity candy flavor.",
+  "Zoap": "Deo Farms' cross of Rainbow Sherbet and Pink Guava, out of Oakland.",
+  "Zookies": "Animal Cookies crossed with Gorilla Glue #4."
+};
+
+/* Short names in crosses, spelled out on the card ("Bacio x RS11" reads
+   "A cross of Bacio Gelato and Rainbow Sherbet #11"). Names not here stay as written. */
+var RESERVED_GENETICS_NAMES = {
+  "Bacio": "Bacio Gelato",
+  "RS11": "Rainbow Sherbet #11",
+  "Zkit": "Zkittlez",
+  "LCG": "Lemon Cherry Gelato",
+  "Sherb": "Sunset Sherbert",
+  "Mochi": "Mochi Gelato"
+};
+
+/* Strain photos, one per strain, in assets/img/strains/: a bud on white,
+   4:3. Picked in November 2026 from Leafly, Weedmaps and posts on X (X photos
+   had their backgrounds removed); where each came from is in the private
+   assets/img/strain-refs/ (credits.json, db/sources.json). Swap in your own photo by replacing
+   the file. A strain not here shows the "Images coming soon" stamp. */
+var RESERVED_GENETICS_PHOTOS = {
+  "Banana OG": "assets/img/strains/banana-og.webp",
+  "Biscotti": "assets/img/strains/biscotti.webp",
+  "Blue Dream": "assets/img/strains/blue-dream.webp",
+  "DJSBB": "assets/img/strains/djsbb.webp",
+  "GDP": "assets/img/strains/gdp.webp",
+  "Gary Payton": "assets/img/strains/gary-payton.webp",
+  "Ghost OG": "assets/img/strains/ghost-og.webp",
+  "GMO": "assets/img/strains/gmo.webp",
+  "Hells Angel OG": "assets/img/strains/hells-angel-og.webp",
+  "Jack Herrer": "assets/img/strains/jack-herrer.webp",
+  "Larry OG": "assets/img/strains/larry-og.webp",
+  "Legend OG": "assets/img/strains/legend-og.webp",
+  "Papaya": "assets/img/strains/papaya.webp",
+  "Sour Diesel #1": "assets/img/strains/sour-diesel-bud.webp",
+  "Sour Diesel #2": "assets/img/strains/sour-diesel-bud.webp",
+  "Sundae Driver": "assets/img/strains/sundae-driver.webp",
+  "Sunset Sherbert": "assets/img/strains/sunset-sherbert.webp",
+  "ZKittlez": "assets/img/strains/zkittlez.webp",
+  "Zoap": "assets/img/strains/zoap.webp",
+  "92 OG": "assets/img/strains/92-og.webp",
+  "Alpha Runtz": "assets/img/strains/alpha-runtz.webp",
+  "Bacio": "assets/img/strains/bacio.webp",
+  "Blue Nerds": "assets/img/strains/blue-nerds.webp",
+  "Gelonade": "assets/img/strains/gelonade.webp",
+  "Gorilla Fett #1": "assets/img/strains/gorilla-fett.webp",
+  "Gorilla Fett #2": "assets/img/strains/gorilla-fett.webp",
+  "Gorilla Fett #3": "assets/img/strains/gorilla-fett.webp",
+  "Kush Co OG": "assets/img/strains/kush-co-og.webp",
+  "LCG Runtz": "assets/img/strains/lcg-runtz.webp",
+  "Lemonatti": "assets/img/strains/lemonatti.webp",
+  "Lip Smacker": "assets/img/strains/lip-smacker.webp",
+  "Mega Wellness OG": "assets/img/strains/mega-wellness-og.webp",
+  "Pink Runtz": "assets/img/strains/pink-runtz.webp",
+  "Sherb x Bacio": "assets/img/strains/sherb-x-bacio.webp",
+  "Super Runtz": "assets/img/strains/super-runtz.webp",
+  "Zookies": "assets/img/strains/zookies.webp",
+  "Biscotti x RS11": "assets/img/strains/biscotti-x-rs11.webp"
+};
 
 /* Filter chips: label + test. "All" is added by the page. */
 var RESERVED_GENETICS_FILTERS = [
@@ -194,21 +302,37 @@ var RESERVED_GENETICS_FILTERS = [
   var card = document.getElementById("gen-card");
   var cardBody = document.getElementById("gen-card-body");
   var lastFocus = null;
+  var STAMP = "assets/img/gen/stamp.webp";
   var parentsOf = function (name) {
     if (!/ x /.test(name)) return [];
     return name.replace(/\s*#\d+$/, "").split(" x ");
   };
+  var listOf = function (a) {
+    return a.length < 3 ? a.join(" and ") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+  };
+  // A cross with no write-up describes itself from its parents
+  var crossInfo = function (name, parents) {
+    var pheno = (name.match(/#(\d+)$/) || [])[1];
+    var full = parents.map(function (p) { return RESERVED_GENETICS_NAMES[p] || p; });
+    return "A cross of " + listOf(full) + (pheno ? ", pheno #" + pheno : "") + ".";
+  };
   var openCard = function (g, from) {
     if (!card || !card.showModal) return;
     if (!card.open) lastFocus = from || document.activeElement;
-    var parents = parentsOf(g.name);
-    var hasMore = g.info || g.img;
-    card.classList.toggle("has-img", !!g.img);
+    var extra = RESERVED_GENETICS_INFO[g.name] || {};
+    if (typeof extra === "string") extra = { info: extra };
+    var img = g.img || extra.img || RESERVED_GENETICS_PHOTOS[g.name];
+    var parents = extra.parents || parentsOf(g.name);
+    var info = g.info || extra.info || (/ x /.test(g.name) ? crossInfo(g.name, parents) : "");
     cardBody.innerHTML =
-      (g.img ? '<div class="sheet-art gen-card-art"><img src="' + esc(g.img) + '" alt="' + esc(g.name) + '" /></div>' : "") +
+      (img
+        ? '<div class="sheet-art has-photo gen-card-art"><img src="' + esc(img) + '" alt="' + esc(g.name) + '" /></div>'
+        : '<div class="sheet-art art-soon gen-card-art"><img class="art-stamp" src="' + STAMP + '" alt="" />' +
+          '<span class="art-soon-text">Images coming soon</span></div>') +
       '<div class="sheet-info">' +
         '<p class="sheet-label">Genetics</p>' +
         '<h2 id="gen-card-title">' + esc(g.name).split(" x ").join(' <i aria-hidden="true">×</i> ') + "</h2>" +
+        (info ? '<p class="gen-info">' + esc(info) + "</p>" : "") +
         (parents.length
           ? '<p class="sheet-label">Cross of</p><ul class="formats gen-parents">' +
             parents.map(function (p) {
@@ -218,8 +342,7 @@ var RESERVED_GENETICS_FILTERS = [
                 : "<li>" + esc(p) + "</li>";
             }).join("") + "</ul>"
           : "") +
-        (g.info ? '<p class="gen-info">' + esc(g.info) + "</p>" : "") +
-        (hasMore ? "" : '<p class="gen-soon">More info coming soon</p>') +
+        (info ? "" : '<p class="gen-soon">More info coming soon</p>') +
       "</div>";
     cardBody.querySelectorAll("[data-parent]").forEach(function (b) {
       b.addEventListener("click", function () { openCard(byName[b.dataset.parent.toLowerCase()]); });

@@ -61,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=214" />
+  <link rel="stylesheet" href="assets/css/style.css?v=215" />
 </head>
 <body>
 
@@ -131,7 +131,7 @@
       <p class="form-msg gold-done" id="gold-done" role="status" aria-live="polite"></p>
 
       <!-- Application: opens from APPLY. Goes to the Sheet's "Gold Card"
-           tab (subscribe.gs, kind "gold"). Shops come from stores.js. -->
+           tab (subscribe.gs, kind "gold"). The shop dropdown is filled from stores.js. -->
       <form id="gold-form" class="contact-form gold-form" novalidate hidden>
         <label for="g-name">Name</label>
         <input id="g-name" name="name" type="text" autocomplete="name" placeholder="First and last" maxlength="100" required />
@@ -139,10 +139,10 @@
         <input id="g-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required />
         <label for="g-bday">Birthday</label>
         <input id="g-bday" name="birthday" type="date" autocomplete="bday" required />
-        <fieldset class="choices" id="g-shop">
-          <legend>Pickup shop</legend>
-          <div class="choice-row gold-shops"></div>
-        </fieldset>
+        <label for="g-shop">Pickup shop</label>
+        <select id="g-shop" name="shop" required>
+          <option value="">Pick your shop</option>
+        </select>
         <!-- Honeypot: real people never see or fill this. -->
         <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <button class="btn btn-red" type="submit">Apply for the List</button>
@@ -179,6 +179,6 @@
   </footer>
 
   <script src="assets/js/stores.js?v=36"></script>
-  <script src="assets/js/site.js?v=32"></script>
+  <script src="assets/js/site.js?v=33"></script>
 </body>
 </html>

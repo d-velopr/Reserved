@@ -574,30 +574,11 @@
       gold.elements.name.focus({ preventScroll: true });
     });
 
-    // Pickup shops: one tap tile per shop in stores.js, with its logo.
-    var shopRow = gold.querySelector(".gold-shops");
+    // Pickup shops: one dropdown option per shop in stores.js.
+    var shopSelect = gold.elements.shop;
     (window.RESERVED_STORES || []).forEach(function (s) {
-      var label = document.createElement("label");
-      label.className = "choice";
-      var input = document.createElement("input");
-      input.type = "radio";
-      input.name = "shop";
-      input.value = s.name + ", " + s.city;
-      var span = document.createElement("span");
-      if (s.logo) {
-        var img = document.createElement("img");
-        img.src = s.logo;
-        img.alt = "";
-        img.loading = "lazy";
-        span.appendChild(img);
-      }
-      var b = document.createElement("b");
-      b.textContent = s.name;
-      span.appendChild(b);
-      span.appendChild(document.createTextNode(s.city));
-      label.appendChild(input);
-      label.appendChild(span);
-      shopRow.appendChild(label);
+      var label = s.name + ", " + s.city;
+      shopSelect.appendChild(new Option(label, label));
     });
 
     // Birthday: the picker stops at the day someone turned 21.
@@ -606,15 +587,14 @@
     var cutoff = new Date(now.getFullYear() - 21, now.getMonth(), now.getDate());
     gold.elements.birthday.max = cutoff.getFullYear() + "-" + pad(cutoff.getMonth() + 1) + "-" + pad(cutoff.getDate());
 
-    var gFields = [gold.elements.name, gold.elements.email, gold.elements.birthday,
-      document.getElementById("g-shop")];
+    var gFields = [gold.elements.name, gold.elements.email, gold.elements.birthday, shopSelect];
     var goldError = function (text, field) {
       gMsg.textContent = text;
       gMsg.className = "form-msg err";
       gFields.forEach(function (f) { f.removeAttribute("aria-invalid"); });
       if (field) {
         field.setAttribute("aria-invalid", "true");
-        (field.tagName === "FIELDSET" ? field.querySelector("input") : field).focus();
+        field.focus();
       }
     };
 
@@ -624,7 +604,7 @@
       var name = gold.elements.name.value.trim();
       var email = gold.elements.email.value.trim();
       var bday = gold.elements.birthday.value; // YYYY-MM-DD
-      var shop = (gold.querySelector('input[name="shop"]:checked') || {}).value;
+      var shop = shopSelect.value;
       if (!name) return goldError("Enter your name.", gold.elements.name);
       if (!EMAIL_RE.test(email)) return goldError("Enter an email like name@email.com.", gold.elements.email);
       if (!/^\d{4}-\d{2}-\d{2}$/.test(bday)) return goldError("Enter your birthday.", gold.elements.birthday);

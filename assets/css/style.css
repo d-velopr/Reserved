@@ -1829,12 +1829,6 @@ body:has(.sheet[open]) { overflow: hidden; }
 /* Gold Card sign-up: the Contact form's boxes and tap tiles */
 .gold-form { width: 100%; border: 1px solid var(--line); border-radius: var(--radius); }
 .gold-form[hidden] { display: none; }
-.gold-form .choice span b { font-weight: 900; }
-.gold-shops .choice span { min-height: 96px; font-size: .85rem; font-weight: 600; color: var(--muted); }
-.gold-shops .choice span b { color: var(--text); font-size: .95rem; }
-/* Some shop logos are white, so each sits on a dark chip in both themes */
-.gold-shops .choice img { box-sizing: content-box; width: 76px; height: 30px; padding: 6px 10px; border-radius: 8px; background: #17100B; object-fit: contain; }
-@media (min-width: 640px) { .contact-form .gold-shops { grid-template-columns: repeat(3, 1fr); } }
 
 /* Three steps joined by a gold line */
 .list-steps { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; margin: 0; padding: 0; list-style: none; }

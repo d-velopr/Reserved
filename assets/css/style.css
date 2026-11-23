@@ -1721,6 +1721,9 @@ body:has(.sheet[open]) { overflow: hidden; }
 /* The Reserved List: a gold title over a gold line (the same 3px line the
    old header band had), then the Gold Card (flips on tap), its sign-up form,
    and three steps. */
+.list-head { padding-bottom: 0; }
+.list-head h1 { color: var(--gold-text); }
+.list-head + .list-page { padding-top: 1.75rem; }
 .list-page { display: grid; justify-items: center; gap: 2.25rem; max-width: 760px; padding-top: 2.5rem; padding-bottom: 4rem; }
 
 .pass {

@@ -391,8 +391,6 @@ h2 { font-size: clamp(1.7rem, 4.4vw, 2.8rem); }
   .nav .nav-sub a, .nav .nav-sub a:last-of-type { border-radius: 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; color: var(--text-soft); }
   .nav .nav-sub a:hover { background: none; }
   .nav .nav-sub a[aria-current="page"] { background: none; color: var(--text); }
-  /* Phone menu: Genetics goes last under Learn (it's first on wider screens) */
-  .nav .nav-sub a[href$="genetics.html"] { order: 1; }
   /* Light/dark switch: sits at the right end of the Home row (no row of its own).
      Top matches the menu's top padding; height matches a menu row. */
   .theme-btn { display: none; }

@@ -1954,7 +1954,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 
 /* ======================================================================
    Genetics: Terp Tunnel's gold header with the DNA seal and the strain count,
-   a sticky search + family chips bar, the strain tiles, then photos
+   a sticky search + family chips bar, then the strain tiles
    ====================================================================== */
 /* The seal: alchemy rings turning both ways around the helix (genetics.js) */
 .gen-seal {

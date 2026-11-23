@@ -2099,6 +2099,9 @@ body:has(.sheet[open]) { overflow: hidden; }
 @media (max-width: 640px) { .gen-card { width: 100%; } }
 
 .gen-jar { padding-bottom: 4rem; }
+/* Home page copy: sits in the Find a Store section, gold arrow like genetics */
+.home-jar { --tz: var(--gold); margin-top: 2.25rem; padding-bottom: 0; }
+:root[data-theme="light"] .home-jar { --tz: #8A5A0E; }
 .gen-jar h2 { margin-bottom: 1rem; font-size: clamp(1.5rem, 5vw, 2.2rem); text-transform: uppercase; }
 /* The heading opens the Collection; the gold arrow says it can be tapped */
 .gen-head-link svg { display: inline-block; width: .8em; height: .8em; margin-left: .15em; vertical-align: -.02em; color: var(--tz); transition: transform .15s; }

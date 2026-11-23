@@ -43,7 +43,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=206" />
+  <link rel="stylesheet" href="assets/css/style.css?v=207" />
 </head>
 <body>
 
@@ -169,12 +169,27 @@
           <ul class="city-chips" id="store-cities"></ul>
         </div>
 
-        <div class="coming-soon" id="coming-soon">
-          <div class="sec-head">
-            <h2 id="coming-title">Coming Soon...</h2>
+        <!-- Explore the Collection: same block as on genetics.html (photo viewer
+             and phone swipe come from genetics.js) -->
+        <div class="gen-jar home-jar">
+          <h2 id="jar-title"><a class="find-link gen-head-link" href="collection.html">Explore the Collection<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a></h2>
+          <!-- Tap a photo to see it full size (the viewer is at the end of the page).
+               Phones: one photo at a time, swipe for the next; the dots show where
+               you are (genetics.js). -->
+          <div class="gen-photos" id="gen-photos">
+            <figure class="gen-photo gen-photo-white">
+              <button type="button" class="gen-zoom" aria-label="Enlarge photo"><img src="assets/img/marketing/flower-lineup.webp" alt="Sixteen Reserved flower jars, from Candy Paint OG to Peach Bellini" width="1000" height="1081" loading="lazy" /></button>
+              <figcaption>Flower</figcaption>
+            </figure>
+            <figure class="gen-photo gen-photo-tall">
+              <button type="button" class="gen-zoom" aria-label="Enlarge photo"><img src="assets/img/misc/jars.webp" alt="Reserved jars: Orange Creamsicle, Zunami, Jokerz 33 and more" width="1000" height="1305" loading="lazy" /></button>
+            </figure>
+            <figure class="gen-photo gen-photo-white">
+              <button type="button" class="gen-zoom" aria-label="Enlarge photo"><img src="assets/img/marketing/vape-lineup.webp" alt="Ten Reserved Live Resin Vapes with their boxes" width="1000" height="981" loading="lazy" /></button>
+              <figcaption>Live Resin Vapes</figcaption>
+            </figure>
           </div>
-          <!-- Filled by home.js from RESERVED_COMING_SOON in stores.js -->
-          <ul class="soon-list" id="coming-list"></ul>
+          <div class="gen-dots" id="gen-dots" role="group" aria-label="Photos"></div>
         </div>
       </div>
     </section>
@@ -224,9 +239,28 @@
   </footer>
 
 
+  <!-- Photo viewer: the tapped photo full size. Arrows / swipe for the next
+       one; tap outside, the X or Escape to close (genetics.js). -->
+  <dialog class="gen-viewer" id="gen-viewer" aria-label="Photo">
+    <button type="button" class="sheet-close" id="gen-viewer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+    <figure class="gen-viewer-fig">
+      <img id="gen-viewer-img" src="" alt="" />
+      <figcaption id="gen-viewer-cap"></figcaption>
+    </figure>
+    <button type="button" class="gen-viewer-nav gen-viewer-prev" id="gen-viewer-prev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="gen-viewer-nav gen-viewer-next" id="gen-viewer-next" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </dialog>
+
   <script src="assets/js/stores.js?v=36"></script>
   <script src="assets/js/products.js?v=24"></script>
   <script src="assets/js/site.js?v=31"></script>
-  <script src="assets/js/home.js?v=18"></script>
+  <script src="assets/js/home.js?v=19"></script>
+  <script src="assets/js/genetics.js?v=14"></script>
 </body>
 </html>

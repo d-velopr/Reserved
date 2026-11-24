@@ -2181,8 +2181,8 @@ body:has(.sheet[open]) { overflow: hidden; }
 /* No card behind the photo: the cut-out sits right on the page (home page) */
 .gen-photo-clear { background: none; box-shadow: none; border-radius: 0; }
 .gen-photo-clear img { object-fit: contain; }
-/* Home has two photos: two across, capped so the small cut-outs stay sharp */
-@media (min-width: 641px) { .home-jar .gen-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 760px; } }
+/* Home has three photos: three across, capped so the small cut-outs stay sharp */
+@media (min-width: 641px) { .home-jar .gen-photos { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1000px; } }
 .gen-photo figcaption {
   position: absolute;
   left: 8px;

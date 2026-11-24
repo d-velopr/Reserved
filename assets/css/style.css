@@ -1953,7 +1953,7 @@ body:has(.sheet[open]) { overflow: hidden; }
 }
 
 /* ======================================================================
-   Genetics: Terp Tunnel's gold header with the DNA seal and the strain count,
+   Genetics: a purple plaid header with the DNA seal and the strain count,
    a sticky search + family chips bar, then the strain tiles
    ====================================================================== */
 /* The seal: alchemy rings turning both ways around the helix (genetics.js) */
@@ -1971,14 +1971,38 @@ body:has(.sheet[open]) { overflow: hidden; }
   .gen-seal .seal-orbit { animation: seal-spin 90s linear infinite reverse; }
 }
 @keyframes seal-spin { to { transform: rotate(360deg); } }
-/* Genetics header: deep clone-room green, not Terp Tunnel's brown. The gold
-   seal, line and title stay; the glow turns green. */
-.edu-gen { --hero-glow: rgba(52, 150, 96, .30); }
+/* Genetics in purple, not Terp Tunnel's gold-on-brown. The header is a deep
+   purple plaid (a check of soft bands and fine lines, darkened behind the
+   seal so it stands out). The gold seal stays. Everything on the page that
+   was gold (tile edges, letters, rail, glows, strain card) turns purple. */
+.edu-gen { --hero-glow: rgba(150, 95, 230, .30); --hero-line: #A77BE0; --hero-text: #C9A6F5; }
+.tz .edu-gen, .gen-card {
+  --tz: #B48AEB;
+  --gold-text: #B48AEB;
+  --gold-glow: 0 6px 22px rgba(150, 95, 230, .12);
+  --gold-glow-strong: 0 10px 32px rgba(150, 95, 230, .34);
+}
+:root[data-theme="light"] .tz .edu-gen, :root[data-theme="light"] .gen-card {
+  --tz: #6B3FA0;
+  --gold-text: #6B3FA0;
+  --gold-glow: 0 6px 22px rgba(107, 63, 160, .16);
+  --gold-glow-strong: 0 10px 32px rgba(107, 63, 160, .45);
+}
 .edu-gen .tz-hero {
   background:
+    radial-gradient(ellipse 42% 55% at 50% 42%, rgba(14, 7, 24, .7), transparent 75%),
     radial-gradient(ellipse 60% 70% at 50% 45%, var(--hero-glow), transparent 70%),
-    linear-gradient(180deg, #0F2219, #06100B);
+    repeating-linear-gradient(90deg,
+      transparent 0 44px, rgba(186, 140, 255, .08) 44px 72px,
+      transparent 72px 86px, rgba(222, 196, 255, .16) 86px 88px,
+      transparent 88px 96px, rgba(222, 196, 255, .09) 96px 97px, transparent 97px 128px),
+    repeating-linear-gradient(0deg,
+      transparent 0 44px, rgba(186, 140, 255, .08) 44px 72px,
+      transparent 72px 86px, rgba(222, 196, 255, .16) 86px 88px,
+      transparent 88px 96px, rgba(222, 196, 255, .09) 96px 97px, transparent 97px 128px),
+    linear-gradient(180deg, #24123A, #100819);
 }
+.edu-gen .gen-stat { color: #D8CCE6; }
 .gen-stat { margin: .9rem 0 0; color: #D6C8AE; font-weight: 800; font-size: 1.05rem; letter-spacing: .02em; text-transform: uppercase; }
 .gen-stat b { color: var(--hero-text); font-size: 1.5em; font-weight: 900; }
 .gen-tools { display: flex; flex-direction: column; gap: .1rem; padding-top: .7rem; }
@@ -2101,12 +2125,12 @@ body:has(.sheet[open]) { overflow: hidden; }
 
 /* Strain card (the product sheet's look): the strain's photo, or the Reserved
    stamp on a gold fade with "Images coming soon", then its name and write-up */
-.gen-card { --tz: var(--gold-text); width: min(440px, 100% - 32px); }
+.gen-card { width: min(440px, 100% - 32px); }
 .gen-card .sheet-info { padding: 1.3rem 1.4rem 1.6rem; }
 .gen-card .sheet-info > .sheet-label:first-child { margin: 0 0 .3rem; color: var(--gold-text); }
 .gen-card h2 { font-size: clamp(1.6rem, 6vw, 2.1rem); overflow-wrap: anywhere; }
 .gen-card h2 i { color: var(--tz); font-style: normal; }
-.gen-card-art { --cat: #A8740F; position: relative; overflow: hidden; }
+.gen-card-art { --cat: #6B3FA0; position: relative; overflow: hidden; }
 .gen-card-art.has-photo img { width: 100%; height: 100%; object-fit: cover; }
 .gen-card-art.art-soon .art-stamp { width: 36%; }
 .gen-parents button {

@@ -1214,6 +1214,11 @@ a.lineup-stage:focus-visible { outline: 3px solid var(--gold); outline-offset: -
    photo (Lila's Lotus, the badders) otherwise stretched the frame to a
    square, taller than every other product's sheet. */
 .sheet-art.has-photo img { position: absolute; inset: 0; }
+/* The open card shows the whole square photo instead of cropping it to 4:3.
+   Every product photo is shot on pure white, so the frame is white too and
+   the sides blend in. */
+.sheet-art.has-photo { background: #fff; }
+.sheet-art.has-photo img { object-fit: contain; }
 /* Logos and labels with a see-through background: whole, on the category color */
 .has-cutout img { width: 80%; height: 80%; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .55)); }
 .sheet-art.has-cutout img { width: 70%; height: 82%; }

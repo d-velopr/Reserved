@@ -45,19 +45,19 @@ window.RESERVED_CATEGORIES = [
 ];
 
 window.RESERVED_PRODUCTS = [
-  // Flower: 3.5g jars. Card shows the open jar, the sheet shows the jars.
+  // Flower: 3.5g jars
   { id: "blueberry-chews", cat: "flower", name: "Blueberry Chews", size: "3.5g", type: "Indica", lineage: "Blueberry x Hi-Chew",
-    img: "assets/img/flower/blueberry-chews.webp", sheetImg: "assets/img/flower/blueberry-chews-jars.webp" },
+    img: "assets/img/flower/blueberry-chews.webp" },
   { id: "candy-paint-og", cat: "flower", name: "Candy Paint OG", size: "3.5g", type: "Hybrid", lineage: "Candy Fumez x Permanent Marker",
-    img: "assets/img/flower/candy-paint-og.webp", sheetImg: "assets/img/flower/candy-paint-og-jars.webp" },
+    img: "assets/img/flower/candy-paint-og.webp" },
   { id: "green-dragon-kush", cat: "flower", name: "Green Dragon Kush", size: "3.5g", type: "Indica", lineage: "Green Crack x Candy Kush",
-    img: "assets/img/flower/green-dragon-kush.webp", sheetImg: "assets/img/flower/green-dragon-kush-jars.webp" },
+    img: "assets/img/flower/green-dragon-kush.webp" },
   { id: "rosewater-runtz", cat: "flower", name: "Rosewater Runtz", size: "3.5g", type: "Indica", lineage: "White Runtz x Gelato 41",
-    img: "assets/img/flower/rosewater-runtz.webp", sheetImg: "assets/img/flower/rosewater-runtz-jars.webp" },
+    img: "assets/img/flower/rosewater-runtz.webp" },
   { id: "strawberry-funnel-cakez", cat: "flower", name: "Strawberry Funnel Cakez", size: "3.5g", type: "Indica", lineage: "Chronic x White Widow x Cheese",
-    img: "assets/img/flower/strawberry-funnel-cakez.webp", sheetImg: "assets/img/flower/strawberry-funnel-cakez-jars.webp" },
+    img: "assets/img/flower/strawberry-funnel-cakez.webp" },
   { id: "zunami", cat: "flower", name: "Zunami", size: "3.5g", type: "Hybrid", lineage: "Zkittlez x Gelato 41 x Sherb BX1",
-    img: "assets/img/flower/zunami.webp", sheetImg: "assets/img/flower/zunami-jars.webp" },
+    img: "assets/img/flower/zunami.webp" },
   // Pre-rolls: Tiger Ztripez (infused) and Minis (flower only)
   { id: "lilas-lotus-tiger-ztripez", cat: "pre-rolls", line: "Tiger Ztripez", name: "Lila's Lotus", size: "Single", desc: "1.5g flower + 0.5g live resin concentrate in three stripes",
     img: "assets/img/prerolls/lilas-lotus-tiger-ztripez.webp" },
